@@ -7,7 +7,7 @@ const teamMembers = [
     name: "髙橋綱弥",
     role: "Lead Engineer",
     description: "フルスタック開発とプロジェクトマネジメントを得意とし、チーム全体の技術戦略を牽引。",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+    initials: "高綱",
     social: {
       twitter: "#",
       github: "#"
@@ -17,7 +17,7 @@ const teamMembers = [
     name: "かえる",
     role: "Creative Engineer",
     description: "UI/UX デザインとフロントエンド開発のスペシャリスト。ユーザー体験の向上に情熱を注ぐ。",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+    initials: "カ",
     social: {
       twitter: "#",
       github: "#"
@@ -27,7 +27,7 @@ const teamMembers = [
     name: "mir",
     role: "Backend Engineer",
     description: "サーバーサイド開発とインフラ構築のエキスパート。スケーラブルなシステム設計を得意とする。",
-    image: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+    initials: "M",
     social: {
       twitter: "#",
       github: "#"
@@ -65,12 +65,12 @@ export default function Team() {
               className="team-card bg-gradient-to-br from-secondary/80 to-muted/40 backdrop-blur-sm border border-border rounded-xl p-8 text-center"
               data-testid={`team-card-${index}`}
             >
-              <img 
-                src={member.image}
-                alt={member.name}
-                className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-primary/30 object-cover"
-                data-testid={`team-image-${index}`}
-              />
+              <div 
+                className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-primary/30 bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center"
+                data-testid={`team-avatar-${index}`}
+              >
+                <span className="text-3xl font-bold text-primary">{member.initials}</span>
+              </div>
               <h3 className="text-2xl font-bold mb-2 text-foreground" data-testid={`team-name-${index}`}>
                 {member.name}
               </h3>
@@ -82,16 +82,20 @@ export default function Team() {
               </p>
               <div className="flex justify-center space-x-4" data-testid={`team-social-${index}`}>
                 <a 
-                  href={member.social.twitter}
+                  href="https://x.com/CRUD5th"
                   className="text-muted-foreground hover:text-primary transition-colors"
                   data-testid={`team-twitter-${index}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Twitter className="w-5 h-5" />
                 </a>
                 <a 
-                  href={member.social.github}
+                  href="https://github.com/crudfifth"
                   className="text-muted-foreground hover:text-primary transition-colors"
                   data-testid={`team-github-${index}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <Github className="w-5 h-5" />
                 </a>

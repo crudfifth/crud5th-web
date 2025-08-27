@@ -13,7 +13,7 @@ const services = [
       "データベース設計",
       "API開発・統合"
     ],
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
+    gradient: "from-blue-500/20 to-cyan-500/20"
   },
   {
     icon: Rocket,
@@ -25,7 +25,7 @@ const services = [
       "スケーリング支援",
       "マーケティング連携"
     ],
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
+    gradient: "from-purple-500/20 to-pink-500/20"
   },
   {
     icon: TrendingUp,
@@ -37,7 +37,7 @@ const services = [
       "業務プロセス改善",
       "技術教育・研修"
     ],
-    image: "https://images.unsplash.com/photo-1556761175-4b46a572b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
+    gradient: "from-green-500/20 to-emerald-500/20"
   }
 ];
 
@@ -71,14 +71,11 @@ export default function Services() {
               className="service-card bg-secondary/50 backdrop-blur-sm border border-border rounded-xl p-8"
               data-testid={`service-card-${index}`}
             >
-              <img 
-                src={service.image} 
-                alt={service.title}
-                className="w-full h-48 object-cover rounded-lg mb-6"
-                data-testid={`service-image-${index}`}
-              />
-              <div className="text-primary text-4xl mb-4 flex justify-center">
-                <service.icon className="w-12 h-12" />
+              <div 
+                className={`w-full h-48 bg-gradient-to-br ${service.gradient} rounded-lg mb-6 flex items-center justify-center`}
+                data-testid={`service-visual-${index}`}
+              >
+                <service.icon className="w-16 h-16 text-primary/80" />
               </div>
               <h3 className="text-2xl font-bold mb-4 text-foreground" data-testid={`service-title-${index}`}>
                 {service.title}

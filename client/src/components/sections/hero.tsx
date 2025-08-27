@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import ParticleBackground from "@/components/animations/particle-background";
-import TypingText from "@/components/animations/typing-text";
+import TypingAnimation from "@/components/ui/typing-animation";
 
 export default function Hero() {
   const scrollToServices = () => {
@@ -46,7 +46,7 @@ export default function Hero() {
           className="text-xl md:text-2xl text-muted-foreground mb-8"
           data-testid="hero-typing"
         >
-          <TypingText />
+          <TypingAnimation />
         </motion.div>
 
         <motion.p

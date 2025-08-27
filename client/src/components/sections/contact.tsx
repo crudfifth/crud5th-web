@@ -122,16 +122,20 @@ export default function Contact() {
                 <h4 className="text-lg font-semibold mb-4 text-foreground">ソーシャルリンク</h4>
                 <div className="flex space-x-4" data-testid="contact-social">
                   <a 
-                    href="#" 
+                    href="https://x.com/CRUD5th" 
                     className="w-12 h-12 bg-secondary border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all neon-glow"
                     data-testid="social-twitter"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <Twitter className="w-5 h-5" />
                   </a>
                   <a 
-                    href="#" 
+                    href="https://github.com/crudfifth" 
                     className="w-12 h-12 bg-secondary border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all neon-glow"
                     data-testid="social-github"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <Github className="w-5 h-5" />
                   </a>

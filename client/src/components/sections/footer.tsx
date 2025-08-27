@@ -53,7 +53,7 @@ export default function Footer() {
           className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground"
           data-testid="footer-copyright"
         >
-          © 2024 CRUD5th. All rights reserved.
+          © {new Date().getFullYear()} CRUD5th. All rights reserved.
         </motion.div>
       </div>
     </footer>
