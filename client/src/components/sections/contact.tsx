@@ -31,7 +31,7 @@ export default function Contact() {
   // EmailJS Configuration
   const EMAILJS_PUBLIC_KEY = 'dU72FW2OraVAQiNy1';
   const EMAILJS_SERVICE_ID = 'service_cek2z0h';
-  const EMAILJS_TEMPLATE_ID = 'template_contactus';
+  const EMAILJS_TEMPLATE_ID = 'template_21xzi95';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
