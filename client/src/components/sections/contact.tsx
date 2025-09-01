@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { Mail, Phone, Twitter, Github } from "lucide-react";
@@ -7,8 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import emailjs from '@emailjs/browser';
 
 interface ContactForm {
   name: string;
@@ -20,6 +19,8 @@ interface ContactForm {
 export default function Contact() {
   const { ref, isVisible } = useScrollAnimation();
   const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<ContactForm>({
     name: "",
     email: "",
@@ -27,34 +28,14 @@ export default function Contact() {
     message: ""
   });
 
-  const contactMutation = useMutation({
-    mutationFn: async (data: ContactForm) => {
-      return await apiRequest("POST", "/api/contact", data);
-    },
-    onSuccess: () => {
-      toast({
-        title: "送信完了",
-        description: "お問い合わせを受け付けました。後日担当者よりご連絡いたします。",
-      });
-      setFormData({
-        name: "",
-        email: "",
-        type: "",
-        message: ""
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: "送信エラー",
-        description: "お問い合わせの送信に失敗しました。時間をおいて再度お試しください。",
-        variant: "destructive",
-      });
-      console.error("Contact form error:", error);
-    }
-  });
+  // EmailJS Configuration
+  const EMAILJS_PUBLIC_KEY = 'dU72FW2OraVAQiNy1';
+  const EMAILJS_SERVICE_ID = 'service_cek2z0h';
+  const EMAILJS_TEMPLATE_ID = 'template_contactus';
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!formData.name || !formData.email || !formData.type || !formData.message) {
       toast({
         title: "入力エラー",
@@ -63,7 +44,47 @@ export default function Contact() {
       });
       return;
     }
-    contactMutation.mutate(formData);
+
+    setIsLoading(true);
+    
+    try {
+      // EmailJSでメール送信
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          name: formData.name,
+          email: formData.email,
+          type: formData.type,
+          message: formData.message,
+          sent_date: new Date().toLocaleString('ja-JP')
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+      
+      toast({
+        title: "送信完了",
+        description: "お問い合わせを受け付けました。後日担当者よりご連絡いたします。",
+      });
+      
+      // フォームをリセット
+      setFormData({
+        name: "",
+        email: "",
+        type: "",
+        message: ""
+      });
+      
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      toast({
+        title: "送信エラー",
+        description: "お問い合わせの送信に失敗しました。時間をおいて再度お試しください。",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInputChange = (field: keyof ContactForm, value: string) => {
@@ -150,7 +171,7 @@ export default function Contact() {
               transition={{ duration: 0.8, delay: 0.4 }}
               data-testid="contact-form"
             >
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">お名前</label>
                   <Input
@@ -200,11 +221,11 @@ export default function Contact() {
                 </div>
                 <Button
                   type="submit"
-                  disabled={contactMutation.isPending}
+                  disabled={isLoading}
                   className="w-full bg-primary text-primary-foreground py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all neon-glow"
                   data-testid="button-submit"
                 >
-                  {contactMutation.isPending ? "送信中..." : "送信する"}
+                  {isLoading ? "送信中..." : "送信する"}
                 </Button>
               </form>
             </motion.div>

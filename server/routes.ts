@@ -5,7 +5,8 @@ import { insertContactSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Contact form submission endpoint
+  // Contact form submission endpoint (現在はEmailJSを使用しているためコメントアウト)
+  /*
   app.post("/api/contact", async (req, res) => {
     try {
       // Validate request body
@@ -47,6 +48,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   });
+  */
 
   // Get all contacts (for admin purposes - in production you might want to add authentication)
   app.get("/api/contacts", async (req, res) => {
