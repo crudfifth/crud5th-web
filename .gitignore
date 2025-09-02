@@ -12,3 +12,6 @@ replit.md
 .config/
 .upm/
 .cache/
+
+# Attached assets (uploaded files)
+attached_assets/
