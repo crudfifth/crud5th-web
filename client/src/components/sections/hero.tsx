@@ -33,7 +33,7 @@ export default function Hero() {
           className="text-6xl md:text-8xl font-black mb-6 leading-tight"
           data-testid="hero-title"
         >
-          <span className="block gradient-text neon-text">CRUD5th</span>
+          <span className="block gradient-text">CRUD5th</span>
           <span className="block text-3xl md:text-5xl font-light text-muted-foreground mt-4">
             エンジニアチーム
           </span>
@@ -69,7 +69,7 @@ export default function Hero() {
         >
           <button
             onClick={scrollToServices}
-            className="bg-primary text-primary-foreground px-8 py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all neon-glow pulse-yellow"
+            className="bg-primary text-primary-foreground px-8 py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all"
             data-testid="button-services"
           >
             サービスを見る

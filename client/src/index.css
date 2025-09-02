@@ -90,13 +90,6 @@
 }
 
 @layer components {
-  .neon-glow {
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-  }
-
-  .neon-text {
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-  }
 
   .gradient-text {
     background: linear-gradient(135deg, hsl(45 100% 50%), hsl(45 100% 60%));
@@ -117,7 +110,6 @@
 
   .service-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(255, 215, 0, 0.1);
   }
 
   .team-card {
@@ -126,7 +118,6 @@
 
   .team-card:hover {
     transform: scale(1.05);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
   }
 
   .counter {
@@ -159,9 +150,6 @@
     will-change: transform;
   }
 
-  .pulse-yellow {
-    animation: pulse-yellow 2s infinite;
-  }
 }
 
 @keyframes blink {
@@ -185,11 +173,3 @@
   }
 }
 
-@keyframes pulse-yellow {
-  0%, 100% { 
-    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); 
-  }
-  50% { 
-    box-shadow: 0 0 0 20px rgba(255, 215, 0, 0); 
-  }
-}

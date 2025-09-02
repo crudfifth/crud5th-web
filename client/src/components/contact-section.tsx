@@ -118,14 +118,14 @@ export default function ContactSection() {
                 <div className="flex space-x-4">
                   <a 
                     href="#" 
-                    className="w-12 h-12 bg-secondary border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all neon-glow"
+                    className="w-12 h-12 bg-secondary border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
                     data-testid="link-twitter"
                   >
                     <Twitter className="w-5 h-5" />
                   </a>
                   <a 
                     href="#" 
-                    className="w-12 h-12 bg-secondary border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all neon-glow"
+                    className="w-12 h-12 bg-secondary border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
                     data-testid="link-github"
                   >
                     <Github className="w-5 h-5" />
@@ -228,7 +228,7 @@ export default function ContactSection() {
                   
                   <Button 
                     type="submit" 
-                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 neon-glow" 
+                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90" 
                     disabled={contactMutation.isPending}
                     data-testid="button-submit"
                   >

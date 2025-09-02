@@ -144,7 +144,7 @@ export default function Contact() {
                 <div className="flex space-x-4" data-testid="contact-social">
                   <a 
                     href="https://x.com/CRUD5th" 
-                    className="w-12 h-12 bg-secondary border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all neon-glow"
+                    className="w-12 h-12 bg-secondary border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
                     data-testid="social-twitter"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -153,7 +153,7 @@ export default function Contact() {
                   </a>
                   <a 
                     href="https://github.com/crudfifth" 
-                    className="w-12 h-12 bg-secondary border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all neon-glow"
+                    className="w-12 h-12 bg-secondary border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
                     data-testid="social-github"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -222,7 +222,7 @@ export default function Contact() {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-primary text-primary-foreground py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all neon-glow"
+                  className="w-full bg-primary text-primary-foreground py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all"
                   data-testid="button-submit"
                 >
                   {isLoading ? "送信中..." : "送信する"}
