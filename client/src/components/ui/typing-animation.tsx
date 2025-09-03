@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 
 const typingTexts = [
-  'フリーランスエンジニアチーム',
-  '革新的なソリューション提供',
-  'あなたのビジネスパートナー'
+  '次世代のデジタル体験を設計',
+  'ビジネス成長を加速する技術力',
+  '戦略からコードまで一気通貫',
+  'イノベーションの実現パートナー'
 ];
 
 export default function TypingAnimation() {

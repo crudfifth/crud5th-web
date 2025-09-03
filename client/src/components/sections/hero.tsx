@@ -29,20 +29,29 @@ export default function Hero() {
         <motion.h1
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="text-6xl md:text-8xl font-black mb-6 leading-tight"
+          transition={{ 
+            duration: 1.2, 
+            ease: [0.16, 1, 0.3, 1] 
+          }}
+          className="text-5xl md:text-7xl font-black mb-6 leading-tight"
           data-testid="hero-title"
         >
-          <span className="block gradient-text">CRUD5th</span>
-          <span className="block text-3xl md:text-5xl font-light text-muted-foreground mt-4">
-            エンジニアチーム
+          <span className="block text-2xl md:text-4xl font-medium text-muted-foreground mb-2">THE</span>
+          <span className="block gradient-text">EVOLUTION</span>
+          <span className="block gradient-text">PARTNER</span>
+          <span className="block text-2xl md:text-3xl font-light text-muted-foreground mt-6">
+            革新を共に創造するエンジニア集団
           </span>
         </motion.h1>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            delay: 0.6, 
+            duration: 1,
+            ease: [0.16, 1, 0.3, 1]
+          }}
           className="text-xl md:text-2xl text-muted-foreground mb-8"
           data-testid="hero-typing"
         >
@@ -52,53 +61,71 @@ export default function Hero() {
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 0.8 }}
-          className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed"
+          transition={{ 
+            delay: 1.2, 
+            duration: 1,
+            ease: [0.16, 1, 0.3, 1]
+          }}
+          className="text-lg md:text-xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed"
           data-testid="hero-description"
         >
-          受託開発・自社サービス開発・DX/ITコンサルティングを通じて、<br className="hidden md:inline" />
-          革新的なソリューションをお届けします
+          テクノロジーの力でビジネスの限界を突破し、<br className="hidden md:inline" />
+          あなたの理想を現実に変える戦略的パートナーシップを提供します。<br className="hidden md:inline" />
+          <span className="text-foreground font-medium">共に未来を築きましょう。</span>
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          transition={{ 
+            delay: 1.6, 
+            duration: 1,
+            ease: [0.16, 1, 0.3, 1]
+          }}
+          className="flex flex-col sm:flex-row gap-6 justify-center"
           data-testid="hero-buttons"
         >
-          <button
+          <motion.button
             onClick={scrollToServices}
-            className="bg-primary text-primary-foreground px-8 py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-primary text-primary-foreground px-10 py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl"
             data-testid="button-services"
           >
-            サービスを見る
-          </button>
-          <button
+            イノベーションを始める
+          </motion.button>
+          <motion.button
             onClick={scrollToContact}
-            className="border border-primary text-primary px-8 py-4 rounded-lg font-semibold hover:bg-primary hover:text-primary-foreground transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="border-2 border-primary text-primary px-10 py-4 rounded-lg font-semibold hover:bg-primary hover:text-primary-foreground transition-all"
             data-testid="button-contact"
           >
-            お問い合わせ
-          </button>
+            相談する
+          </motion.button>
         </motion.div>
       </div>
 
       {/* Scroll Indicator */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2, duration: 0.8 }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
         data-testid="scroll-indicator"
       >
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="cursor-pointer"
+          animate={{ y: [0, 12, 0] }}
+          transition={{ 
+            duration: 3, 
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="cursor-pointer group"
           onClick={scrollToServices}
+          whileHover={{ scale: 1.2 }}
         >
-          <ChevronDown className="w-6 h-6 text-primary" />
+          <ChevronDown className="w-6 h-6 text-primary group-hover:text-accent transition-colors" />
         </motion.div>
       </motion.div>
     </section>
