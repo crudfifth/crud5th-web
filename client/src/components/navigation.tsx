@@ -20,6 +20,7 @@ export default function Navigation() {
             className="text-2xl font-bold text-white cursor-pointer drop-shadow-lg" 
             onClick={() => scrollToSection('home')}
             data-testid="logo-crud5th"
+            style={{ color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
           >
             CRUD5th
           </div>
@@ -28,28 +29,32 @@ export default function Navigation() {
           <div className="hidden md:flex space-x-8">
             <button 
               onClick={() => scrollToSection('home')} 
-              className="text-white/90 hover:text-white transition-colors drop-shadow"
+              className="text-white hover:text-white/80 transition-colors font-medium"
+              style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
               data-testid="nav-link-home"
             >
               ホーム
             </button>
             <button 
               onClick={() => scrollToSection('services')} 
-              className="text-white/90 hover:text-white transition-colors drop-shadow"
+              className="text-white hover:text-white/80 transition-colors font-medium"
+              style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
               data-testid="nav-link-services"
             >
               サービス
             </button>
             <button 
               onClick={() => scrollToSection('team')} 
-              className="text-white/90 hover:text-white transition-colors drop-shadow"
+              className="text-white hover:text-white/80 transition-colors font-medium"
+              style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
               data-testid="nav-link-team"
             >
               チーム
             </button>
             <button 
               onClick={() => scrollToSection('contact')} 
-              className="text-white/90 hover:text-white transition-colors drop-shadow"
+              className="text-white hover:text-white/80 transition-colors font-medium"
+              style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
               data-testid="nav-link-contact"
             >
               お問い合わせ
@@ -60,10 +65,11 @@ export default function Navigation() {
           <div className="md:hidden">
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="text-white/90 hover:text-white transition-colors"
+              className="text-white hover:text-white/80 transition-colors"
+              style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.8))' }}
               data-testid="mobile-menu-toggle"
             >
-              {isOpen ? <X className="w-6 h-6 drop-shadow" /> : <Menu className="w-6 h-6 drop-shadow" />}
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
@@ -74,28 +80,32 @@ export default function Navigation() {
             <div className="flex flex-col space-y-4 pt-4">
               <button 
                 onClick={() => scrollToSection('home')} 
-                className="text-left text-white/90 hover:text-white transition-colors"
+                className="text-left text-white hover:text-white/80 transition-colors font-medium"
+                style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
                 data-testid="mobile-nav-link-home"
               >
                 ホーム
               </button>
               <button 
                 onClick={() => scrollToSection('services')} 
-                className="text-left text-white/90 hover:text-white transition-colors"
+                className="text-left text-white hover:text-white/80 transition-colors font-medium"
+                style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
                 data-testid="mobile-nav-link-services"
               >
                 サービス
               </button>
               <button 
                 onClick={() => scrollToSection('team')} 
-                className="text-left text-white/90 hover:text-white transition-colors"
+                className="text-left text-white hover:text-white/80 transition-colors font-medium"
+                style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
                 data-testid="mobile-nav-link-team"
               >
                 チーム
               </button>
               <button 
                 onClick={() => scrollToSection('contact')} 
-                className="text-left text-white/90 hover:text-white transition-colors"
+                className="text-left text-white hover:text-white/80 transition-colors font-medium"
+                style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
                 data-testid="mobile-nav-link-contact"
               >
                 お問い合わせ
