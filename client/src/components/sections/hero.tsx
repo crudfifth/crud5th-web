@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import ParticleBackground from "@/components/animations/particle-background";
 import TypingAnimation from "@/components/ui/typing-animation";
+import videoSrc from "@assets/Blue Modern Technology YouTube Intro_1756887855888.mp4";
 
 export default function Hero() {
   const scrollToServices = () => {
@@ -20,12 +21,27 @@ export default function Hero() {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <ParticleBackground />
+      {/* Background Video */}
+      <video 
+        autoPlay 
+        muted 
+        loop 
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        data-testid="hero-background-video"
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
       
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background/90 to-secondary/30" />
+      {/* Video Overlay for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background/40 via-background/60 to-primary/20 z-10" />
       
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
+      {/* Subtle particle effects over video */}
+      <div className="absolute inset-0 z-20 opacity-30">
+        <ParticleBackground />
+      </div>
+      
+      <div className="relative z-30 text-center max-w-4xl mx-auto px-6">
         <motion.h1
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -36,10 +52,10 @@ export default function Hero() {
           className="text-5xl md:text-7xl font-black mb-6 leading-tight"
           data-testid="hero-title"
         >
-          <span className="block text-2xl md:text-4xl font-medium text-muted-foreground mb-2">THE</span>
-          <span className="block gradient-text">EVOLUTION</span>
-          <span className="block gradient-text">PARTNER</span>
-          <span className="block text-2xl md:text-3xl font-light text-muted-foreground mt-6">
+          <span className="block text-2xl md:text-4xl font-medium text-foreground/80 mb-2 drop-shadow-lg">THE</span>
+          <span className="block gradient-text drop-shadow-lg">EVOLUTION</span>
+          <span className="block gradient-text drop-shadow-lg">PARTNER</span>
+          <span className="block text-2xl md:text-3xl font-light text-foreground/70 mt-6 drop-shadow-lg">
             革新を共に創造するエンジニア集団
           </span>
         </motion.h1>
@@ -52,7 +68,7 @@ export default function Hero() {
             duration: 1,
             ease: [0.16, 1, 0.3, 1]
           }}
-          className="text-xl md:text-2xl text-muted-foreground mb-8"
+          className="text-xl md:text-2xl text-foreground/80 mb-8 drop-shadow-lg"
           data-testid="hero-typing"
         >
           <TypingAnimation />
@@ -66,12 +82,12 @@ export default function Hero() {
             duration: 1,
             ease: [0.16, 1, 0.3, 1]
           }}
-          className="text-lg md:text-xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed"
+          className="text-lg md:text-xl text-foreground/80 mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-lg"
           data-testid="hero-description"
         >
           テクノロジーの力でビジネスの限界を突破し、<br className="hidden md:inline" />
           あなたの理想を現実に変える戦略的パートナーシップを提供します。<br className="hidden md:inline" />
-          <span className="text-foreground font-medium">共に未来を築きましょう。</span>
+          <span className="text-foreground font-semibold drop-shadow-lg">共に未来を築きましょう。</span>
         </motion.p>
 
         <motion.div
