@@ -92,16 +92,18 @@
 @layer components {
 
   .gradient-text {
-    background: linear-gradient(135deg, hsl(193 82% 31%), hsl(193 100% 50%));
+    background: linear-gradient(135deg, hsl(193 82% 65%), hsl(193 100% 80%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
   }
 
   .typing-cursor::after {
     content: '|';
     animation: blink 1s infinite;
-    color: var(--primary);
+    color: white;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
   }
 
   .service-card {

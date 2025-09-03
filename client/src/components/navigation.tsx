@@ -13,11 +13,11 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border/50" data-testid="navigation">
+    <nav className="fixed top-0 w-full z-50 bg-white/10 backdrop-blur-xl border-b border-white/20" data-testid="navigation">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div 
-            className="text-2xl font-bold gradient-text cursor-pointer" 
+            className="text-2xl font-bold text-white cursor-pointer drop-shadow-lg" 
             onClick={() => scrollToSection('home')}
             data-testid="logo-crud5th"
           >
@@ -28,28 +28,28 @@ export default function Navigation() {
           <div className="hidden md:flex space-x-8">
             <button 
               onClick={() => scrollToSection('home')} 
-              className="hover:text-primary transition-colors"
+              className="text-white/90 hover:text-white transition-colors drop-shadow"
               data-testid="nav-link-home"
             >
               ホーム
             </button>
             <button 
               onClick={() => scrollToSection('services')} 
-              className="hover:text-primary transition-colors"
+              className="text-white/90 hover:text-white transition-colors drop-shadow"
               data-testid="nav-link-services"
             >
               サービス
             </button>
             <button 
               onClick={() => scrollToSection('team')} 
-              className="hover:text-primary transition-colors"
+              className="text-white/90 hover:text-white transition-colors drop-shadow"
               data-testid="nav-link-team"
             >
               チーム
             </button>
             <button 
               onClick={() => scrollToSection('contact')} 
-              className="hover:text-primary transition-colors"
+              className="text-white/90 hover:text-white transition-colors drop-shadow"
               data-testid="nav-link-contact"
             >
               お問い合わせ
@@ -60,42 +60,42 @@ export default function Navigation() {
           <div className="md:hidden">
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="text-primary"
+              className="text-white/90 hover:text-white transition-colors"
               data-testid="mobile-menu-toggle"
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isOpen ? <X className="w-6 h-6 drop-shadow" /> : <Menu className="w-6 h-6 drop-shadow" />}
             </button>
           </div>
         </div>
         
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-border/50" data-testid="mobile-menu">
+          <div className="md:hidden mt-4 pb-4 border-t border-white/20" data-testid="mobile-menu">
             <div className="flex flex-col space-y-4 pt-4">
               <button 
                 onClick={() => scrollToSection('home')} 
-                className="text-left hover:text-primary transition-colors"
+                className="text-left text-white/90 hover:text-white transition-colors"
                 data-testid="mobile-nav-link-home"
               >
                 ホーム
               </button>
               <button 
                 onClick={() => scrollToSection('services')} 
-                className="text-left hover:text-primary transition-colors"
+                className="text-left text-white/90 hover:text-white transition-colors"
                 data-testid="mobile-nav-link-services"
               >
                 サービス
               </button>
               <button 
                 onClick={() => scrollToSection('team')} 
-                className="text-left hover:text-primary transition-colors"
+                className="text-left text-white/90 hover:text-white transition-colors"
                 data-testid="mobile-nav-link-team"
               >
                 チーム
               </button>
               <button 
                 onClick={() => scrollToSection('contact')} 
-                className="text-left hover:text-primary transition-colors"
+                className="text-left text-white/90 hover:text-white transition-colors"
                 data-testid="mobile-nav-link-contact"
               >
                 お問い合わせ

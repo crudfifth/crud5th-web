@@ -52,10 +52,10 @@ export default function Hero() {
           className="text-5xl md:text-7xl font-black mb-6 leading-tight"
           data-testid="hero-title"
         >
-          <span className="block text-2xl md:text-4xl font-medium text-foreground/80 mb-2 drop-shadow-lg">THE</span>
-          <span className="block gradient-text drop-shadow-lg">EVOLUTION</span>
-          <span className="block gradient-text drop-shadow-lg">PARTNER</span>
-          <span className="block text-2xl md:text-3xl font-light text-foreground/70 mt-6 drop-shadow-lg">
+          <span className="block text-2xl md:text-4xl font-medium text-white/90 mb-2 drop-shadow-2xl">THE</span>
+          <span className="block text-white drop-shadow-2xl" style={{ background: 'linear-gradient(135deg, hsl(193 82% 65%), hsl(193 100% 80%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))' }}>EVOLUTION</span>
+          <span className="block text-white drop-shadow-2xl" style={{ background: 'linear-gradient(135deg, hsl(193 82% 65%), hsl(193 100% 80%))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))' }}>PARTNER</span>
+          <span className="block text-2xl md:text-3xl font-light text-white/85 mt-6 drop-shadow-2xl">
             革新を共に創造するエンジニア集団
           </span>
         </motion.h1>
@@ -68,7 +68,7 @@ export default function Hero() {
             duration: 1,
             ease: [0.16, 1, 0.3, 1]
           }}
-          className="text-xl md:text-2xl text-foreground/80 mb-8 drop-shadow-lg"
+          className="text-xl md:text-2xl text-white/90 mb-8 drop-shadow-2xl"
           data-testid="hero-typing"
         >
           <TypingAnimation />
@@ -82,12 +82,12 @@ export default function Hero() {
             duration: 1,
             ease: [0.16, 1, 0.3, 1]
           }}
-          className="text-lg md:text-xl text-foreground/80 mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-lg"
+          className="text-lg md:text-xl text-white/85 mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-2xl"
           data-testid="hero-description"
         >
           テクノロジーの力でビジネスの限界を突破し、<br className="hidden md:inline" />
           あなたの理想を現実に変える戦略的パートナーシップを提供します。<br className="hidden md:inline" />
-          <span className="text-foreground font-semibold drop-shadow-lg">共に未来を築きましょう。</span>
+          <span className="text-white font-semibold drop-shadow-2xl">共に未来を築きましょう。</span>
         </motion.p>
 
         <motion.div
@@ -141,7 +141,7 @@ export default function Hero() {
           onClick={scrollToServices}
           whileHover={{ scale: 1.2 }}
         >
-          <ChevronDown className="w-6 h-6 text-primary group-hover:text-accent transition-colors" />
+          <ChevronDown className="w-6 h-6 text-white/90 group-hover:text-white transition-colors drop-shadow-lg" />
         </motion.div>
       </motion.div>
     </section>
