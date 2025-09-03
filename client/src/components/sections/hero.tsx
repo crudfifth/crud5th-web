@@ -34,7 +34,8 @@ export default function Hero() {
       </video>
       
       {/* Video Overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background/40 via-background/60 to-primary/20 z-10" />
+      <div className="absolute inset-0 bg-black/60 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-primary/10 z-10" />
       
       {/* Subtle particle effects over video */}
       <div className="absolute inset-0 z-20 opacity-30">
