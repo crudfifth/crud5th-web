@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import ScrollReveal, { RevealOnScroll, SlideInLeft } from "@/components/animations/scroll-reveal";
+import { AnimatedUnderline, AnimatedArrow } from "@/components/animations/svg-path-animation";
 import { Code, Rocket, TrendingUp } from "lucide-react";
 
 const services = [
@@ -41,54 +42,128 @@ const services = [
   }
 ];
 
-export default function Services() {
-  const { ref, isVisible } = useScrollAnimation();
+// Enhanced 3D Service Card Component
+function ServiceCard({ service, index }: { service: typeof services[0], index: number }) {
 
   return (
-    <section id="services" className="py-24 bg-gradient-to-b from-background to-secondary/20">
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 50 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-20"
-          data-testid="services-header"
+    <ScrollReveal 
+      direction="up" 
+      delay={index * 200} 
+      className="h-full"
+    >
+      <motion.div
+        className="service-card bg-secondary/50 backdrop-blur-sm border border-border rounded-xl p-8 h-full group cursor-pointer"
+        data-testid={`service-card-${index}`}
+        whileHover={{
+          scale: 1.02,
+          rotateY: 5,
+          rotateX: 5,
+        }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        style={{
+          transformStyle: "preserve-3d",
+          perspective: 1000
+        }}
+      >
+        <motion.div 
+          className={`w-full h-48 bg-gradient-to-br ${service.gradient} rounded-lg mb-6 flex items-center justify-center relative overflow-hidden`}
+          data-testid={`service-visual-${index}`}
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.3 }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 gradient-text">サービス</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            私たちが提供する技術サービスで、あなたのビジネスを次のレベルへ
-          </p>
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100"
+            transition={{ duration: 0.3 }}
+          />
+          <motion.div
+            whileHover={{ 
+              scale: 1.1,
+              rotate: 5
+            }}
+            transition={{ duration: 0.3 }}
+          >
+            <service.icon className="w-16 h-16 text-primary/80 relative z-10" />
+          </motion.div>
+          
+          {/* Animated arrow that appears on hover */}
+          <motion.div
+            className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100"
+            initial={{ x: 20, opacity: 0 }}
+            whileHover={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <AnimatedArrow className="w-6 h-6" delay={0} direction="right" />
+          </motion.div>
         </motion.div>
+        
+        <motion.h3 
+          className="text-2xl font-bold mb-4 text-foreground relative" 
+          data-testid={`service-title-${index}`}
+          whileHover={{ x: 5 }}
+          transition={{ duration: 0.2 }}
+        >
+          {service.title}
+          <AnimatedUnderline className="absolute -bottom-1 left-0 w-0 group-hover:w-full transition-all duration-500" delay={100} width={120} />
+        </motion.h3>
+        
+        <motion.p 
+          className="text-muted-foreground mb-6 leading-relaxed" 
+          data-testid={`service-description-${index}`}
+          whileHover={{ opacity: 0.8 }}
+        >
+          {service.description}
+        </motion.p>
+        
+        <div className="space-y-2 text-sm text-muted-foreground" data-testid={`service-features-${index}`}>
+          {service.features.map((feature, featureIndex) => (
+            <motion.div 
+              key={featureIndex}
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: featureIndex * 0.1 }}
+              whileHover={{ x: 5, color: "hsl(193 100% 60%)" }}
+              className="transition-colors duration-200"
+            >
+              ・{feature}
+            </motion.div>
+          ))}
+        </div>
+        
+        {/* Glass morphism overlay */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 rounded-xl opacity-0 group-hover:opacity-100 pointer-events-none"
+          transition={{ duration: 0.3 }}
+        />
+      </motion.div>
+    </ScrollReveal>
+  );
+}
+
+export default function Services() {
+  return (
+    <section id="services" className="py-24 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-6 relative">
+        <RevealOnScroll className="text-center mb-20" data-testid="services-header">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6 gradient-text relative">
+            サービス
+            <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32" delay={800} />
+          </h2>
+          <SlideInLeft delay={400}>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              私たちが提供する技術サービスで、あなたのビジネスを次のレベルへ
+            </p>
+          </SlideInLeft>
+        </RevealOnScroll>
         
         <div className="grid md:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <motion.div
-              key={service.title}
-              initial={{ opacity: 0, y: 50 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              className="service-card bg-secondary/50 backdrop-blur-sm border border-border rounded-xl p-8"
-              data-testid={`service-card-${index}`}
-            >
-              <div 
-                className={`w-full h-48 bg-gradient-to-br ${service.gradient} rounded-lg mb-6 flex items-center justify-center`}
-                data-testid={`service-visual-${index}`}
-              >
-                <service.icon className="w-16 h-16 text-primary/80" />
-              </div>
-              <h3 className="text-2xl font-bold mb-4 text-foreground" data-testid={`service-title-${index}`}>
-                {service.title}
-              </h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed" data-testid={`service-description-${index}`}>
-                {service.description}
-              </p>
-              <div className="space-y-2 text-sm text-muted-foreground" data-testid={`service-features-${index}`}>
-                {service.features.map((feature, featureIndex) => (
-                  <div key={featureIndex}>・{feature}</div>
-                ))}
-              </div>
-            </motion.div>
+            <ServiceCard key={service.title} service={service} index={index} />
           ))}
         </div>
       </div>
