@@ -161,15 +161,15 @@ export default function ProjectInsights() {
         {/* Technology Stack Visualization - Infinite Scrolling Marquee */}
         <RevealOnScroll className="mt-16 text-center" delay={800}>
           <h3 className="text-2xl font-bold mb-12 gradient-text relative">
-            技術スタック
-            <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24" delay={1000} />
+            対応技術スタック
+            <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32" delay={1000} />
           </h3>
           
           <div className="space-y-6 overflow-hidden">
             {/* Row 1 - Left scroll */}
             <div className="marquee-container">
               <div className="marquee marquee-left">
-                {["React", "TypeScript", "Node.js", "Vue.js", "Angular"].concat(["React", "TypeScript", "Node.js", "Vue.js", "Angular"]).map((tech, index) => (
+                {["React", "TypeScript", "Node.js", "Vue.js", "Angular", "Next.js", "Nuxt.js", "Svelte", "Solid.js"].concat(["React", "TypeScript", "Node.js", "Vue.js", "Angular", "Next.js", "Nuxt.js", "Svelte", "Solid.js"]).map((tech, index) => (
                   <div
                     key={`row1-${index}`}
                     className="tech-tag bg-secondary/30 backdrop-blur-sm border border-border rounded-lg px-6 py-3 text-sm font-medium text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 whitespace-nowrap mx-3"
@@ -184,7 +184,7 @@ export default function ProjectInsights() {
             {/* Row 2 - Right scroll */}
             <div className="marquee-container">
               <div className="marquee marquee-right">
-                {["PostgreSQL", "AWS", "Docker", "MongoDB", "Redis"].concat(["PostgreSQL", "AWS", "Docker", "MongoDB", "Redis"]).map((tech, index) => (
+                {["PostgreSQL", "AWS", "Docker", "MongoDB", "Redis", "MySQL", "Firebase", "Supabase", "PlanetScale"].concat(["PostgreSQL", "AWS", "Docker", "MongoDB", "Redis", "MySQL", "Firebase", "Supabase", "PlanetScale"]).map((tech, index) => (
                   <div
                     key={`row2-${index}`}
                     className="tech-tag bg-secondary/30 backdrop-blur-sm border border-border rounded-lg px-6 py-3 text-sm font-medium text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 whitespace-nowrap mx-3"
@@ -199,7 +199,7 @@ export default function ProjectInsights() {
             {/* Row 3 - Left scroll */}
             <div className="marquee-container">
               <div className="marquee marquee-left">
-                {["Python", "FastAPI", "Django", "Flask", "GraphQL"].concat(["Python", "FastAPI", "Django", "Flask", "GraphQL"]).map((tech, index) => (
+                {["Python", "FastAPI", "Django", "Flask", "GraphQL", "REST API", "tRPC", "Prisma", "Drizzle"].concat(["Python", "FastAPI", "Django", "Flask", "GraphQL", "REST API", "tRPC", "Prisma", "Drizzle"]).map((tech, index) => (
                   <div
                     key={`row3-${index}`}
                     className="tech-tag bg-secondary/30 backdrop-blur-sm border border-border rounded-lg px-6 py-3 text-sm font-medium text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 whitespace-nowrap mx-3"
@@ -214,7 +214,7 @@ export default function ProjectInsights() {
             {/* Row 4 - Right scroll */}
             <div className="marquee-container">
               <div className="marquee marquee-right">
-                {["Kubernetes", "Git", "GitHub Actions", "Vercel", "Cloudflare"].concat(["Kubernetes", "Git", "GitHub Actions", "Vercel", "Cloudflare"]).map((tech, index) => (
+                {["Kubernetes", "Git", "GitHub Actions", "Vercel", "Cloudflare", "Netlify", "Railway", "Heroku", "DigitalOcean"].concat(["Kubernetes", "Git", "GitHub Actions", "Vercel", "Cloudflare", "Netlify", "Railway", "Heroku", "DigitalOcean"]).map((tech, index) => (
                   <div
                     key={`row4-${index}`}
                     className="tech-tag bg-secondary/30 backdrop-blur-sm border border-border rounded-lg px-6 py-3 text-sm font-medium text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 whitespace-nowrap mx-3"
