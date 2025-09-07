@@ -20,28 +20,28 @@ export default function SectionTransition({
 
   const variants = {
     fade: {
-      opacity: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]),
-      y: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [50, 0, 0, -50])
+      opacity: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 1]),
+      y: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [50, 0, 0, 0])
     },
     slide: {
-      x: useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [-100, 0, 0, 100]),
-      opacity: useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
+      x: useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [-100, 0, 0, 0]),
+      opacity: useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 1])
     },
     scale: {
-      scale: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 0.8]),
-      opacity: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
+      scale: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 1]),
+      opacity: useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 1])
     },
     reveal: {
       clipPath: useTransform(
         scrollYProgress,
-        [0, 0.3, 0.7, 1],
+        [0, 0.3, 1],
         [
           "polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)",
           "polygon(0 0%, 100% 0%, 100% 100%, 0% 100%)",
-          "polygon(0 0%, 100% 0%, 100% 100%, 0% 100%)",
-          "polygon(0 0%, 100% 0%, 100% 0%, 0% 0%)"
+          "polygon(0 0%, 100% 0%, 100% 100%, 0% 100%)"
         ]
-      )
+      ),
+      opacity: useTransform(scrollYProgress, [0, 0.3, 1], [0, 1, 1])
     }
   };
 
