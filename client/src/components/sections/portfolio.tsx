@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
 import { ExternalLink, Github, Play, Award } from "lucide-react";
@@ -89,18 +89,20 @@ const categoryColors = {
 
 export default function Portfolio() {
   const { ref, isVisible } = useScrollAnimation();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
+  
+  // Auto-rotating spiral animation - continuous rotation
+  const [rotation, setRotation] = useState(0);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRotation(prev => (prev + 0.5) % 360); // Slow continuous rotation
+    }, 50); // Smooth 60fps animation
 
-  // Spiral animation based on scroll
-  const spiralRotation = useTransform(scrollYProgress, [0, 1], [0, 360]);
-  const spiralY = useTransform(scrollYProgress, [0, 1], [0, -200]);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section id="portfolio" className="py-24 bg-gradient-to-br from-background via-secondary/5 to-background relative overflow-hidden" ref={containerRef}>
+    <section id="portfolio" className="py-32 bg-gradient-to-br from-background via-secondary/5 to-background relative overflow-hidden min-h-screen flex items-center">
       {/* Space Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/6 w-2 h-2 bg-cyan-400/60 rounded-full animate-pulse" />
@@ -148,12 +150,16 @@ export default function Portfolio() {
           </p>
         </motion.div>
 
-        {/* Simplified Spiral Portfolio Layout */}
-        <div className="portfolio-container relative" style={{ perspective: "1500px", height: "800px" }}>
+        {/* Auto-Rotating Spiral Portfolio Layout */}
+        <div className="portfolio-container relative" style={{ perspective: "1500px", height: "900px" }}>
           <motion.div
             className="portfolio-spiral-simple"
-            style={{
-              rotateY: spiralRotation,
+            animate={{ 
+              rotateY: rotation 
+            }}
+            transition={{ 
+              duration: 0, // Immediate updates for smooth rotation
+              ease: "linear" 
             }}
           >
             {portfolioProjects.map((project, index) => {
@@ -259,26 +265,37 @@ export default function Portfolio() {
             })}
           </motion.div>
 
-          {/* Central navigation hub */}
+          {/* Central navigation hub with rotation indicator */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-cyan-400/40 to-purple-400/40 backdrop-blur-xl border-2 border-white/40 flex items-center justify-center shadow-2xl">
-              <div className="text-white text-xs font-bold">WORKS</div>
+            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-cyan-400/40 to-purple-400/40 backdrop-blur-xl border-2 border-white/40 flex flex-col items-center justify-center shadow-2xl">
+              <div className="text-white text-xs font-bold mb-1">WORKS</div>
+              <div className="text-cyan-300 text-xs">回転中...</div>
             </div>
-            {/* Navigation indicators */}
+            
+            {/* Rotating progress ring */}
+            <motion.div
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full border-2 border-transparent border-t-cyan-400/60"
+              animate={{ rotate: rotation * 2 }} // Faster rotation for visual feedback
+              transition={{ duration: 0, ease: "linear" }}
+            />
+            
+            {/* Navigation indicators - static positions */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
               {portfolioProjects.map((_, index) => {
                 const angle = (index * 60) * (Math.PI / 180);
-                const radius = 50;
+                const radius = 55;
                 const x = Math.cos(angle) * radius;
                 const y = Math.sin(angle) * radius;
                 return (
                   <div
                     key={index}
-                    className="absolute w-2 h-2 bg-cyan-400/60 rounded-full"
+                    className="absolute w-3 h-3 bg-cyan-400/60 rounded-full border border-white/40 flex items-center justify-center"
                     style={{
                       transform: `translate(${x}px, ${y}px)`,
                     }}
-                  />
+                  >
+                    <div className="text-white text-xs font-bold">{index + 1}</div>
+                  </div>
                 );
               })}
             </div>

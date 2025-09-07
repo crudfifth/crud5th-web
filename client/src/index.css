@@ -522,12 +522,14 @@
   background: hsl(var(--primary) / 0.1);
 }
 
-/* Simplified Portfolio Spiral 3D Effects */
+/* Auto-Rotating Portfolio Spiral 3D Effects */
 .portfolio-container {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 2rem 0;
+  position: sticky;
+  top: 10vh;
 }
 
 .portfolio-spiral-simple {
