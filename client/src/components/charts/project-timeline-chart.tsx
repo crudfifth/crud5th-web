@@ -45,6 +45,27 @@ const projectData: ProjectData[] = [
     endDate: new Date(2024, 7, 15),
     category: "自社サービス",
     progress: 40
+  },
+  {
+    name: "Webサイトリニューアル",
+    startDate: new Date(2024, 0, 8),
+    endDate: new Date(2024, 3, 20),
+    category: "受託開発",
+    progress: 95
+  },
+  {
+    name: "データ分析基盤構築",
+    startDate: new Date(2024, 2, 20),
+    endDate: new Date(2024, 6, 30),
+    category: "コンサル",
+    progress: 55
+  },
+  {
+    name: "API統合プラットフォーム",
+    startDate: new Date(2024, 5, 1),
+    endDate: new Date(2024, 8, 15),
+    category: "自社サービス",
+    progress: 25
   }
 ];
 
@@ -63,9 +84,9 @@ export default function ProjectTimelineChart() {
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
-    const margin = { top: 40, right: 40, bottom: 60, left: 120 };
+    const margin = { top: 40, right: 40, bottom: 80, left: 140 };
     const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.bottom - margin.top;
+    const height = 480 - margin.bottom - margin.top;
 
     const g = svg.append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -84,7 +105,7 @@ export default function ProjectTimelineChart() {
     const yScale = d3.scaleBand()
       .domain(projectData.map(d => d.name))
       .range([0, height])
-      .padding(0.2);
+      .padding(0.15);
 
     // Create timeline bars
     const bars = g.selectAll(".timeline-bar")
@@ -246,7 +267,7 @@ export default function ProjectTimelineChart() {
       <svg
         ref={svgRef}
         width="800"
-        height="400"
+        height="480"
         className="w-full h-auto"
         style={{ maxWidth: "100%", height: "auto" }}
       />
