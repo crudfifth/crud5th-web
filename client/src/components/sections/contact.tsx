@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import emailjs from '@emailjs/browser';
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
 interface ContactForm {
   name: string;
@@ -28,10 +29,36 @@ export default function Contact() {
     message: ""
   });
 
-  // EmailJS Configuration
-  const EMAILJS_PUBLIC_KEY = 'dU72FW2OraVAQiNy1';
-  const EMAILJS_SERVICE_ID = 'service_cek2z0h';
-  const EMAILJS_TEMPLATE_ID = 'template_21xzi95';
+  // Contact form mutation
+  const contactMutation = useMutation({
+    mutationFn: async (data: ContactForm) => {
+      return await apiRequest('/api/contact', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "送信完了",
+        description: "お問い合わせを受け付けました。後日担当者よりご連絡いたします。",
+      });
+      // フォームをリセット
+      setFormData({
+        name: "",
+        email: "",
+        type: "",
+        message: ""
+      });
+    },
+    onError: (error: any) => {
+      console.error('Contact form error:', error);
+      toast({
+        title: "送信エラー",
+        description: "お問い合わせの送信に失敗しました。時間をおいて再度お試しください。",
+        variant: "destructive",
+      });
+    }
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,46 +72,7 @@ export default function Contact() {
       return;
     }
 
-    setIsLoading(true);
-    
-    try {
-      // EmailJSでメール送信
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        {
-          name: formData.name,
-          email: formData.email,
-          type: formData.type,
-          message: formData.message,
-          sent_date: new Date().toLocaleString('ja-JP')
-        },
-        EMAILJS_PUBLIC_KEY
-      );
-      
-      toast({
-        title: "送信完了",
-        description: "お問い合わせを受け付けました。後日担当者よりご連絡いたします。",
-      });
-      
-      // フォームをリセット
-      setFormData({
-        name: "",
-        email: "",
-        type: "",
-        message: ""
-      });
-      
-    } catch (error) {
-      console.error('EmailJS Error:', error);
-      toast({
-        title: "送信エラー",
-        description: "お問い合わせの送信に失敗しました。時間をおいて再度お試しください。",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    contactMutation.mutate(formData);
   };
 
   const handleInputChange = (field: keyof ContactForm, value: string) => {
@@ -221,11 +209,11 @@ export default function Contact() {
                 </div>
                 <Button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={contactMutation.isPending}
                   className="w-full bg-primary text-primary-foreground py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all"
                   data-testid="button-submit"
                 >
-                  {isLoading ? "送信中..." : "送信する"}
+                  {contactMutation.isPending ? "送信中..." : "送信する"}
                 </Button>
               </form>
             </motion.div>
