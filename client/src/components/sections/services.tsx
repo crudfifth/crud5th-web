@@ -97,9 +97,9 @@ function ServiceCard({ service, index }: { service: typeof services[0], index: n
         </motion.div>
         
         <motion.h3 
-          className="text-2xl font-bold mb-4 text-foreground relative" 
+          className="text-xl font-semibold mb-3 text-foreground relative" 
           data-testid={`service-title-${index}`}
-          whileHover={{ x: 5 }}
+          whileHover={{ x: 3 }}
           transition={{ duration: 0.2 }}
         >
           {service.title}
@@ -107,24 +107,25 @@ function ServiceCard({ service, index }: { service: typeof services[0], index: n
         </motion.h3>
         
         <motion.p 
-          className="text-muted-foreground mb-6 leading-relaxed" 
+          className="text-sm text-muted-foreground mb-5 leading-relaxed" 
           data-testid={`service-description-${index}`}
           whileHover={{ opacity: 0.8 }}
         >
           {service.description}
         </motion.p>
         
-        <div className="space-y-2 text-sm text-muted-foreground" data-testid={`service-features-${index}`}>
+        <div className="space-y-1.5 text-xs text-muted-foreground" data-testid={`service-features-${index}`}>
           {service.features.map((feature, featureIndex) => (
             <motion.div 
               key={featureIndex}
-              initial={{ opacity: 0, x: -10 }}
+              initial={{ opacity: 0, x: -8 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: featureIndex * 0.1 }}
-              whileHover={{ x: 5, color: "hsl(193 100% 60%)" }}
-              className="transition-colors duration-200"
+              whileHover={{ x: 3, color: "hsl(193 100% 60%)" }}
+              className="transition-colors duration-200 flex items-center"
             >
-              ・{feature}
+              <span className="w-1 h-1 bg-primary rounded-full mr-2 flex-shrink-0"></span>
+              {feature}
             </motion.div>
           ))}
         </div>
@@ -149,14 +150,14 @@ export default function Services() {
       </div>
       
       <div className="max-w-7xl mx-auto px-6 relative">
-        <RevealOnScroll className="text-center mb-20" data-testid="services-header">
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 gradient-text relative">
+        <RevealOnScroll className="text-center mb-16" data-testid="services-header">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text relative">
             サービス
-            <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32" delay={800} />
+            <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24" delay={800} />
           </h2>
           <SlideInLeft delay={400}>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              私たちが提供する技術サービスで、あなたのビジネスを次のレベルへ
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              私たちが提供する技術サービスで、あなたのビジネスを次のレベルへ導きます
             </p>
           </SlideInLeft>
         </RevealOnScroll>

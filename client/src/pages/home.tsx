@@ -10,6 +10,7 @@ import Counter from "@/components/ui/counter-animation";
 import SectionTransition, { WaveTransition, DiagonalTransition } from "@/components/animations/section-transition";
 import ParallaxSection from "@/components/animations/parallax-section";
 import ScrollReveal, { RevealOnScroll } from "@/components/animations/scroll-reveal";
+import ProjectInsights from "@/components/sections/project-insights";
 
 export default function Home() {
   useEffect(() => {
@@ -98,6 +99,13 @@ export default function Home() {
             </div>
           </section>
         </ParallaxSection>
+
+        {/* Smooth transition to insights section */}
+        <WaveTransition direction="up" color="hsl(217 22% 10%)" />
+        
+        <SectionTransition variant="reveal">
+          <ProjectInsights />
+        </SectionTransition>
 
         {/* Diagonal transition to team section */}
         <DiagonalTransition direction="right" color="hsl(217 20% 8%)" />
