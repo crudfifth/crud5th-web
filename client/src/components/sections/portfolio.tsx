@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
@@ -21,63 +21,103 @@ interface PortfolioProject {
 const portfolioProjects: PortfolioProject[] = [
   {
     id: 1,
-    title: "ECサイト構築プロジェクト",
-    description: "最新技術を駆使した高性能Eコマースプラットフォーム。ユーザビリティとパフォーマンスを重視した設計で、売上向上を実現。",
+    title: "ECサイト構築プラットフォーム",
+    description: "次世代コマース体験を実現する統合型ECプラットフォーム。AI推薦とリアルタイム在庫管理を搭載。",
     category: "受託開発",
     technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "AWS"],
     status: "完了",
     image: "/api/placeholder/400/300",
-    achievements: ["月間売上30%向上", "ページ速度50%改善", "ユーザー満足度4.8/5"]
+    achievements: ["月間売上300%向上", "ページ速度90%改善", "コンバージョン率250%アップ"]
   },
   {
     id: 2,
-    title: "SaaS管理システム",
-    description: "企業向け統合管理ソリューション。複雑な業務フローを効率化し、生産性向上をサポート。",
+    title: "企業向けSaaS統合管理システム",
+    description: "マルチテナント対応の企業向け統合プラットフォーム。ワークフロー自動化とBI分析機能を実装。",
     category: "自社サービス",
-    technologies: ["Vue.js", "FastAPI", "MongoDB", "Docker", "AWS"],
+    technologies: ["Vue.js", "FastAPI", "MongoDB", "Docker", "GCP"],
     status: "進行中",
     image: "/api/placeholder/400/300",
-    achievements: ["業務効率40%向上", "コスト削減25%", "導入企業50社突破"]
+    achievements: ["業務効率65%向上", "導入企業120社突破", "ARR 5億円達成"]
   },
   {
     id: 3,
-    title: "AIチャットボット開発",
-    description: "自然言語処理を活用したインテリジェントなカスタマーサポートシステム。24/7対応でサービス品質向上。",
-    category: "自社サービス",
-    technologies: ["Python", "TensorFlow", "FastAPI", "Redis", "React"],
+    title: "AIドリブン・カスタマーサポート",
+    description: "GPT-4を活用した次世代カスタマーサポートシステム。多言語対応と感情分析機能を搭載。",
+    category: "自社サービス", 
+    technologies: ["Python", "OpenAI GPT-4", "FastAPI", "Redis", "React"],
     status: "完了",
     image: "/api/placeholder/400/300",
-    achievements: ["応答精度95%", "サポート業務70%削減", "顧客満足度向上"]
+    achievements: ["応答精度98.5%", "サポート業務85%自動化", "顧客満足度4.9/5"]
   },
   {
     id: 4,
-    title: "DX導入支援システム",
-    description: "レガシーシステムからモダンな環境への移行をサポート。段階的なデジタル化戦略でリスクを最小化。",
+    title: "レガシーシステムモダン化コンサル",
+    description: "大手企業のレガシーシステム刷新プロジェクト。マイクロサービス化とクラウドネイティブ移行を実現。",
     category: "コンサル",
-    technologies: ["Angular", "Spring Boot", "MySQL", "Kubernetes", "Azure"],
-    status: "進行中",
+    technologies: ["Kubernetes", "Spring Boot", "PostgreSQL", "Azure", "Terraform"],
+    status: "完了",
     image: "/api/placeholder/400/300",
-    achievements: ["移行成功率100%", "業務継続性確保", "従業員研修完了"]
+    achievements: ["運用コスト60%削減", "システム可用性99.9%", "開発速度300%向上"]
   },
   {
     id: 5,
-    title: "モバイルアプリ開発",
-    description: "クロスプラットフォーム対応の革新的なモバイルアプリケーション。直感的なUIと高いパフォーマンスを実現。",
+    title: "次世代モバイル金融アプリ",
+    description: "ブロックチェーン技術を活用したデジタルウォレット。セキュアな決済とDeFi機能を統合。",
     category: "受託開発",
-    technologies: ["React Native", "TypeScript", "Firebase", "GraphQL"],
-    status: "完了",
+    technologies: ["React Native", "Solidity", "Node.js", "MongoDB", "AWS"],
+    status: "進行中",
     image: "/api/placeholder/400/300",
-    achievements: ["App Store評価4.9", "ダウンロード10万突破", "アクティブ率85%"]
+    achievements: ["ユーザー数50万突破", "取引高100億円突破", "セキュリティ認証取得"]
   },
   {
     id: 6,
-    title: "ブロックチェーン基盤",
-    description: "次世代分散アプリケーションのための堅牢なブロックチェーンインフラ。セキュリティと透明性を重視。",
+    title: "IoTデータ分析プラットフォーム",
+    description: "製造業向けリアルタイムデータ分析システム。機械学習による予知保全と品質管理を実現。",
     category: "自社サービス",
-    technologies: ["Solidity", "Web3.js", "Node.js", "IPFS", "Ethereum"],
+    technologies: ["Python", "TensorFlow", "InfluxDB", "Kafka", "Kubernetes"],
+    status: "完了",
+    image: "/api/placeholder/400/300",
+    achievements: ["故障予測精度92%", "保守コスト45%削減", "生産効率20%向上"]
+  },
+  {
+    id: 7,
+    title: "メタバース教育プラットフォーム",
+    description: "VR/AR技術を活用した没入型学習環境。リアルタイムコラボレーションと3D教材作成機能。",
+    category: "受託開発",
+    technologies: ["Unity", "WebRTC", "Node.js", "PostgreSQL", "AWS"],
+    status: "進行中",
+    image: "/api/placeholder/400/300",
+    achievements: ["学習効果40%向上", "利用学校数200校突破", "国際教育賞受賞"]
+  },
+  {
+    id: 8,
+    title: "ヘルスケアAIプラットフォーム",
+    description: "医療画像解析とバイタルデータ分析を組み合わせた包括的ヘルスケアソリューション。",
+    category: "自社サービス",
+    technologies: ["Python", "PyTorch", "FastAPI", "PostgreSQL", "Docker"],
+    status: "完了",
+    image: "/api/placeholder/400/300",
+    achievements: ["診断精度96%達成", "医療機関100施設導入", "FDA承認取得"]
+  },
+  {
+    id: 9,
+    title: "サステナブル物流最適化システム",
+    description: "AIとIoTを活用したカーボンニュートラル配送ルート最適化。リアルタイム追跡とCO2削減分析。",
+    category: "コンサル",
+    technologies: ["React", "Python", "Neo4j", "Apache Kafka", "GCP"],
+    status: "進行中",
+    image: "/api/placeholder/400/300",
+    achievements: ["CO2排出量30%削減", "配送効率25%向上", "ESG投資評価A+獲得"]
+  },
+  {
+    id: 10,
+    title: "量子コンピューティング研究基盤",
+    description: "次世代計算技術の研究開発プラットフォーム。量子アルゴリズムの実装とシミュレーション環境を提供。",
+    category: "自社サービス",
+    technologies: ["Qiskit", "Python", "Kubernetes", "PostgreSQL", "IBM Quantum"],
     status: "企画中",
     image: "/api/placeholder/400/300",
-    achievements: ["プロトタイプ完成", "投資家説明会成功", "特許出願準備中"]
+    achievements: ["量子優位性実証", "研究論文10本発表", "特許出願15件"]
   }
 ];
 
@@ -89,14 +129,28 @@ const categoryColors = {
 
 export default function Portfolio() {
   const { ref, isVisible } = useScrollAnimation();
+  const svgRef = useRef<SVGSVGElement>(null);
   
-  // Auto-rotating spiral animation - continuous rotation
+  // Enhanced animation states
   const [rotation, setRotation] = useState(0);
+  const [waveOffset, setWaveOffset] = useState(0);
+  const [particlePositions, setParticlePositions] = useState<{x: number, y: number, z: number}[]>([]);
+  
+  // Initialize floating particles
+  useEffect(() => {
+    const particles = Array.from({ length: 50 }, () => ({
+      x: (Math.random() - 0.5) * 1000,
+      y: (Math.random() - 0.5) * 800,
+      z: (Math.random() - 0.5) * 600
+    }));
+    setParticlePositions(particles);
+  }, []);
   
   useEffect(() => {
     const interval = setInterval(() => {
-      setRotation(prev => (prev + 0.5) % 360); // Slow continuous rotation
-    }, 50); // Smooth 60fps animation
+      setRotation(prev => (prev + 0.3) % 360); // Slower rotation
+      setWaveOffset(prev => prev + 0.02); // Wave animation
+    }, 30); // 30fps for smoother animation
 
     return () => clearInterval(interval);
   }, []);
@@ -150,45 +204,159 @@ export default function Portfolio() {
           </p>
         </motion.div>
 
-        {/* Auto-Rotating Spiral Portfolio Layout */}
-        <div className="portfolio-container relative" style={{ perspective: "1500px", height: "900px" }}>
+        {/* Enhanced 3D Portfolio with Path Animations */}
+        <div className="portfolio-container-enhanced relative" style={{ perspective: "2000px", height: "1000px" }}>
+          {/* SVG Path Animations */}
+          <svg
+            ref={svgRef}
+            className="absolute inset-0 w-full h-full pointer-events-none z-10"
+            style={{ transform: "translateZ(0)" }}
+          >
+            <defs>
+              <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgba(79, 209, 197, 0)" />
+                <stop offset="50%" stopColor="rgba(79, 209, 197, 0.8)" />
+                <stop offset="100%" stopColor="rgba(168, 85, 247, 0)" />
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feMerge> 
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            
+            {/* Connecting orbital paths */}
+            {portfolioProjects.map((_, index) => {
+              const angle = (index * 36) * (Math.PI / 180);
+              const nextAngle = ((index + 1) % 10 * 36) * (Math.PI / 180);
+              const radius = 350;
+              const centerX = 500;
+              const centerY = 400;
+              
+              const x1 = centerX + Math.cos(angle) * radius;
+              const y1 = centerY + Math.sin(angle) * radius;
+              const x2 = centerX + Math.cos(nextAngle) * radius;
+              const y2 = centerY + Math.sin(nextAngle) * radius;
+              
+              return (
+                <motion.path
+                  key={`path-${index}`}
+                  d={`M ${x1} ${y1} Q ${centerX} ${centerY} ${x2} ${y2}`}
+                  stroke="url(#pathGradient)"
+                  strokeWidth="2"
+                  fill="none"
+                  filter="url(#glow)"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ 
+                    pathLength: 1, 
+                    opacity: [0, 0.8, 0],
+                  }}
+                  transition={{
+                    duration: 3,
+                    delay: index * 0.2,
+                    repeat: Infinity,
+                    repeatDelay: 2
+                  }}
+                />
+              );
+            })}
+            
+            {/* Central energy ring */}
+            <motion.circle
+              cx="500"
+              cy="400"
+              r="80"
+              stroke="rgba(79, 209, 197, 0.5)"
+              strokeWidth="2"
+              fill="none"
+              filter="url(#glow)"
+              animate={{
+                r: [80, 100, 80],
+                opacity: [0.3, 0.8, 0.3]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+          </svg>
+
+          {/* 3D Floating Particles */}
+          <div className="absolute inset-0 pointer-events-none">
+            {particlePositions.map((particle, index) => (
+              <motion.div
+                key={`particle-${index}`}
+                className="absolute w-1 h-1 bg-cyan-400/40 rounded-full"
+                style={{
+                  left: "50%",
+                  top: "50%",
+                }}
+                animate={{
+                  x: particle.x + Math.sin(waveOffset * 2 + index) * 20,
+                  y: particle.y + Math.cos(waveOffset * 1.5 + index) * 15,
+                  scale: [0.5, 1.5, 0.5],
+                  opacity: [0.2, 0.8, 0.2]
+                }}
+                transition={{
+                  duration: 4 + Math.random() * 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: index * 0.1
+                }}
+              />
+            ))}
+          </div>
+
           <motion.div
-            className="portfolio-spiral-simple"
+            className="portfolio-spiral-enhanced"
             animate={{ 
-              rotateY: rotation 
+              rotateY: rotation,
+              rotateX: Math.sin(waveOffset) * 5 // Subtle X-axis wobble
             }}
             transition={{ 
-              duration: 0, // Immediate updates for smooth rotation
+              duration: 0,
               ease: "linear" 
             }}
           >
             {portfolioProjects.map((project, index) => {
-              // Simplified spiral calculation - more horizontal, easier to read
-              const angle = (index * 60) * (Math.PI / 180); // 60 degrees between each item
-              const radius = 280; // Fixed radius for consistent circle
+              // Enhanced 3D spiral calculation for 10 items
+              const angle = (index * 36) * (Math.PI / 180); // 36 degrees between each item (360/10)
+              const radius = 350; // Larger radius for more items
               const x = Math.cos(angle) * radius;
               const z = Math.sin(angle) * radius;
-              const y = index * -40; // Less vertical spacing
+              const y = Math.sin(index * 0.8 + waveOffset * 3) * 80 + Math.cos(waveOffset * 2) * 20; // Dynamic wave positioning
+              const floatY = Math.sin(waveOffset * 1.5 + index) * 15; // Additional floating effect
 
               return (
                 <motion.div
                   key={project.id}
-                  className="portfolio-card-simple absolute left-1/2 top-1/2"
+                  className="portfolio-card-enhanced absolute left-1/2 top-1/2"
                   style={{
-                    transform: `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) rotateY(${-angle * (180 / Math.PI)}deg)`,
+                    transform: `translate(-50%, -50%) translate3d(${x}px, ${y + floatY}px, ${z}px) rotateY(${-angle * (180 / Math.PI)}deg)`,
                     transformStyle: "preserve-3d"
                   }}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
+                  initial={{ opacity: 0, scale: 0.8, rotateX: -30 }}
+                  animate={{ 
+                    opacity: 1, 
+                    scale: 1,
+                    rotateX: Math.sin(waveOffset + index) * 10, // Dynamic rotation
+                  }}
+                  transition={{ 
+                    duration: 0,
+                    ease: "linear"
+                  }}
                   whileHover={{ 
-                    scale: 1.08,
-                    z: 80
+                    scale: 1.12,
+                    z: 120,
+                    rotateX: 0,
+                    transition: { duration: 0.3 }
                   }}
                   data-testid={`portfolio-card-${index}`}
                 >
-                  <div className="glassmorphism-card-simple w-72 h-80 p-5 rounded-xl border border-white/30 backdrop-blur-xl bg-white/10 shadow-2xl relative overflow-hidden group">
+                  <div className="glassmorphism-card-enhanced w-72 h-80 p-5 rounded-xl border border-white/30 backdrop-blur-xl bg-white/10 shadow-2xl relative overflow-hidden group">
                     {/* Background gradient based on category */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category as keyof typeof categoryColors]} opacity-30 group-hover:opacity-60 transition-opacity duration-300 rounded-xl`} />
                     
