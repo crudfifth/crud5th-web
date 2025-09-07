@@ -522,21 +522,70 @@
   background: hsl(var(--primary) / 0.1);
 }
 
-/* Portfolio Spiral 3D Effects */
-.portfolio-spiral {
-  transform-style: preserve-3d;
-  perspective: 1200px;
-  position: relative;
-  width: 100%;
-  height: 600px;
+/* Simplified Portfolio Spiral 3D Effects */
+.portfolio-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 2rem 0;
 }
 
-.portfolio-card {
+.portfolio-spiral-simple {
+  transform-style: preserve-3d;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.portfolio-card-simple {
   transform-style: preserve-3d;
   backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Improved Glassmorphism Card for better readability */
+.glassmorphism-card-simple {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.glassmorphism-card-simple::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  transition: left 0.6s ease-in-out;
+}
+
+.glassmorphism-card-simple:hover::before {
+  left: 100%;
+}
+
+.glassmorphism-card-simple:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(79, 209, 197, 0.6);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 50px rgba(79, 209, 197, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: translateZ(20px) scale(1.02);
 }
 
 /* Glassmorphism Card Effects */

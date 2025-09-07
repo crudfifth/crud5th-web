@@ -148,34 +148,28 @@ export default function Portfolio() {
           </p>
         </motion.div>
 
-        {/* Spiral Portfolio Grid */}
-        <motion.div 
-          className="relative"
-          style={{
-            transform: `perspective(1000px) rotateX(20deg)`,
-          }}
-        >
+        {/* Simplified Spiral Portfolio Layout */}
+        <div className="portfolio-container relative" style={{ perspective: "1500px", height: "800px" }}>
           <motion.div
-            className="portfolio-spiral"
+            className="portfolio-spiral-simple"
             style={{
-              rotateZ: spiralRotation,
-              y: spiralY
+              rotateY: spiralRotation,
             }}
           >
             {portfolioProjects.map((project, index) => {
-              // Calculate spiral position
+              // Simplified spiral calculation - more horizontal, easier to read
               const angle = (index * 60) * (Math.PI / 180); // 60 degrees between each item
-              const radius = 300 + (index * 30); // Expanding spiral
+              const radius = 280; // Fixed radius for consistent circle
               const x = Math.cos(angle) * radius;
               const z = Math.sin(angle) * radius;
-              const y = index * -80; // Vertical spacing
+              const y = index * -40; // Less vertical spacing
 
               return (
                 <motion.div
                   key={project.id}
-                  className="portfolio-card absolute"
+                  className="portfolio-card-simple absolute left-1/2 top-1/2"
                   style={{
-                    transform: `translate3d(${x}px, ${y}px, ${z}px)`,
+                    transform: `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) rotateY(${-angle * (180 / Math.PI)}deg)`,
                     transformStyle: "preserve-3d"
                   }}
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -183,107 +177,113 @@ export default function Portfolio() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
                   whileHover={{ 
-                    scale: 1.05,
-                    rotateY: 5,
-                    z: 50
+                    scale: 1.08,
+                    z: 80
                   }}
                   data-testid={`portfolio-card-${index}`}
                 >
-                  <div className="glassmorphism-card w-80 h-96 p-6 rounded-2xl border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl relative overflow-hidden group">
+                  <div className="glassmorphism-card-simple w-72 h-80 p-5 rounded-xl border border-white/30 backdrop-blur-xl bg-white/10 shadow-2xl relative overflow-hidden group">
                     {/* Background gradient based on category */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl`} />
+                    <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category as keyof typeof categoryColors]} opacity-30 group-hover:opacity-60 transition-opacity duration-300 rounded-xl`} />
                     
-                    {/* Content */}
-                    <div className="relative z-10 h-full flex flex-col">
-                      {/* Status badge */}
-                      <div className="flex justify-between items-start mb-4">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          project.status === "完了" ? "bg-green-500/20 text-green-300 border border-green-500/30" :
-                          project.status === "進行中" ? "bg-blue-500/20 text-blue-300 border border-blue-500/30" :
-                          "bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                    {/* Content - Simplified for better readability */}
+                    <div className="relative z-10 h-full flex flex-col text-center">
+                      {/* Project number and status */}
+                      <div className="flex justify-between items-center mb-3">
+                        <div className="w-8 h-8 rounded-full bg-cyan-400/20 flex items-center justify-center">
+                          <span className="text-sm font-bold text-cyan-300">
+                            {String(index + 1).padStart(2, '0')}
+                          </span>
+                        </div>
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                          project.status === "完了" ? "bg-green-500/30 text-green-200 border border-green-400/50" :
+                          project.status === "進行中" ? "bg-blue-500/30 text-blue-200 border border-blue-400/50" :
+                          "bg-purple-500/30 text-purple-200 border border-purple-400/50"
                         }`}>
                           {project.status}
                         </span>
-                        <span className="text-xs text-muted-foreground bg-secondary/30 px-2 py-1 rounded-full">
-                          {project.category}
-                        </span>
                       </div>
 
-                      {/* Title and description */}
-                      <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">
+                      {/* Title */}
+                      <h3 className="text-lg font-bold text-white mb-2 group-hover:text-cyan-200 transition-colors leading-tight">
                         {project.title}
                       </h3>
-                      <p className="text-sm text-gray-300 mb-4 leading-relaxed flex-1">
+                      
+                      {/* Category */}
+                      <div className="text-xs text-cyan-300 mb-3 font-medium">
+                        {project.category}
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-xs text-gray-300 mb-3 leading-relaxed flex-1 line-clamp-3">
                         {project.description}
                       </p>
 
-                      {/* Technologies */}
-                      <div className="mb-4">
-                        <div className="flex flex-wrap gap-1">
-                          {project.technologies.slice(0, 3).map((tech, techIndex) => (
-                            <span 
-                              key={techIndex}
-                              className="text-xs px-2 py-1 bg-white/10 rounded-full text-cyan-200 border border-white/20"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                          {project.technologies.length > 3 && (
-                            <span className="text-xs px-2 py-1 bg-white/5 rounded-full text-gray-400">
-                              +{project.technologies.length - 3}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Achievements */}
+                      {/* Key achievement */}
                       {project.achievements && (
-                        <div className="mb-4">
-                          <div className="flex items-center gap-1 mb-2">
+                        <div className="mb-3 p-2 bg-white/5 rounded-lg border border-white/10">
+                          <div className="flex items-center justify-center gap-1 mb-1">
                             <Award className="w-3 h-3 text-yellow-400" />
-                            <span className="text-xs font-medium text-yellow-300">主な成果</span>
+                            <span className="text-xs font-medium text-yellow-300">成果</span>
                           </div>
-                          <ul className="text-xs text-gray-300 space-y-1">
-                            {project.achievements.slice(0, 2).map((achievement, achIndex) => (
-                              <li key={achIndex} className="flex items-center gap-2">
-                                <div className="w-1 h-1 bg-cyan-400 rounded-full" />
-                                {achievement}
-                              </li>
-                            ))}
-                          </ul>
+                          <div className="text-xs text-white font-medium">
+                            {project.achievements[0]}
+                          </div>
                         </div>
                       )}
 
-                      {/* Action buttons */}
-                      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <Button size="sm" variant="ghost" className="flex-1 text-xs bg-white/10 hover:bg-white/20 border border-white/20">
-                          <Play className="w-3 h-3 mr-1" />
-                          詳細
-                        </Button>
-                        <Button size="sm" variant="ghost" className="bg-white/10 hover:bg-white/20 border border-white/20">
-                          <ExternalLink className="w-3 h-3" />
-                        </Button>
+                      {/* Technologies - Top 3 only */}
+                      <div className="flex flex-wrap gap-1 justify-center mb-4">
+                        {project.technologies.slice(0, 3).map((tech, techIndex) => (
+                          <span 
+                            key={techIndex}
+                            className="text-xs px-2 py-1 bg-cyan-500/20 rounded-full text-cyan-200 border border-cyan-400/30 font-medium"
+                          >
+                            {tech}
+                          </span>
+                        ))}
                       </div>
+
+                      {/* View button */}
+                      <Button size="sm" variant="ghost" className="w-full text-xs bg-white/20 hover:bg-white/30 border border-white/40 text-white font-medium opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <Play className="w-3 h-3 mr-1" />
+                        プロジェクト詳細
+                      </Button>
                     </div>
 
-                    {/* Holographic effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/5 to-purple-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+                    {/* Enhanced glow effect on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/10 to-purple-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl pointer-events-none" />
                   </div>
                 </motion.div>
               );
             })}
           </motion.div>
 
-          {/* Central hub */}
-          <motion.div 
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20"
-            style={{ y: spiralY }}
-          >
-            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-cyan-400/30 to-purple-400/30 backdrop-blur-xl border border-white/30 flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 animate-pulse" />
+          {/* Central navigation hub */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-cyan-400/40 to-purple-400/40 backdrop-blur-xl border-2 border-white/40 flex items-center justify-center shadow-2xl">
+              <div className="text-white text-xs font-bold">WORKS</div>
             </div>
-          </motion.div>
-        </motion.div>
+            {/* Navigation indicators */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              {portfolioProjects.map((_, index) => {
+                const angle = (index * 60) * (Math.PI / 180);
+                const radius = 50;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+                return (
+                  <div
+                    key={index}
+                    className="absolute w-2 h-2 bg-cyan-400/60 rounded-full"
+                    style={{
+                      transform: `translate(${x}px, ${y}px)`,
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
