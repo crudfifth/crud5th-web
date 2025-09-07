@@ -513,12 +513,16 @@
   flex-shrink: 0;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
 .marquee .tech-tag:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 8px 32px rgba(79, 209, 197, 0.3);
-  border-color: hsl(var(--primary) / 0.5);
-  background: hsl(var(--primary) / 0.1);
+  transform: translateY(-2px) scale(1.05) !important;
+  box-shadow: 0 8px 32px rgba(79, 209, 197, 0.3) !important;
+  border-color: hsl(193 82% 45% / 0.5) !important;
+  background: hsl(193 82% 45% / 0.1) !important;
+  color: hsl(210 20% 95%) !important;
+  animation-play-state: running !important;
 }
 
