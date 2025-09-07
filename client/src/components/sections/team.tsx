@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import ScrollReveal, { RevealOnScroll, SlideInLeft, ScaleIn } from "@/components/animations/scroll-reveal";
+import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
 import { Twitter, Github } from "lucide-react";
 
 const teamMembers = [
@@ -9,8 +10,8 @@ const teamMembers = [
     description: "フルスタック開発とプロジェクトマネジメントを得意とし、チーム全体の技術戦略を牽引。",
     initials: "高綱",
     social: {
-      twitter: "#",
-      github: "#"
+      twitter: "https://x.com/CRUD5th",
+      github: "https://github.com/crudfifth"
     }
   },
   {
@@ -19,8 +20,8 @@ const teamMembers = [
     description: "UI/UX デザインとフロントエンド開発のスペシャリスト。ユーザー体験の向上に情熱を注ぐ。",
     initials: "カ",
     social: {
-      twitter: "#",
-      github: "#"
+      twitter: "https://x.com/CRUD5th",
+      github: "https://github.com/crudfifth"
     }
   },
   {
@@ -29,78 +30,169 @@ const teamMembers = [
     description: "サーバーサイド開発とインフラ構築のエキスパート。スケーラブルなシステム設計を得意とする。",
     initials: "M",
     social: {
-      twitter: "#",
-      github: "#"
+      twitter: "https://x.com/CRUD5th",
+      github: "https://github.com/crudfifth"
     }
   }
 ];
 
-export default function Team() {
-  const { ref, isVisible } = useScrollAnimation();
-
+// Enhanced 3D Team Card Component
+function TeamCard({ member, index }: { member: typeof teamMembers[0], index: number }) {
   return (
-    <section id="team" className="py-24 bg-background">
-      <div className="max-w-7xl mx-auto px-6">
+    <ScaleIn delay={index * 200} className="h-full">
+      <motion.div
+        className="team-card bg-gradient-to-br from-secondary/80 to-muted/40 backdrop-blur-sm border border-border rounded-xl p-8 text-center h-full group cursor-pointer relative overflow-hidden"
+        data-testid={`team-card-${index}`}
+        whileHover={{
+          scale: 1.02,
+          rotateY: 8,
+          z: 50
+        }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        style={{
+          transformStyle: "preserve-3d",
+          perspective: 1200
+        }}
+      >
+        {/* Background glow effect */}
         <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 50 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-20"
-          data-testid="team-header"
+          className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 rounded-xl"
+          transition={{ duration: 0.4 }}
+        />
+        
+        {/* Avatar with enhanced 3D effect */}
+        <motion.div 
+          className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-primary/30 bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center relative z-10"
+          data-testid={`team-avatar-${index}`}
+          whileHover={{
+            scale: 1.1,
+            rotateZ: 5,
+            boxShadow: "0 0 40px rgba(29, 151, 176, 0.4)"
+          }}
+          transition={{ duration: 0.3 }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 gradient-text">チーム</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            多様なスキルセットを持つエンジニアが集まったプロフェッショナルチーム
-          </p>
+          <motion.span 
+            className="text-3xl font-bold text-primary"
+            whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.2 }}
+          >
+            {member.initials}
+          </motion.span>
+          
+          {/* Floating particles around avatar on hover */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+          >
+            {[...Array(6)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 bg-primary/60 rounded-full"
+                style={{
+                  top: `${20 + Math.sin(i * Math.PI / 3) * 40}%`,
+                  left: `${50 + Math.cos(i * Math.PI / 3) * 40}%`
+                }}
+                animate={{
+                  y: [-5, -15, -5],
+                  opacity: [0.6, 1, 0.6]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: i * 0.3
+                }}
+              />
+            ))}
+          </motion.div>
         </motion.div>
+        
+        <motion.h3 
+          className="text-2xl font-bold mb-2 text-foreground relative" 
+          data-testid={`team-name-${index}`}
+          whileHover={{ y: -2 }}
+          transition={{ duration: 0.2 }}
+        >
+          {member.name}
+          <AnimatedUnderline className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 group-hover:w-full transition-all duration-500" delay={200} width={100} />
+        </motion.h3>
+        
+        <motion.p 
+          className="text-primary/80 font-medium mb-4" 
+          data-testid={`team-role-${index}`}
+          whileHover={{ color: "hsl(193 100% 70%)" }}
+          transition={{ duration: 0.2 }}
+        >
+          {member.role}
+        </motion.p>
+        
+        <motion.p 
+          className="text-muted-foreground mb-6 leading-relaxed text-sm" 
+          data-testid={`team-description-${index}`}
+          whileHover={{ opacity: 0.8 }}
+        >
+          {member.description}
+        </motion.p>
+        
+        {/* Social links with hover effects */}
+        <div className="flex justify-center space-x-4" data-testid={`team-social-${index}`}>
+          <motion.a
+            href={member.social.twitter}
+            className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social"
+            whileHover={{ scale: 1.1, y: -2 }}
+            transition={{ duration: 0.2 }}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Twitter className="w-5 h-5 text-muted-foreground group-hover/social:text-primary transition-colors" />
+          </motion.a>
+          <motion.a
+            href={member.social.github}
+            className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social"
+            whileHover={{ scale: 1.1, y: -2 }}
+            transition={{ duration: 0.2 }}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Github className="w-5 h-5 text-muted-foreground group-hover/social:text-primary transition-colors" />
+          </motion.a>
+        </div>
+        
+        {/* Glass morphism overlay */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 pointer-events-none"
+          transition={{ duration: 0.4 }}
+        />
+      </motion.div>
+    </ScaleIn>
+  );
+}
+
+export default function Team() {
+  return (
+    <section id="team" className="py-24 bg-background relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-accent/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-6 relative">
+        <RevealOnScroll className="text-center mb-20" data-testid="team-header">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6 gradient-text relative">
+            チーム
+            <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32" delay={600} />
+          </h2>
+          <SlideInLeft delay={300}>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              多様なスキルセットを持つエンジニアが集まったプロフェッショナルチーム
+            </p>
+          </SlideInLeft>
+        </RevealOnScroll>
         
         <div className="grid md:grid-cols-3 gap-8">
           {teamMembers.map((member, index) => (
-            <motion.div
-              key={member.name}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              className="team-card bg-gradient-to-br from-secondary/80 to-muted/40 backdrop-blur-sm border border-border rounded-xl p-8 text-center"
-              data-testid={`team-card-${index}`}
-            >
-              <div 
-                className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-primary/30 bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center"
-                data-testid={`team-avatar-${index}`}
-              >
-                <span className="text-3xl font-bold text-primary">{member.initials}</span>
-              </div>
-              <h3 className="text-2xl font-bold mb-2 text-foreground" data-testid={`team-name-${index}`}>
-                {member.name}
-              </h3>
-              <p className="text-primary font-semibold mb-4" data-testid={`team-role-${index}`}>
-                {member.role}
-              </p>
-              <p className="text-muted-foreground mb-6 leading-relaxed" data-testid={`team-description-${index}`}>
-                {member.description}
-              </p>
-              <div className="flex justify-center space-x-4" data-testid={`team-social-${index}`}>
-                <a 
-                  href="https://x.com/CRUD5th"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                  data-testid={`team-twitter-${index}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Twitter className="w-5 h-5" />
-                </a>
-                <a 
-                  href="https://github.com/crudfifth"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                  data-testid={`team-github-${index}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Github className="w-5 h-5" />
-                </a>
-              </div>
-            </motion.div>
+            <TeamCard key={member.name} member={member} index={index} />
           ))}
         </div>
       </div>
