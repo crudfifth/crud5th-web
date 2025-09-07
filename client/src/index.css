@@ -449,3 +449,76 @@
   }
 }
 
+/* Technology Stack Infinite Marquee Animations */
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  width: 100%;
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 10%,
+    rgba(0, 0, 0, 1) 90%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 10%,
+    rgba(0, 0, 0, 1) 90%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.marquee {
+  display: flex;
+  width: fit-content;
+  gap: 0;
+}
+
+.marquee-left {
+  animation: marquee-left 40s linear infinite;
+}
+
+.marquee-right {
+  animation: marquee-right 40s linear infinite;
+}
+
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+/* Pause animation on hover for better UX */
+.marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Add subtle glow effect to tech tags in marquee */
+.marquee .tech-tag {
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.marquee .tech-tag:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 32px rgba(79, 209, 197, 0.3);
+  border-color: hsl(var(--primary) / 0.5);
+  background: hsl(var(--primary) / 0.1);
+}
+

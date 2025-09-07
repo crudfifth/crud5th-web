@@ -158,31 +158,73 @@ export default function ProjectInsights() {
           </div>
         </RevealOnScroll>
 
-        {/* Technology Stack Visualization */}
+        {/* Technology Stack Visualization - Infinite Scrolling Marquee */}
         <RevealOnScroll className="mt-16 text-center" delay={800}>
-          <h3 className="text-2xl font-bold mb-8 gradient-text relative">
+          <h3 className="text-2xl font-bold mb-12 gradient-text relative">
             技術スタック
             <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24" delay={1000} />
           </h3>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {[
-              "React", "TypeScript", "Node.js", "PostgreSQL", "AWS", "Docker",
-              "Python", "FastAPI", "Redis", "GraphQL", "MongoDB", "Kubernetes"
-            ].map((tech, index) => (
-              <motion.div
-                key={tech}
-                className="tech-tag bg-secondary/30 backdrop-blur-sm border border-border rounded-lg p-3 text-sm font-medium text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05, y: -2 }}
-                viewport={{ once: true }}
-                data-testid={`tech-${index}`}
-              >
-                {tech}
-              </motion.div>
-            ))}
+          <div className="space-y-6 overflow-hidden">
+            {/* Row 1 - Left scroll */}
+            <div className="marquee-container">
+              <div className="marquee marquee-left">
+                {["React", "TypeScript", "Node.js", "Vue.js", "Angular"].concat(["React", "TypeScript", "Node.js", "Vue.js", "Angular"]).map((tech, index) => (
+                  <div
+                    key={`row1-${index}`}
+                    className="tech-tag bg-secondary/30 backdrop-blur-sm border border-border rounded-lg px-6 py-3 text-sm font-medium text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 whitespace-nowrap mx-3"
+                    data-testid={`tech-row1-${index}`}
+                  >
+                    {tech}
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Row 2 - Right scroll */}
+            <div className="marquee-container">
+              <div className="marquee marquee-right">
+                {["PostgreSQL", "AWS", "Docker", "MongoDB", "Redis"].concat(["PostgreSQL", "AWS", "Docker", "MongoDB", "Redis"]).map((tech, index) => (
+                  <div
+                    key={`row2-${index}`}
+                    className="tech-tag bg-secondary/30 backdrop-blur-sm border border-border rounded-lg px-6 py-3 text-sm font-medium text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 whitespace-nowrap mx-3"
+                    data-testid={`tech-row2-${index}`}
+                  >
+                    {tech}
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Row 3 - Left scroll */}
+            <div className="marquee-container">
+              <div className="marquee marquee-left">
+                {["Python", "FastAPI", "Django", "Flask", "GraphQL"].concat(["Python", "FastAPI", "Django", "Flask", "GraphQL"]).map((tech, index) => (
+                  <div
+                    key={`row3-${index}`}
+                    className="tech-tag bg-secondary/30 backdrop-blur-sm border border-border rounded-lg px-6 py-3 text-sm font-medium text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 whitespace-nowrap mx-3"
+                    data-testid={`tech-row3-${index}`}
+                  >
+                    {tech}
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Row 4 - Right scroll */}
+            <div className="marquee-container">
+              <div className="marquee marquee-right">
+                {["Kubernetes", "Git", "GitHub Actions", "Vercel", "Cloudflare"].concat(["Kubernetes", "Git", "GitHub Actions", "Vercel", "Cloudflare"]).map((tech, index) => (
+                  <div
+                    key={`row4-${index}`}
+                    className="tech-tag bg-secondary/30 backdrop-blur-sm border border-border rounded-lg px-6 py-3 text-sm font-medium text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 whitespace-nowrap mx-3"
+                    data-testid={`tech-row4-${index}`}
+                  >
+                    {tech}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </RevealOnScroll>
       </div>
