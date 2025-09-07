@@ -108,17 +108,17 @@ function TeamCard({ member, index }: { member: typeof teamMembers[0], index: num
         </motion.div>
         
         <motion.h3 
-          className="text-2xl font-bold mb-2 text-foreground relative" 
+          className="text-xl font-semibold mb-2 text-foreground relative" 
           data-testid={`team-name-${index}`}
-          whileHover={{ y: -2 }}
+          whileHover={{ y: -1 }}
           transition={{ duration: 0.2 }}
         >
           {member.name}
-          <AnimatedUnderline className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 group-hover:w-full transition-all duration-500" delay={200} width={100} />
+          <AnimatedUnderline className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 group-hover:w-full transition-all duration-500" delay={200} width={80} />
         </motion.h3>
         
         <motion.p 
-          className="text-primary/80 font-medium mb-4" 
+          className="text-primary/80 font-medium mb-3 text-sm" 
           data-testid={`team-role-${index}`}
           whileHover={{ color: "hsl(193 100% 70%)" }}
           transition={{ duration: 0.2 }}
@@ -127,7 +127,7 @@ function TeamCard({ member, index }: { member: typeof teamMembers[0], index: num
         </motion.p>
         
         <motion.p 
-          className="text-muted-foreground mb-6 leading-relaxed text-sm" 
+          className="text-muted-foreground mb-5 leading-relaxed text-xs" 
           data-testid={`team-description-${index}`}
           whileHover={{ opacity: 0.8 }}
         >
@@ -178,14 +178,14 @@ export default function Team() {
       </div>
       
       <div className="max-w-7xl mx-auto px-6 relative">
-        <RevealOnScroll className="text-center mb-20" data-testid="team-header">
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 gradient-text relative">
+        <RevealOnScroll className="text-center mb-16" data-testid="team-header">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text relative">
             チーム
-            <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32" delay={600} />
+            <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24" delay={600} />
           </h2>
           <SlideInLeft delay={300}>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              多様なスキルセットを持つエンジニアが集まったプロフェッショナルチーム
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              多様なスキルセットと豊富な経験を持つエンジニアが集まったプロフェッショナルチーム
             </p>
           </SlideInLeft>
         </RevealOnScroll>
