@@ -11,6 +11,7 @@ import SectionTransition, { WaveTransition, DiagonalTransition } from "@/compone
 import ParallaxSection from "@/components/animations/parallax-section";
 import ScrollReveal, { RevealOnScroll } from "@/components/animations/scroll-reveal";
 import ProjectInsights from "@/components/sections/project-insights";
+import Portfolio from "@/components/sections/portfolio";
 
 export default function Home() {
   useEffect(() => {
@@ -105,6 +106,13 @@ export default function Home() {
         
         <SectionTransition variant="reveal">
           <ProjectInsights />
+        </SectionTransition>
+
+        {/* Wave transition to portfolio section */}
+        <WaveTransition direction="down" color="hsl(217 20% 8%)" />
+        
+        <SectionTransition variant="scale">
+          <Portfolio />
         </SectionTransition>
 
         {/* Diagonal transition to team section */}
