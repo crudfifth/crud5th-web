@@ -231,24 +231,40 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
       data-testid={`service-node-${node.id}`}
     >
       <div className={`relative h-full bg-gradient-to-br ${categoryColors[node.category]} backdrop-blur-md border border-white/20 rounded-2xl p-4 overflow-hidden`}>
-        {/* 左上角のかわいいデザイン要素 */}
-        <div className="absolute -top-1 -left-1 z-10">
+        {/* 左上角のアクセントデザイン（はみ出し） */}
+        <div className="absolute -top-3 -left-3 z-20">
           <div className="relative">
-            {/* メインの装飾 */}
-            <div className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
+            {/* アウターリング */}
+            <div className={`w-8 h-8 rounded-full border-2 transition-all duration-500 ${
               isHighlighted 
-                ? 'bg-cyan-400/80 border-cyan-300 shadow-lg shadow-cyan-400/30' 
-                : 'bg-white/20 border-white/40'
-            } backdrop-blur-sm`} />
+                ? 'bg-gradient-to-br from-cyan-400/60 to-blue-500/40 border-cyan-300 shadow-xl shadow-cyan-400/40 scale-110' 
+                : 'bg-gradient-to-br from-white/15 to-white/5 border-white/30 shadow-lg shadow-black/20'
+            } backdrop-blur-md`} />
             
-            {/* 小さな内側の点 */}
-            <div className={`absolute top-1/2 left-1/2 w-1.5 h-1.5 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
-              isHighlighted ? 'bg-white animate-pulse' : 'bg-white/60'
+            {/* インナーコア */}
+            <div className={`absolute top-1/2 left-1/2 w-4 h-4 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+              isHighlighted 
+                ? 'bg-gradient-to-br from-cyan-300 to-cyan-500 shadow-lg shadow-cyan-400/60 animate-pulse' 
+                : 'bg-gradient-to-br from-white/40 to-white/20'
             }`} />
             
-            {/* 接続線の起点を示すライン */}
-            <div className={`absolute top-2 left-2 w-6 h-0.5 rotate-45 transition-all duration-300 ${
-              isHighlighted ? 'bg-gradient-to-r from-cyan-400 to-transparent' : 'bg-gradient-to-r from-white/40 to-transparent'
+            {/* 中央の光る点 */}
+            <div className={`absolute top-1/2 left-1/2 w-2 h-2 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+              isHighlighted ? 'bg-white animate-ping' : 'bg-white/80'
+            }`} />
+            
+            {/* 接続方向指示ライン */}
+            <div className={`absolute top-4 left-4 w-8 h-1 rotate-45 rounded-full transition-all duration-300 ${
+              isHighlighted 
+                ? 'bg-gradient-to-r from-cyan-400 via-cyan-300 to-transparent shadow-lg shadow-cyan-400/30' 
+                : 'bg-gradient-to-r from-white/50 via-white/30 to-transparent'
+            }`} />
+            
+            {/* 装飾的なサブライン */}
+            <div className={`absolute top-5 left-5 w-4 h-0.5 rotate-45 rounded-full transition-all duration-300 delay-100 ${
+              isHighlighted 
+                ? 'bg-gradient-to-r from-blue-400 to-transparent opacity-80' 
+                : 'bg-gradient-to-r from-white/30 to-transparent opacity-60'
             }`} />
           </div>
         </div>
