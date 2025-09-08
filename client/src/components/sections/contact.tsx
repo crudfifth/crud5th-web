@@ -67,7 +67,7 @@ export default function Contact() {
           className="text-center mb-20"
           data-testid="contact-header"
         >
-          <h2 className="text-2xl font-bold mb-12 gradient-text relative">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text relative">
             お問い合わせ
             <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32" delay={600} />
           </h2>

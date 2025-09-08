@@ -182,7 +182,7 @@ export default function Team() {
       
       <div className="max-w-7xl mx-auto px-6 relative">
         <RevealOnScroll className="text-center mb-16" data-testid="team-header">
-          <h2 className="text-2xl font-bold mb-12 gradient-text relative">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text relative">
             チーム
             <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24" delay={600} />
           </h2>
