@@ -145,7 +145,7 @@ const serviceNodes: ServiceNode[] = [
   // Business & Communication Layer (Center)
   {
     id: "raft-core",
-    title: "Raft Core",
+    title: "SES Corabo",
     category: "business",
     description: "SES営業推進・案件マッチング支援",
     technologies: ["React", "AI/ML"],
@@ -388,7 +388,7 @@ function ConnectionLine({ from, to, isActive }: { from: ServiceNode, to: Service
 export default function Portfolio() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [zoom, setZoom] = useState(0.5); // デフォルトで50%ズーム
+  const [zoom, setZoom] = useState(0.6); // デフォルトで60%ズーム
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
@@ -450,7 +450,7 @@ export default function Portfolio() {
 
   // ズーム・パンのリセット
   const resetView = () => {
-    setZoom(0.5);
+    setZoom(0.6);
     setPan({ x: 0, y: 0 });
   };
 
