@@ -277,21 +277,53 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
           )}
         </div>
 
-        {/* Connection Point - single point at top-left corner */}
-        {node.connections.length > 0 && (
-          <div
-            className={`absolute w-3 h-3 rounded-full border-2 border-white/60 transition-all duration-300 ${
-              highlightedConnections.has(node.id) 
-                ? 'bg-cyan-400 border-cyan-300 shadow-lg shadow-cyan-400/50' 
-                : 'bg-white/30'
-            }`}
-            style={{
-              left: '0px',
-              top: '0px',
-              transform: 'translate(-50%, -50%)'
-            }}
-          />
-        )}
+        {/* Connection Points - positioned on card edges */}
+        {node.connections.map((connectionId, index) => {
+          // カードの境界線上に配置（上下左右の辺に分散）
+          const totalConnections = node.connections.length;
+          const cardWidth = 288; // w-72 = 288px
+          const cardHeight = 160; // h-40 = 160px
+          
+          let x, y;
+          
+          // 接続数に応じて辺に分散配置
+          if (index < Math.ceil(totalConnections / 4)) {
+            // 上辺
+            x = (cardWidth / (Math.ceil(totalConnections / 4) + 1)) * (index + 1) - cardWidth / 2;
+            y = -cardHeight / 2;
+          } else if (index < Math.ceil(totalConnections / 2)) {
+            // 右辺
+            const rightIndex = index - Math.ceil(totalConnections / 4);
+            x = cardWidth / 2;
+            y = (cardHeight / (Math.ceil(totalConnections / 4) + 1)) * (rightIndex + 1) - cardHeight / 2;
+          } else if (index < Math.ceil(totalConnections * 3 / 4)) {
+            // 下辺
+            const bottomIndex = index - Math.ceil(totalConnections / 2);
+            x = cardWidth / 2 - (cardWidth / (Math.ceil(totalConnections / 4) + 1)) * (bottomIndex + 1);
+            y = cardHeight / 2;
+          } else {
+            // 左辺
+            const leftIndex = index - Math.ceil(totalConnections * 3 / 4);
+            x = -cardWidth / 2;
+            y = cardHeight / 2 - (cardHeight / (Math.ceil(totalConnections / 4) + 1)) * (leftIndex + 1);
+          }
+          
+          return (
+            <div
+              key={connectionId}
+              className={`absolute w-3 h-3 rounded-full border-2 border-white/60 transition-all duration-300 ${
+                highlightedConnections.has(connectionId) 
+                  ? 'bg-cyan-400 border-cyan-300 shadow-lg shadow-cyan-400/50' 
+                  : 'bg-white/30'
+              }`}
+              style={{
+                left: `calc(50% + ${x}px)`,
+                top: `calc(50% + ${y}px)`,
+                transform: 'translate(-50%, -50%)'
+              }}
+            />
+          );
+        })}
       </div>
     </motion.div>
   );
@@ -300,25 +332,19 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
 function ConnectionLine({ from, to, isActive }: { from: ServiceNode, to: ServiceNode, isActive: boolean }) {
   const pathId = `connection-${from.id}-${to.id}`;
   
-  // Calculate top-left corner positions (cards are w-72 = 288px, h-40 = 160px)
-  const fromX = from.position.x - 144;
-  const fromY = from.position.y - 80;
-  const toX = to.position.x - 144;
-  const toY = to.position.y - 80;
-  
   // Calculate control points for curved path
-  const dx = toX - fromX;
-  const dy = toY - fromY;
+  const dx = to.position.x - from.position.x;
+  const dy = to.position.y - from.position.y;
   const distance = Math.sqrt(dx * dx + dy * dy);
   
   const controlOffset = Math.min(distance * 0.3, 100);
-  const midX = (fromX + toX) / 2;
-  const midY = (fromY + toY) / 2;
+  const midX = (from.position.x + to.position.x) / 2;
+  const midY = (from.position.y + to.position.y) / 2;
   
   const perpX = -dy / distance * controlOffset;
   const perpY = dx / distance * controlOffset;
   
-  const pathData = `M ${fromX} ${fromY} Q ${midX + perpX} ${midY + perpY} ${toX} ${toY}`;
+  const pathData = `M ${from.position.x} ${from.position.y} Q ${midX + perpX} ${midY + perpY} ${to.position.x} ${to.position.y}`;
 
   return (
     <g>
@@ -500,7 +526,7 @@ export default function Portfolio() {
               resetView();
               setIsFocused(true);
             }}
-            className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-colors text-sm text-white"
+            className="absolute top-4 right-4 z-10 flex items-center gap-2 px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-colors text-sm text-white"
           >
             <Eye className="w-4 h-4" />
             全体表示
