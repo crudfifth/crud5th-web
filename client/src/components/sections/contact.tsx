@@ -57,7 +57,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 bg-gradient-to-b from-secondary/20 to-background">
+    <section id="contact" className="py-24 bg-gradient-to-b from-secondary/20 to-background relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
           ref={ref}
@@ -76,8 +76,8 @@ export default function Contact() {
           </p>
         </motion.div>
         
-        <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-16">
             {/* Contact Info */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -85,48 +85,48 @@ export default function Contact() {
               transition={{ duration: 0.8, delay: 0.2 }}
               data-testid="contact-info"
             >
-              <h3 className="text-2xl font-bold mb-8 text-foreground">直接お問い合わせ</h3>
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4" data-testid="contact-email">
-                  <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                    <Mail className="w-6 h-6 text-primary" />
+              <h3 className="text-3xl font-bold mb-10 text-foreground">直接お問い合わせ</h3>
+              <div className="space-y-8">
+                <div className="flex items-center space-x-5 group hover:bg-secondary/30 p-4 rounded-xl transition-all duration-300" data-testid="contact-email">
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/30 to-primary/10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Mail className="w-7 h-7 text-primary" />
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">Email</div>
-                    <div className="text-foreground font-semibold">crudfifth@gmail.com</div>
+                    <div className="text-sm text-muted-foreground mb-1">Email</div>
+                    <div className="text-foreground font-semibold text-lg">crudfifth@gmail.com</div>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4" data-testid="contact-phone">
-                  <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                    <Phone className="w-6 h-6 text-primary" />
+                <div className="flex items-center space-x-5 group hover:bg-secondary/30 p-4 rounded-xl transition-all duration-300" data-testid="contact-phone">
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/30 to-primary/10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Phone className="w-7 h-7 text-primary" />
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">電話</div>
-                    <div className="text-foreground font-semibold">090-9423-8717</div>
+                    <div className="text-sm text-muted-foreground mb-1">電話</div>
+                    <div className="text-foreground font-semibold text-lg">090-9423-8717</div>
                   </div>
                 </div>
               </div>
               
-              <div className="mt-12">
-                <h4 className="text-lg font-semibold mb-4 text-foreground">ソーシャルリンク</h4>
-                <div className="flex space-x-4" data-testid="contact-social">
+              <div className="mt-16">
+                <h4 className="text-xl font-semibold mb-6 text-foreground">ソーシャルリンク</h4>
+                <div className="flex space-x-6" data-testid="contact-social">
                   <a 
                     href="https://x.com/CRUD5th" 
-                    className="w-12 h-12 bg-secondary border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
+                    className="w-14 h-14 bg-gradient-to-br from-secondary to-secondary/50 border border-border/50 rounded-xl flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl"
                     data-testid="social-twitter"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Twitter className="w-5 h-5" />
+                    <Twitter className="w-6 h-6" />
                   </a>
                   <a 
                     href="https://github.com/crudfifth" 
-                    className="w-12 h-12 bg-secondary border border-border rounded-lg flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all"
+                    className="w-14 h-14 bg-gradient-to-br from-secondary to-secondary/50 border border-border/50 rounded-xl flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl"
                     data-testid="social-github"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Github className="w-5 h-5" />
+                    <Github className="w-6 h-6" />
                   </a>
                 </div>
               </div>
@@ -139,23 +139,24 @@ export default function Contact() {
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
               data-testid="contact-form"
             >
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 contact-form">
+              <div className="bg-gradient-to-br from-card/50 to-card/20 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-2xl">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 contact-form">
                   <FormField
                     control={form.control}
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">お名前</FormLabel>
+                        <FormLabel className="text-foreground font-medium text-base mb-3 block">お名前</FormLabel>
                         <FormControl>
                           <Input 
                             {...field} 
                             placeholder="山田太郎" 
-                            className="bg-gray-900/60 border-gray-700 rounded-none text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
+                            className="bg-background/60 border-border hover:border-primary/60 focus:border-primary rounded-none text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 transition-all duration-300 h-12 px-4" 
                             data-testid="input-name"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-destructive mt-2" />
                       </FormItem>
                     )}
                   />
@@ -165,17 +166,17 @@ export default function Contact() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">メールアドレス</FormLabel>
+                        <FormLabel className="text-foreground font-medium text-base mb-3 block">メールアドレス</FormLabel>
                         <FormControl>
                           <Input 
                             {...field} 
                             type="email" 
                             placeholder="example@email.com" 
-                            className="bg-gray-900/60 border-gray-700 rounded-none text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                            className="bg-background/60 border-border hover:border-primary/60 focus:border-primary rounded-none text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 transition-all duration-300 h-12 px-4"
                             data-testid="input-email"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-destructive mt-2" />
                       </FormItem>
                     )}
                   />
@@ -185,10 +186,10 @@ export default function Contact() {
                     name="type"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">お問い合わせ種別</FormLabel>
+                        <FormLabel className="text-foreground font-medium text-base mb-3 block">お問い合わせ種別</FormLabel>
                         <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
-                            <SelectTrigger className="bg-gray-900/60 border-gray-700 rounded-none text-foreground hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" data-testid="select-category">
+                            <SelectTrigger className="bg-background/60 border-border hover:border-primary/60 focus:border-primary rounded-none text-foreground focus:ring-2 focus:ring-primary/20 transition-all duration-300 h-12 px-4" data-testid="select-category">
                               <SelectValue placeholder="選択してください" />
                             </SelectTrigger>
                           </FormControl>
@@ -199,7 +200,7 @@ export default function Contact() {
                             <SelectItem value="その他" data-testid="option-other">その他</SelectItem>
                           </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage className="text-destructive mt-2" />
                       </FormItem>
                     )}
                   />
@@ -209,31 +210,32 @@ export default function Contact() {
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground">メッセージ</FormLabel>
+                        <FormLabel className="text-foreground font-medium text-base mb-3 block">メッセージ</FormLabel>
                         <FormControl>
                           <Textarea 
                             {...field} 
                             rows={5} 
                             placeholder="プロジェクトの詳細やご要望をお聞かせください..." 
-                            className="bg-gray-900/60 border-gray-700 rounded-none text-foreground placeholder:text-muted-foreground resize-none hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all min-h-[120px]"
+                            className="bg-background/60 border-border hover:border-primary/60 focus:border-primary rounded-none text-foreground placeholder:text-muted-foreground resize-none focus:ring-2 focus:ring-primary/20 transition-all duration-300 min-h-[140px] p-4"
                             data-testid="textarea-message"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-destructive mt-2" />
                       </FormItem>
                     )}
                   />
                   
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 focus:bg-primary/90 transition-all py-3 font-medium" 
-                    disabled={contactMutation.isPending}
-                    data-testid="button-submit"
-                  >
-                    {contactMutation.isPending ? "送信中..." : "送信する"}
-                  </Button>
-                </form>
-              </Form>
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary/70 focus:from-primary/90 focus:to-primary/70 transition-all duration-300 py-4 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none" 
+                      disabled={contactMutation.isPending}
+                      data-testid="button-submit"
+                    >
+                      {contactMutation.isPending ? "送信中..." : "送信する"}
+                    </Button>
+                  </form>
+                </Form>
+              </div>
             </motion.div>
           </div>
         </div>
