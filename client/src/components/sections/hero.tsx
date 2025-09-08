@@ -193,7 +193,7 @@ export default function Hero() {
                  data-testid="hero-description">
               {(() => {
                 const lines = [
-                  "CRUD5thは、最新テクノロジーを駆使してビジネス変革を推進するエンジニアチームです。",
+                  "CRUD5th は、最新テクノロジーを駆使してビジネス変革を推進するエンジニアチームです。",
                   "受託開発・自社サービス開発・DX/ITコンサルティングを通じて、",
                   "お客様の成長と成功に貢献する包括的なソリューションを提供いたします。"
                 ];
@@ -203,6 +203,8 @@ export default function Hero() {
                   <div key={lineIndex} className="mb-1">
                     {line.split("").map((char, index) => {
                       const currentCharIndex = charIndex++;
+                      const isCRUD5thChar = lineIndex === 0 && index < 7; // CRUD5thの部分（7文字）
+                      
                       return (
                         <motion.span
                           key={currentCharIndex}
@@ -213,7 +215,11 @@ export default function Hero() {
                             delay: 2.8 + (currentCharIndex * 0.025),
                             ease: "easeOut"
                           }}
-                          className={char === " " ? "inline-block w-1" : "inline-block"}
+                          className={`${char === " " ? "inline-block w-1" : "inline-block"} ${
+                            isCRUD5thChar 
+                              ? "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-bold text-lg tracking-wider drop-shadow-lg" 
+                              : ""
+                          }`}
                         >
                           {char === " " ? "\u00A0" : char}
                         </motion.span>
