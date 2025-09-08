@@ -149,26 +149,22 @@ function TeamCard({ member, index }: { member: typeof teamMembers[0], index: num
         
         {/* Social links with hover effects */}
         <div className="flex justify-center space-x-4" data-testid={`team-social-${index}`}>
-          <motion.a
+          <a
             href={member.social.twitter}
-            className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social"
-            whileHover={{ scale: 1.1, y: -2 }}
-            transition={{ duration: 0.2 }}
+            className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social hover:scale-110 inline-block"
             target="_blank"
             rel="noopener noreferrer"
           >
             <SiX className="w-5 h-5 text-muted-foreground group-hover/social:text-primary transition-colors" />
-          </motion.a>
-          <motion.a
+          </a>
+          <a
             href={member.social.github}
-            className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social"
-            whileHover={{ scale: 1.1, y: -2 }}
-            transition={{ duration: 0.2 }}
+            className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social hover:scale-110 inline-block"
             target="_blank"
             rel="noopener noreferrer"
           >
             <Github className="w-5 h-5 text-muted-foreground group-hover/social:text-primary transition-colors" />
-          </motion.a>
+          </a>
         </div>
         
         {/* Glass morphism overlay */}
