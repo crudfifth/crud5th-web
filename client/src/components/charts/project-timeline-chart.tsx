@@ -119,8 +119,9 @@ export default function ProjectTimelineChart() {
       .attr("rx", 8)
       .attr("opacity", 0.8)
       .transition()
-      .duration(1500)
-      .delay((d: ProjectData, i: number) => i * 200)
+      .duration(2000)
+      .delay((d: ProjectData, i: number) => i * 300)
+      .ease(d3.easeElasticOut.amplitude(1).period(0.3))
       .attr("width", (d: ProjectData) => (xScale(d.endDate) - xScale(d.startDate)) * (d.progress / 100));
 
     // Progress text
