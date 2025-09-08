@@ -231,6 +231,28 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
       data-testid={`service-node-${node.id}`}
     >
       <div className={`relative h-full bg-gradient-to-br ${categoryColors[node.category]} backdrop-blur-md border border-white/20 rounded-2xl p-4 overflow-hidden`}>
+        {/* 左上角のかわいいデザイン要素 */}
+        <div className="absolute -top-1 -left-1 z-10">
+          <div className="relative">
+            {/* メインの装飾 */}
+            <div className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${
+              isHighlighted 
+                ? 'bg-cyan-400/80 border-cyan-300 shadow-lg shadow-cyan-400/30' 
+                : 'bg-white/20 border-white/40'
+            } backdrop-blur-sm`} />
+            
+            {/* 小さな内側の点 */}
+            <div className={`absolute top-1/2 left-1/2 w-1.5 h-1.5 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+              isHighlighted ? 'bg-white animate-pulse' : 'bg-white/60'
+            }`} />
+            
+            {/* 接続線の起点を示すライン */}
+            <div className={`absolute top-2 left-2 w-6 h-0.5 rotate-45 transition-all duration-300 ${
+              isHighlighted ? 'bg-gradient-to-r from-cyan-400 to-transparent' : 'bg-gradient-to-r from-white/40 to-transparent'
+            }`} />
+          </div>
+        </div>
+
         {/* Glow Effect */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-2xl"
