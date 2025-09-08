@@ -332,19 +332,30 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
 function ConnectionLine({ from, to, isActive }: { from: ServiceNode, to: ServiceNode, isActive: boolean }) {
   const pathId = `connection-${from.id}-${to.id}`;
   
+  // SVGの中央を基準とした座標に変換
+  const svgWidth = 2200;
+  const svgHeight = 1100;
+  const centerX = svgWidth / 2;
+  const centerY = svgHeight / 2;
+  
+  const fromX = centerX + from.position.x;
+  const fromY = centerY + from.position.y;
+  const toX = centerX + to.position.x;
+  const toY = centerY + to.position.y;
+  
   // Calculate control points for curved path
-  const dx = to.position.x - from.position.x;
-  const dy = to.position.y - from.position.y;
+  const dx = toX - fromX;
+  const dy = toY - fromY;
   const distance = Math.sqrt(dx * dx + dy * dy);
   
   const controlOffset = Math.min(distance * 0.3, 100);
-  const midX = (from.position.x + to.position.x) / 2;
-  const midY = (from.position.y + to.position.y) / 2;
+  const midX = (fromX + toX) / 2;
+  const midY = (fromY + toY) / 2;
   
   const perpX = -dy / distance * controlOffset;
   const perpY = dx / distance * controlOffset;
   
-  const pathData = `M ${from.position.x} ${from.position.y} Q ${midX + perpX} ${midY + perpY} ${to.position.x} ${to.position.y}`;
+  const pathData = `M ${fromX} ${fromY} Q ${midX + perpX} ${midY + perpY} ${toX} ${toY}`;
 
   return (
     <g>
@@ -543,8 +554,8 @@ export default function Portfolio() {
             <svg 
               className="absolute pointer-events-none" 
               style={{ 
-                width: '1800px', 
-                height: '950px',
+                width: '2200px', 
+                height: '1100px',
                 left: '50%',
                 top: '50%',
                 transform: 'translate(-50%, -50%)',
@@ -575,8 +586,8 @@ export default function Portfolio() {
             <div 
               className="absolute pointer-events-none"
               style={{
-                width: '1800px',
-                height: '950px',
+                width: '2200px',
+                height: '1100px',
                 left: '50%',
                 top: '50%',
                 transform: 'translate(-50%, -50%)'
