@@ -106,6 +106,21 @@ export default function Portfolio() {
     const unsubscribe = circleRotation.on("change", (latest) => {
       if (cardListRef.current) {
         cardListRef.current.style.setProperty("--base-deg", `${latest}`);
+        
+        // Apply back-side class to cards that are on the back side
+        const cards = cardListRef.current.querySelectorAll('.portfolio-sample-card');
+        cards.forEach((card: Element, index: number) => {
+          const cardElement = card as HTMLElement;
+          const cardRotation = (latest + (index * (360 / portfolioProjects.length))) % 360;
+          const normalizedRotation = cardRotation < 0 ? cardRotation + 360 : cardRotation;
+          
+          // Card is on back side if rotation is between 90 and 270 degrees
+          if (normalizedRotation > 90 && normalizedRotation < 270) {
+            cardElement.classList.add('back-side');
+          } else {
+            cardElement.classList.remove('back-side');
+          }
+        });
       }
     });
     return unsubscribe;

@@ -576,6 +576,17 @@
     translateZ(var(--r));
 }
 
+/* Fade out cards when they're behind (180deg rotation range) */
+.portfolio-sample-card {
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+}
+
+/* Simpler approach: reduce opacity for cards on back side through transform classes */
+.portfolio-sample-card.back-side {
+  opacity: 0.3;
+}
+
 /* Back face positioning */
 .portfolio-sample-card .back {
   transform: 
@@ -602,16 +613,19 @@
   transition: transform 0.8s var(--ease-out-quart);
 }
 
-/* Glassmorphism Card Effects */
+/* Glassmorphism Card Effects - Enhanced depth and opacity */
 .glassmorphism-card {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.15); /* More opaque background */
+  border: 1px solid rgba(255, 255, 255, 0.35); /* More visible border */
   box-shadow: 
-    0 8px 32px rgba(31, 38, 135, 0.37),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+    0 12px 40px rgba(0, 0, 0, 0.6), /* Stronger main shadow for depth */
+    0 6px 20px rgba(31, 38, 135, 0.5), /* Colored shadow */
+    0 2px 8px rgba(0, 0, 0, 0.4), /* Close shadow for thickness */
+    inset 0 1px 2px rgba(255, 255, 255, 0.2), /* Inner highlight */
+    inset 0 -1px 2px rgba(0, 0, 0, 0.1), /* Inner depth */
+    0 0 0 1px rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -638,13 +652,16 @@
 }
 
 .glassmorphism-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.20); /* Even more opaque on hover */
+  border-color: rgba(255, 255, 255, 0.4);
   box-shadow: 
-    0 16px 64px rgba(31, 38, 135, 0.5),
+    0 20px 60px rgba(0, 0, 0, 0.7), /* Stronger shadow on hover */
+    0 8px 30px rgba(31, 38, 135, 0.6),
+    0 4px 15px rgba(0, 0, 0, 0.5),
     0 0 40px rgba(79, 209, 197, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transform: translateY(-5px);
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px); /* Slightly less movement */
 }
 
 /* Floating animation for space particles */
