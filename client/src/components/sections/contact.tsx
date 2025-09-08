@@ -230,7 +230,17 @@ export default function Contact() {
                   
                     <Button 
                       type="submit" 
-                      className="w-full bg-black/20 backdrop-blur-xl border border-white/30 text-white hover:bg-white/10 hover:border-white/50 transition-all duration-300 py-4 font-semibold text-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/40 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none rounded-lg" 
+                      className="w-full bg-black/20 backdrop-blur-xl border border-white/30 text-white hover:bg-white/10 hover:border-primary/60 transition-all duration-300 py-4 font-semibold text-lg transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none rounded-lg" 
+                      style={{
+                        boxShadow: '0 0 20px rgba(46, 184, 207, 0.3), 0 0 40px rgba(46, 184, 207, 0.1)',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.boxShadow = '0 0 30px rgba(46, 184, 207, 0.5), 0 0 60px rgba(46, 184, 207, 0.2)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.boxShadow = '0 0 20px rgba(46, 184, 207, 0.3), 0 0 40px rgba(46, 184, 207, 0.1)';
+                      }}
                       disabled={contactMutation.isPending}
                       data-testid="button-submit"
                     >
