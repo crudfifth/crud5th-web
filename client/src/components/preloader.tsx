@@ -24,25 +24,37 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         setResourcesLoaded(prev => ({ ...prev, fonts: true }));
         setProgress(25);
 
-        // Preload video
+        // Preload video with proper handling
         setLoadingText('Loading video assets...');
-        const videoPromise = new Promise((resolve, reject) => {
+        const videoPromise = new Promise((resolve) => {
           const video = document.createElement('video');
-          // Video will be loaded via Hero component
-          // We'll check if it exists and is ready
-          setTimeout(() => {
-            const heroVideo = document.querySelector('video');
-            if (heroVideo) {
-              if (heroVideo.readyState >= 3) {
-                resolve(true);
-              } else {
-                heroVideo.addEventListener('loadeddata', () => resolve(true), { once: true });
-              }
-            } else {
-              // If no video element yet, just continue
+          video.preload = 'auto';
+          video.muted = true;
+          
+          // Import video source dynamically
+          import('@assets/Blue Modern Technology YouTube Intro_1756887855888.mp4').then(module => {
+            video.src = module.default;
+            
+            const handleLoad = () => {
               resolve(true);
-            }
-          }, 100);
+            };
+            
+            const handleError = () => {
+              console.warn('Video preload failed, continuing anyway');
+              resolve(true);
+            };
+            
+            video.addEventListener('loadeddata', handleLoad, { once: true });
+            video.addEventListener('error', handleError, { once: true });
+            
+            // Fallback timeout
+            setTimeout(() => resolve(true), 5000);
+            
+            video.load();
+          }).catch(() => {
+            console.warn('Video import failed, continuing anyway');
+            resolve(true);
+          });
         });
         
         await videoPromise;
