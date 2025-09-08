@@ -169,7 +169,8 @@ export default function ProjectTimelineChart() {
           .attr("opacity", 1)
           .style("filter", `drop-shadow(0 0 10px ${color}) drop-shadow(0 0 20px ${color}60)`)
           .transition()
-          .duration(300)
+          .delay(1500)
+          .duration(800)
           .attr("opacity", 0.8)
           .style("filter", "none");
       });
@@ -259,7 +260,7 @@ export default function ProjectTimelineChart() {
     const legendStartX = margin.left + (width - legendWidth) / 2;
     
     const legend = svg.append("g")
-      .attr("transform", `translate(${legendStartX}, ${height + margin.top + 30})`);
+      .attr("transform", `translate(${legendStartX}, ${height + margin.top + 50})`);
 
     const legendItems = legend.selectAll(".legend-item")
       .data(categories)
