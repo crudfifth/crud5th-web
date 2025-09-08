@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
 import ScrollReveal, { RevealOnScroll, SlideInLeft, ScaleIn } from "@/components/animations/scroll-reveal";
 import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
-import { Twitter, Github } from "lucide-react";
+import { Github } from "lucide-react";
+import { SiX } from "react-icons/si";
 
 const teamMembers = [
   {
-    name: "髙橋綱弥",
+    name: "髙橋 綱弥",
     role: "Lead Engineer",
     description: "フルスタック開発とプロジェクトマネジメントを得意とし、チーム全体の技術戦略を牽引。",
     initials: "高綱",
@@ -144,7 +145,7 @@ function TeamCard({ member, index }: { member: typeof teamMembers[0], index: num
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Twitter className="w-5 h-5 text-muted-foreground group-hover/social:text-primary transition-colors" />
+            <SiX className="w-5 h-5 text-muted-foreground group-hover/social:text-primary transition-colors" />
           </motion.a>
           <motion.a
             href={member.social.github}
