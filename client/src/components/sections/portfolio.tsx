@@ -311,17 +311,36 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
           return (
             <div
               key={connectionId}
-              className={`absolute w-3 h-3 rounded-full border-2 border-white/60 transition-all duration-300 ${
+              className={`absolute transition-all duration-300 ${
                 highlightedConnections.has(connectionId) 
-                  ? 'bg-cyan-400 border-cyan-300 shadow-lg shadow-cyan-400/50' 
-                  : 'bg-white/30'
+                  ? 'text-cyan-400 drop-shadow-lg' 
+                  : 'text-white/60'
               }`}
               style={{
                 left: `calc(50% + ${x}px)`,
                 top: `calc(50% + ${y}px)`,
-                transform: 'translate(-50%, -50%)'
+                transform: 'translate(-50%, -50%)',
+                fontSize: '10px'
               }}
-            />
+            >
+              {/* かわいい接続ポイントデザイン */}
+              <div className="relative">
+                {/* メインの六角形コネクター */}
+                <div className={`w-3 h-3 rotate-45 border-2 transition-all duration-300 ${
+                  highlightedConnections.has(connectionId)
+                    ? 'bg-cyan-400 border-cyan-300 shadow-lg shadow-cyan-400/50'
+                    : 'bg-white/20 border-white/40'
+                } backdrop-blur-sm`} />
+                
+                {/* 小さなキラキラエフェクト */}
+                {highlightedConnections.has(connectionId) && (
+                  <>
+                    <div className="absolute -top-1 -right-1 w-1 h-1 bg-cyan-300 rounded-full animate-ping opacity-60" />
+                    <div className="absolute -bottom-1 -left-1 w-0.5 h-0.5 bg-white rounded-full animate-pulse" />
+                  </>
+                )}
+              </div>
+            </div>
           );
         })}
       </div>
