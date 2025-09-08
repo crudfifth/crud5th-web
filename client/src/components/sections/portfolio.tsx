@@ -641,22 +641,23 @@ export default function Portfolio() {
           </p>
         </motion.div>
 
-        {/* Service Network Visualization */}
-        <div
-          ref={containerRef}
-          className={`relative w-full h-[700px] mx-auto bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-3xl border border-white/10 overflow-hidden cursor-grab outline-none ${
-            isFocused ? "ring-2 ring-cyan-500/50" : ""
-          }`}
-          style={{
-            perspective: "1000px",
-            cursor: isDragging ? "grabbing" : "grab",
-          }}
-          onWheel={handleWheel}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-        >
+        {/* Desktop: Interactive Service Network, Mobile: Card Grid */}
+        <div className="hidden md:block">
+          <div
+            ref={containerRef}
+            className={`relative w-full h-[700px] mx-auto bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-3xl border border-white/10 overflow-hidden cursor-grab outline-none ${
+              isFocused ? "ring-2 ring-cyan-500/50" : ""
+            }`}
+            style={{
+              perspective: "1000px",
+              cursor: isDragging ? "grabbing" : "grab",
+            }}
+            onWheel={handleWheel}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+          >
           {/* 全体表示ボタン（マップ内） */}
           <button
             onClick={() => {
@@ -758,6 +759,79 @@ export default function Portfolio() {
           {/* Zoom Level Indicator */}
           <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm rounded-lg px-3 py-2 text-xs text-white/70">
             ズーム: {Math.round(zoom * 100)}%
+          </div>
+          </div>
+        </div>
+        
+        {/* Mobile: Simple Service Cards */}
+        <div className="block md:hidden">
+          <div className="grid gap-6">
+            {serviceNodes.map((node, index) => (
+              <motion.div
+                key={node.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`bg-gradient-to-br ${categoryColors[node.category]} backdrop-blur-sm border border-white/20 rounded-xl p-5`}
+                data-testid={`mobile-service-${node.id}`}
+              >
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="p-2 bg-white/15 rounded-lg border border-white/20 flex-shrink-0">
+                    {node.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="text-lg font-bold text-white truncate">
+                        {node.title}
+                      </h3>
+                      <div
+                        className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                          node.status === "active"
+                            ? "bg-green-400"
+                            : node.status === "development"
+                              ? "bg-yellow-400"
+                              : "bg-purple-400"
+                        } animate-pulse`}
+                      />
+                    </div>
+                    <p className="text-sm text-white/70 capitalize mb-2">{node.category}</p>
+                    <p className="text-sm text-white/80 leading-relaxed">
+                      {node.description}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap gap-2">
+                  {node.technologies.map((tech, techIndex) => (
+                    <span
+                      key={techIndex}
+                      className="text-xs px-3 py-1 bg-white/15 rounded-full text-white/90 border border-white/20"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                
+                {node.connections.length > 0 && (
+                  <div className="mt-4 pt-4 border-t border-white/20">
+                    <p className="text-xs text-white/60 mb-2">連携サービス:</p>
+                    <div className="flex flex-wrap gap-1">
+                      {node.connections.map((connectionId, connIndex) => {
+                        const connectedNode = serviceNodes.find(n => n.id === connectionId);
+                        return connectedNode ? (
+                          <span
+                            key={connIndex}
+                            className="text-xs px-2 py-1 bg-white/10 rounded text-white/70"
+                          >
+                            {connectedNode.title}
+                          </span>
+                        ) : null;
+                      })}
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            ))}
           </div>
         </div>
 
