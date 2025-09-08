@@ -212,7 +212,7 @@ interface NodeCardProps {
 function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: NodeCardProps) {
   return (
     <motion.div
-      className={`absolute w-56 h-28 cursor-pointer group ${isHighlighted ? 'z-30' : 'z-10'}`}
+      className={`absolute w-72 h-40 cursor-pointer group ${isHighlighted ? 'z-30' : 'z-10'}`}
       style={{
         left: node.position.x,
         top: node.position.y,
@@ -253,41 +253,68 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
             {node.icon}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-bold text-white truncate">{node.title}</h3>
-            <p className="text-xs text-white/70 capitalize">{node.category}</p>
+            <h3 className="text-base font-bold text-white truncate">{node.title}</h3>
+            <p className="text-sm text-white/70 capitalize">{node.category}</p>
           </div>
         </div>
 
         {/* Description */}
-        <p className="text-xs text-white/80 leading-relaxed mb-3 line-clamp-2">
+        <p className="text-sm text-white/80 leading-relaxed mb-4 line-clamp-3">
           {node.description}
         </p>
 
         {/* Technologies */}
-        <div className="flex flex-wrap gap-1">
-          {node.technologies.slice(0, 3).map((tech, index) => (
-            <span key={index} className="text-xs px-2 py-1 bg-white/15 rounded-full text-white/90 border border-white/20">
+        <div className="flex flex-wrap gap-1.5">
+          {node.technologies.slice(0, 4).map((tech, index) => (
+            <span key={index} className="text-xs px-2.5 py-1 bg-white/15 rounded-full text-white/90 border border-white/20">
               {tech}
             </span>
           ))}
-          {node.technologies.length > 3 && (
-            <span className="text-xs px-2 py-1 bg-white/10 rounded-full text-white/60">
-              +{node.technologies.length - 3}
+          {node.technologies.length > 4 && (
+            <span className="text-xs px-2.5 py-1 bg-white/10 rounded-full text-white/60">
+              +{node.technologies.length - 4}
             </span>
           )}
         </div>
 
-        {/* Connection Points */}
+        {/* Connection Points - positioned on card edges */}
         {node.connections.map((connectionId, index) => {
-          const angle = (index / node.connections.length) * 360;
-          const x = Math.cos((angle - 90) * Math.PI / 180) * 45;
-          const y = Math.sin((angle - 90) * Math.PI / 180) * 30;
+          // カードの境界線上に配置（上下左右の辺に分散）
+          const totalConnections = node.connections.length;
+          const cardWidth = 288; // w-72 = 288px
+          const cardHeight = 160; // h-40 = 160px
+          
+          let x, y;
+          
+          // 接続数に応じて辺に分散配置
+          if (index < Math.ceil(totalConnections / 4)) {
+            // 上辺
+            x = (cardWidth / (Math.ceil(totalConnections / 4) + 1)) * (index + 1) - cardWidth / 2;
+            y = -cardHeight / 2;
+          } else if (index < Math.ceil(totalConnections / 2)) {
+            // 右辺
+            const rightIndex = index - Math.ceil(totalConnections / 4);
+            x = cardWidth / 2;
+            y = (cardHeight / (Math.ceil(totalConnections / 4) + 1)) * (rightIndex + 1) - cardHeight / 2;
+          } else if (index < Math.ceil(totalConnections * 3 / 4)) {
+            // 下辺
+            const bottomIndex = index - Math.ceil(totalConnections / 2);
+            x = cardWidth / 2 - (cardWidth / (Math.ceil(totalConnections / 4) + 1)) * (bottomIndex + 1);
+            y = cardHeight / 2;
+          } else {
+            // 左辺
+            const leftIndex = index - Math.ceil(totalConnections * 3 / 4);
+            x = -cardWidth / 2;
+            y = cardHeight / 2 - (cardHeight / (Math.ceil(totalConnections / 4) + 1)) * (leftIndex + 1);
+          }
           
           return (
             <div
               key={connectionId}
-              className={`absolute w-2 h-2 rounded-full border-2 border-white/40 transition-colors duration-300 ${
-                highlightedConnections.has(connectionId) ? 'bg-cyan-400' : 'bg-white/20'
+              className={`absolute w-3 h-3 rounded-full border-2 border-white/60 transition-all duration-300 ${
+                highlightedConnections.has(connectionId) 
+                  ? 'bg-cyan-400 border-cyan-300 shadow-lg shadow-cyan-400/50' 
+                  : 'bg-white/30'
               }`}
               style={{
                 left: `calc(50% + ${x}px)`,
@@ -506,7 +533,7 @@ export default function Portfolio() {
                 left: '50%',
                 top: '50%',
                 transform: 'translate(-50%, -50%)',
-                zIndex: 1 
+                zIndex: -1 
               }}
             >
               {serviceNodes.map(fromNode => 
