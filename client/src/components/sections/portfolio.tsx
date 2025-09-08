@@ -156,10 +156,18 @@ export default function Portfolio() {
   useEffect(() => {
     if (!sectionRef.current || !ringRef.current) return;
 
-    const cards = Array.from(ringRef.current.querySelectorAll('.card3d'));
+    let cards = Array.from(ringRef.current.querySelectorAll('.card3d'));
+
+    // ★ まずは5枚に制限（表示）
+    cards.forEach((c, i) => {
+      const element = c as HTMLElement;
+      element.style.display = i < 5 ? 'block' : 'none';
+    });
+    cards = cards.slice(0, 5);
+
     const N = cards.length;
     
-    // Nを実数に同期
+    // --N を実数に同期
     document.documentElement.style.setProperty('--N', String(N));
     const STEP = 360 / N;
 
@@ -176,39 +184,39 @@ export default function Portfolio() {
 
     const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
 
-    // indexをCSS変数で埋める（transformはCSS側の数式で決まる）
+    // index を CSS 変数に流し込む（幾何はCSS側で決定）
     cards.forEach((c, i) => {
       const element = c as HTMLElement;
       element.style.setProperty('--i', i.toString());
     });
 
-    // 半径を自動計算（重なり回避）
-    function pxVar(name: string): number {
+    // ★ 半径：重なりに強い"弦長ベース"の式に変更
+    // R >= (カード幅 + 両側ギャップ) / (2 * sin(π/N))
+    function readPxVar(name: string): number {
       const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
       const n = parseFloat(v);
-      return isNaN(n) ? 0 : n;
+      return Number.isFinite(n) ? n : 0;
     }
 
     function computeRadius(): number {
-      const w = pxVar('--card-w');
-      const gap = pxVar('--gap-px') || 12;
-      const r = (w / 2 + gap) / Math.tan(Math.PI / N);
+      const w = readPxVar('--card-w');
+      const gap = readPxVar('--gap-px') || 12;
+      const r = (w + 2 * gap) / (2 * Math.sin(Math.PI / N));
       return Math.max(r, 420);
     }
 
     function applyRadius() {
       const r = Math.round(computeRadius());
-      document.documentElement.style.setProperty('--radius', r + 'px');
+      document.documentElement.style.setProperty('--radius', `${r}px`);
     }
 
     function updateTargetFromScroll() {
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
       const vh = window.innerHeight;
-      const total = (sectionRef.current.offsetHeight - vh) || 1;
-      const passed = clamp((vh - rect.top) / total, 0, 1);
-      const turns = 1.0; // 1周
-      targetRot = -passed * (turns * 360);
+      const total = Math.max(1, sectionRef.current.offsetHeight - vh);
+      const passed = Math.max(0, Math.min(1, (vh - rect.top) / total));
+      targetRot = -passed * 360; // 1周
     }
 
     function snapMaybe() {
