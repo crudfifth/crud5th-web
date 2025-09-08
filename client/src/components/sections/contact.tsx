@@ -1,4 +1,3 @@
-import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { Mail, Phone, Twitter, Github } from "lucide-react";
@@ -6,77 +5,55 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useMutation } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { insertContactSchema } from "@shared/schema";
+import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
+import { z } from "zod";
 
-interface ContactForm {
-  name: string;
-  email: string;
-  type: string;
-  message: string;
-}
+type ContactFormData = z.infer<typeof insertContactSchema>;
 
 export default function Contact() {
   const { ref, isVisible } = useScrollAnimation();
   const { toast } = useToast();
-  const formRef = useRef<HTMLFormElement>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState<ContactForm>({
-    name: "",
-    email: "",
-    type: "",
-    message: ""
+  
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(insertContactSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      type: "受託開発",
+      message: ""
+    }
   });
 
-  // Contact form mutation
   const contactMutation = useMutation({
-    mutationFn: async (data: ContactForm) => {
-      return await apiRequest('/api/contact', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
+    mutationFn: async (data: ContactFormData) => {
+      const response = await apiRequest('POST', '/api/contact', data);
+      return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
         title: "送信完了",
-        description: "お問い合わせを受け付けました。後日担当者よりご連絡いたします。",
+        description: data.message,
       });
-      // フォームをリセット
-      setFormData({
-        name: "",
-        email: "",
-        type: "",
-        message: ""
-      });
+      form.reset();
     },
     onError: (error: any) => {
-      console.error('Contact form error:', error);
       toast({
-        title: "送信エラー",
-        description: "お問い合わせの送信に失敗しました。時間をおいて再度お試しください。",
         variant: "destructive",
+        title: "送信失敗",
+        description: error.message || "送信に失敗しました。もう一度お試しください。",
       });
     }
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!formData.name || !formData.email || !formData.type || !formData.message) {
-      toast({
-        title: "入力エラー",
-        description: "すべての項目を入力してください。",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    contactMutation.mutate(formData);
-  };
-
-  const handleInputChange = (field: keyof ContactForm, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const onSubmit = (data: ContactFormData) => {
+    contactMutation.mutate(data);
   };
 
   return (
@@ -90,8 +67,11 @@ export default function Contact() {
           className="text-center mb-20"
           data-testid="contact-header"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 gradient-text">お問い合わせ</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold mb-12 gradient-text relative">
+            お問い合わせ
+            <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32" delay={600} />
+          </h2>
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             プロジェクトのご相談やお見積もりなど、お気軽にお問い合わせください
           </p>
         </motion.div>
@@ -154,68 +134,106 @@ export default function Contact() {
 
             {/* Contact Form */}
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={isVisible ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              initial={{ opacity: 0, y: 60 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
               data-testid="contact-form"
             >
-              <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">お名前</label>
-                  <Input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange("name", e.target.value)}
-                    placeholder="山田太郎"
-                    className="bg-secondary border-border text-foreground"
-                    data-testid="input-name"
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-foreground">お名前</FormLabel>
+                        <FormControl>
+                          <Input 
+                            {...field} 
+                            placeholder="山田太郎" 
+                            className="bg-secondary/50 backdrop-blur-sm border-border text-foreground hover:bg-secondary/70 transition-all rounded-lg" 
+                            data-testid="input-name"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">メールアドレス</label>
-                  <Input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange("email", e.target.value)}
-                    placeholder="example@email.com"
-                    className="bg-secondary border-border text-foreground"
-                    data-testid="input-email"
+                  
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-foreground">メールアドレス</FormLabel>
+                        <FormControl>
+                          <Input 
+                            {...field} 
+                            type="email" 
+                            placeholder="example@email.com" 
+                            className="bg-secondary/50 backdrop-blur-sm border-border text-foreground hover:bg-secondary/70 transition-all rounded-lg"
+                            data-testid="input-email"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">お問い合わせ種別</label>
-                  <Select value={formData.type} onValueChange={(value) => handleInputChange("type", value)}>
-                    <SelectTrigger className="bg-secondary border-border text-foreground" data-testid="select-type">
-                      <SelectValue placeholder="選択してください" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="受託開発">受託開発について</SelectItem>
-                      <SelectItem value="自社サービス開発">自社サービス開発について</SelectItem>
-                      <SelectItem value="DX・ITコンサル">DX・ITコンサルについて</SelectItem>
-                      <SelectItem value="その他">その他</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">メッセージ</label>
-                  <Textarea
-                    value={formData.message}
-                    onChange={(e) => handleInputChange("message", e.target.value)}
-                    rows={5}
-                    placeholder="プロジェクトの詳細やご要望をお聞かせください..."
-                    className="bg-secondary border-border text-foreground resize-none"
-                    data-testid="textarea-message"
+                  
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-foreground">お問い合わせ種別</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="bg-secondary/50 backdrop-blur-sm border-border text-foreground hover:bg-secondary/70 transition-all" data-testid="select-category">
+                              <SelectValue placeholder="選択してください" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="受託開発" data-testid="option-freelance-development">受託開発</SelectItem>
+                            <SelectItem value="自社サービス開発" data-testid="option-web-service-development">自社サービス開発</SelectItem>
+                            <SelectItem value="DX・ITコンサル" data-testid="option-dx-consulting">DX・ITコンサル</SelectItem>
+                            <SelectItem value="その他" data-testid="option-other">その他</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <Button
-                  type="submit"
-                  disabled={contactMutation.isPending}
-                  className="w-full bg-primary text-primary-foreground py-4 rounded-lg font-semibold hover:bg-primary/90 transition-all"
-                  data-testid="button-submit"
-                >
-                  {contactMutation.isPending ? "送信中..." : "送信する"}
-                </Button>
-              </form>
+                  
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-foreground">メッセージ</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            {...field} 
+                            rows={5} 
+                            placeholder="プロジェクトの詳細やご要望をお聞かせください..." 
+                            className="bg-secondary/50 backdrop-blur-sm border-border text-foreground resize-none hover:bg-secondary/70 transition-all rounded-lg min-h-[120px]"
+                            data-testid="textarea-message"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary/70 transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl" 
+                    disabled={contactMutation.isPending}
+                    data-testid="button-submit"
+                  >
+                    {contactMutation.isPending ? "送信中..." : "送信する"}
+                  </Button>
+                </form>
+              </Form>
             </motion.div>
           </div>
         </div>
