@@ -237,8 +237,87 @@ export default function LoadingScreen() {
             </motion.div>
           </div>
 
-          {/* Bottom ambient glow */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-primary/10 to-transparent" />
+          {/* Space-themed floating particles and stars */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {/* Floating micro particles */}
+            {[...Array(50)].map((_, i) => (
+              <motion.div
+                key={`particle-${i}`}
+                className="absolute w-1 h-1 bg-white/20 rounded-full"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  y: [0, -20, 0],
+                  opacity: [0.2, 0.8, 0.2],
+                  scale: [0.5, 1, 0.5]
+                }}
+                transition={{
+                  duration: 3 + Math.random() * 4,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                  ease: "easeInOut"
+                }}
+              />
+            ))}
+            
+            {/* Constellation stars */}
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={`star-${i}`}
+                className="absolute bg-cyan-400/40 rounded-full"
+                style={{
+                  width: `${1 + Math.random() * 3}px`,
+                  height: `${1 + Math.random() * 3}px`,
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  opacity: [0.3, 1, 0.3],
+                  scale: [1, 1.5, 1]
+                }}
+                transition={{
+                  duration: 2 + Math.random() * 3,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                  ease: "easeInOut"
+                }}
+              />
+            ))}
+            
+            {/* Bottom geometric pattern */}
+            <div className="absolute bottom-0 left-0 right-0 h-40 overflow-hidden">
+              <motion.div
+                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-4xl h-32"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.5, duration: 1 }}
+              >
+                {/* Hexagonal grid pattern */}
+                <svg viewBox="0 0 100 40" className="w-full h-full opacity-10">
+                  <defs>
+                    <pattern id="hexGrid" x="0" y="0" width="10" height="8.66" patternUnits="userSpaceOnUse">
+                      <polygon points="5,0 9.33,2.5 9.33,7.5 5,10 0.67,7.5 0.67,2.5" 
+                        fill="none" stroke="currentColor" strokeWidth="0.5" className="text-cyan-400"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100" height="40" fill="url(#hexGrid)" />
+                </svg>
+                
+                {/* Animated scanning line */}
+                <motion.div
+                  className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"
+                  animate={{ x: ["-100%", "200%"] }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
+                />
+              </motion.div>
+            </div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
