@@ -59,17 +59,24 @@ function ServiceCard({ service, index }: { service: typeof services[0], index: n
           rotateY: 5,
           rotateX: 5,
         }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
         style={{
           transformStyle: "preserve-3d",
-          perspective: 1000
+          perspective: 1000,
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden',
+          willChange: 'transform'
         }}
       >
         <motion.div 
           className={`w-full h-48 bg-gradient-to-br ${service.gradient} rounded-lg mb-6 flex items-center justify-center relative overflow-hidden`}
           data-testid={`service-visual-${index}`}
           whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.2 }}
+          style={{
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden'
+          }}
         >
           <motion.div
             className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100"
@@ -80,7 +87,7 @@ function ServiceCard({ service, index }: { service: typeof services[0], index: n
               scale: 1.1,
               rotate: 5
             }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
           >
             <service.icon className="w-16 h-16 text-primary/80 relative z-10" />
           </motion.div>

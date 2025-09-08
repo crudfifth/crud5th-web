@@ -19,6 +19,32 @@
   perspective: 1000px;
 }
 
+/* Optimize motion elements */
+[class*="motion-"] {
+  will-change: transform, opacity;
+}
+
+/* Smooth animations */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+  
+  .glass-card,
+  .glass-button,
+  .glass-input {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+}
+
+/* Performance for hover effects */
+button:hover,
+a:hover,
+.group:hover {
+  will-change: transform, box-shadow;
+}
+
 :root {
   /* Modern Dark Theme - matches opening animation */
   --background: hsl(217 20% 8%);
