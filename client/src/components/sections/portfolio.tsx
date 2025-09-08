@@ -619,12 +619,12 @@ export default function Portfolio() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 1 }}
-          className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
+          className="mt-12 flex flex-wrap justify-center items-center gap-6"
         >
           {Object.entries(categoryColors).map(([category, gradient]) => (
-            <div key={category} className="flex items-center gap-2">
-              <div className={`w-4 h-4 rounded bg-gradient-to-br ${gradient} border border-white/20`} />
-              <span className="text-sm text-gray-400 capitalize">{category}</span>
+            <div key={category} className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full">
+              <div className={`w-3 h-3 rounded-full bg-gradient-to-br ${gradient} border border-white/20`} />
+              <span className="text-sm text-gray-300 capitalize whitespace-nowrap">{category}</span>
             </div>
           ))}
         </motion.div>
