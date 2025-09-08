@@ -167,7 +167,11 @@ export default function ProjectTimelineChart() {
           .transition()
           .duration(150)
           .attr("opacity", 1)
-          .style("filter", `drop-shadow(0 0 10px ${color}) drop-shadow(0 0 20px ${color}60)`);
+          .style("filter", `drop-shadow(0 0 10px ${color}) drop-shadow(0 0 20px ${color}60)`)
+          .transition()
+          .duration(300)
+          .attr("opacity", 0.8)
+          .style("filter", "none");
       });
 
     // Progress text
