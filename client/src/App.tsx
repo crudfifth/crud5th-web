@@ -6,7 +6,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
-import OpeningAnimation from "@/components/animations/opening-animation";
 import Preloader from "@/components/preloader";
 
 function Router() {
@@ -20,14 +19,9 @@ function Router() {
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [showOpening, setShowOpening] = useState(true);
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
-  };
-
-  const handleOpeningComplete = () => {
-    setShowOpening(false);
   };
 
   return (
@@ -36,8 +30,6 @@ function App() {
         <Toaster />
         {isLoading ? (
           <Preloader onComplete={handleLoadingComplete} />
-        ) : showOpening ? (
-          <OpeningAnimation onComplete={handleOpeningComplete} />
         ) : (
           <Router />
         )}
