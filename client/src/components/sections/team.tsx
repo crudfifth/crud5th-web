@@ -148,10 +148,10 @@ function TeamCard({ member, index }: { member: typeof teamMembers[0], index: num
         </motion.p>
         
         {/* Social links with hover effects */}
-        <div className="flex justify-center space-x-4" data-testid={`team-social-${index}`}>
+        <div className="flex justify-center space-x-4 relative z-20" data-testid={`team-social-${index}`}>
           <a
             href={member.social.twitter}
-            className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social hover:scale-110 inline-block"
+            className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social hover:scale-110 inline-block relative z-30"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -159,7 +159,7 @@ function TeamCard({ member, index }: { member: typeof teamMembers[0], index: num
           </a>
           <a
             href={member.social.github}
-            className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social hover:scale-110 inline-block"
+            className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social hover:scale-110 inline-block relative z-30"
             target="_blank"
             rel="noopener noreferrer"
           >
