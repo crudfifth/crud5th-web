@@ -196,7 +196,7 @@ export default function Portfolio() {
                 >
                   {/* Front Face */}
                   <div className="card-face front">
-                    <div className="glassmorphism-card w-72 h-80 p-5 rounded-2xl border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl relative overflow-hidden group cursor-pointer">
+                    <div className="glassmorphism-card w-full h-full p-4 rounded-xl border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl relative overflow-hidden group cursor-pointer">
                       {/* Background gradient based on category */}
                       <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl`} />
                       
@@ -257,7 +257,7 @@ export default function Portfolio() {
 
                   {/* Back Face */}
                   <div className="card-face back">
-                    <div className="glassmorphism-card w-72 h-80 p-5 rounded-2xl border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl relative overflow-hidden group cursor-pointer">
+                    <div className="glassmorphism-card w-full h-full p-4 rounded-xl border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl relative overflow-hidden group cursor-pointer">
                       {/* Background gradient */}
                       <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-30 rounded-2xl`} />
                       

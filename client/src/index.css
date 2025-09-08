@@ -526,11 +526,12 @@
 .portfolio-container {
   position: relative;
   width: 100%;
-  height: 600px;
+  height: 700px;
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 1000px;
+  perspective: 1500px;
+  perspective-origin: center center;
   transform-style: preserve-3d;
 }
 
@@ -539,55 +540,57 @@
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
+  transform: rotateX(15deg); /* Slight tilt to see cards better */
 }
 
 .portfolio-card {
-  --r: 350px; /* Circle radius */
-  --z-offset: 500px; /* Z-axis offset for 3D depth */
+  --r: 280px; /* Circle radius - smaller for better visibility */
   --rotate-deg: calc(360 / var(--card-count)); /* Individual card rotation (degrees) */
   
   position: absolute;
-  top: 0;
-  left: calc(50% - 144px); /* Center horizontally (card width 288px / 2) */
+  top: 50%;
+  left: 50%;
   transform-style: preserve-3d;
   list-style: none;
+  width: 240px;
+  height: 320px;
+  margin-left: -120px; /* Half of width */
+  margin-top: -160px; /* Half of height */
 }
 
 .portfolio-card .card-face {
   position: absolute;
   backface-visibility: hidden;
   pointer-events: auto;
+  width: 100%;
+  height: 100%;
 }
 
 /* Front face positioning with circular layout */
 .portfolio-card .front {
   transform: 
     rotateY(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg))
-    translateZ(calc(cos(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r) - var(--z-offset)))
-    translateX(calc(sin(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r)));
+    translateZ(var(--r));
 }
 
 /* Back face positioning (180 degrees rotated) */
 .portfolio-card .back {
   transform: 
     rotateY(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg)) + 180) * 1deg))
-    translateZ(calc(cos(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r) - var(--z-offset)))
-    translateX(calc(sin(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r)));
+    translateZ(var(--r));
 }
 
 /* Flipped state */
 .portfolio-card.is-flipped .front {
   transform: 
     rotateY(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg)) + 179.9) * 1deg))
-    translateZ(calc(cos(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r) - var(--z-offset)))
-    translateX(calc(sin(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r)));
+    translateZ(var(--r));
 }
 
 .portfolio-card.is-flipped .back {
   transform: 
     rotateY(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg)) + 359.9) * 1deg))
-    translateZ(calc(cos(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r) - var(--z-offset)))
-    translateX(calc(sin(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r)));
+    translateZ(var(--r));
 }
 
 /* Flip transition only when not scrolling */
@@ -599,7 +602,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateZ(50px);
   z-index: 10;
   pointer-events: none;
 }
