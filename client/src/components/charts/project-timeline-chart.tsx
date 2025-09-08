@@ -204,10 +204,13 @@ export default function ProjectTimelineChart() {
       .attr("opacity", 1);
 
     // Legend
-    const legend = svg.append("g")
-      .attr("transform", `translate(${margin.left}, ${height + margin.top + 30})`);
-
     const categories = Object.keys(categoryColors);
+    const legendWidth = categories.length * 120;
+    const legendStartX = margin.left + (width - legendWidth) / 2;
+    
+    const legend = svg.append("g")
+      .attr("transform", `translate(${legendStartX}, ${height + margin.top + 30})`);
+
     const legendItems = legend.selectAll(".legend-item")
       .data(categories)
       .enter()
