@@ -455,6 +455,7 @@
   white-space: nowrap;
   position: relative;
   width: 100%;
+  padding: 12px 0;
   mask-image: linear-gradient(
     to right,
     rgba(0, 0, 0, 0) 0%,

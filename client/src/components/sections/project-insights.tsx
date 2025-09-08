@@ -165,7 +165,7 @@ export default function ProjectInsights() {
             <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32" delay={1000} />
           </h3>
           
-          <div className="space-y-6 overflow-hidden">
+          <div className="space-y-6">
             {/* Row 1 - Left scroll */}
             <div className="marquee-container">
               <div className="marquee marquee-left">
