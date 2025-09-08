@@ -10,6 +10,7 @@ const teamMembers = [
     role: "Lead Engineer",
     description: "フルスタック開発とプロジェクトマネジメントを得意とし、チーム全体の技術戦略を牽引。",
     initials: "高綱",
+    image: "/attached_assets/image_1757302635700.jpeg",
     social: {
       twitter: "https://x.com/CRUD5th",
       github: "https://github.com/crudfifth"
@@ -63,7 +64,7 @@ function TeamCard({ member, index }: { member: typeof teamMembers[0], index: num
         
         {/* Avatar with enhanced 3D effect */}
         <motion.div 
-          className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-primary/30 bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center relative z-10"
+          className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-primary/30 bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center relative z-10 overflow-hidden"
           data-testid={`team-avatar-${index}`}
           whileHover={{
             scale: 1.1,
@@ -72,13 +73,23 @@ function TeamCard({ member, index }: { member: typeof teamMembers[0], index: num
           }}
           transition={{ duration: 0.3 }}
         >
-          <motion.span 
-            className="text-3xl font-bold text-primary"
-            whileHover={{ scale: 1.1 }}
-            transition={{ duration: 0.2 }}
-          >
-            {member.initials}
-          </motion.span>
+          {member.image ? (
+            <motion.img
+              src={member.image}
+              alt={member.name}
+              className="w-full h-full object-cover rounded-full"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
+            />
+          ) : (
+            <motion.span 
+              className="text-3xl font-bold text-primary"
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.2 }}
+            >
+              {member.initials}
+            </motion.span>
+          )}
           
           {/* Floating particles around avatar on hover */}
           <motion.div
