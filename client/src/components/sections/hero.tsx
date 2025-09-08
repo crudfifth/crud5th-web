@@ -114,7 +114,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mb-8"
+          className="mb-8 mt-16"
         >
           <motion.span 
             initial={{ opacity: 0, y: 20 }}
@@ -137,7 +137,7 @@ export default function Hero() {
               delay: 0.6,
               ease: [0.16, 1, 0.3, 1] 
             }}
-            className="text-4xl md:text-6xl lg:text-8xl font-bold mb-4 leading-tight"
+            className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 leading-tight"
             data-testid="hero-title"
           >
             <span className="block bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent drop-shadow-2xl mb-2 font-extrabold tracking-tight">EVOLUTION</span>
