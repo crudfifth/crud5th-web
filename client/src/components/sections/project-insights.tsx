@@ -99,7 +99,7 @@ function InsightCard({ insight, index }: { insight: typeof insightCards[0], inde
 
 export default function ProjectInsights() {
   return (
-    <section id="insights" className="py-24 bg-gradient-to-br from-background via-secondary/10 to-background relative overflow-hidden">
+    <section id="insights" className="pt-24 pb-8 bg-gradient-to-br from-background via-secondary/10 to-background relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-accent/5 rounded-full blur-3xl" />
@@ -159,7 +159,7 @@ export default function ProjectInsights() {
         </RevealOnScroll>
 
         {/* Technology Stack Visualization - Infinite Scrolling Marquee */}
-        <RevealOnScroll className="mt-16 text-center" delay={800}>
+        <RevealOnScroll className="mt-12 text-center" delay={800}>
           <h3 className="text-2xl font-bold mb-12 gradient-text relative">
             対応技術スタック
             <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32" delay={1000} />
