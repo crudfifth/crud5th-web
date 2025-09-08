@@ -231,7 +231,7 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
       data-testid={`service-node-${node.id}`}
     >
       {/* 左上角のアクセントデザイン（カードの外に独立） */}
-      <div className="absolute -top-1 -left-1 z-30">
+      <div className="absolute -top-3 -left-3 z-30">
         <div className="relative">
           {/* アウターリング */}
           <div className={`w-8 h-8 rounded-full border-2 transition-all duration-500 ${
@@ -252,15 +252,15 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
             isHighlighted ? 'bg-white animate-ping' : 'bg-white/80'
           }`} />
           
-          {/* 接続方向指示ライン */}
-          <div className={`absolute top-4 left-4 w-8 h-1 rotate-45 rounded-full transition-all duration-300 ${
+          {/* 接続方向指示ライン（左下に移動） */}
+          <div className={`absolute top-6 left-6 w-8 h-1 rotate-45 rounded-full transition-all duration-300 ${
             isHighlighted 
               ? 'bg-gradient-to-r from-cyan-400 via-cyan-300 to-transparent shadow-lg shadow-cyan-400/30' 
               : 'bg-gradient-to-r from-white/50 via-white/30 to-transparent'
           }`} />
           
-          {/* 装飾的なサブライン */}
-          <div className={`absolute top-5 left-5 w-4 h-0.5 rotate-45 rounded-full transition-all duration-300 delay-100 ${
+          {/* 装飾的なサブライン（左下に移動） */}
+          <div className={`absolute top-7 left-7 w-4 h-0.5 rotate-45 rounded-full transition-all duration-300 delay-100 ${
             isHighlighted 
               ? 'bg-gradient-to-r from-blue-400 to-transparent opacity-80' 
               : 'bg-gradient-to-r from-white/30 to-transparent opacity-60'
