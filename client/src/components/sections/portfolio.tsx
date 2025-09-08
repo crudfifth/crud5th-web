@@ -330,18 +330,11 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
 }
 
 function ConnectionLine({ from, to, isActive }: { from: ServiceNode, to: ServiceNode, isActive: boolean }) {
-  const pathId = `connection-${from.id}-${to.id}`;
-  
-  // SVGの中央を基準とした座標に変換
-  const svgWidth = 2200;
-  const svgHeight = 1100;
-  const centerX = svgWidth / 2;
-  const centerY = svgHeight / 2;
-  
-  const fromX = centerX + from.position.x;
-  const fromY = centerY + from.position.y;
-  const toX = centerX + to.position.x;
-  const toY = centerY + to.position.y;
+  // ノード位置をSVG座標系に変換（SVGも中央基準なのでオフセットなし）
+  const fromX = from.position.x + 1100; // SVG幅の半分
+  const fromY = from.position.y + 550;  // SVG高さの半分
+  const toX = to.position.x + 1100;
+  const toY = to.position.y + 550;
   
   // Calculate control points for curved path
   const dx = toX - fromX;
