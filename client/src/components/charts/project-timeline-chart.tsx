@@ -170,7 +170,16 @@ export default function ProjectTimelineChart() {
           .style("filter", `drop-shadow(0 0 10px ${color}) drop-shadow(0 0 20px ${color}60)`)
           .transition()
           .delay(1500)
-          .duration(800)
+          .duration(300)
+          .style("filter", `drop-shadow(0 0 6px ${color}) drop-shadow(0 0 12px ${color}40)`)
+          .transition()
+          .duration(300)
+          .style("filter", `drop-shadow(0 0 3px ${color}) drop-shadow(0 0 6px ${color}20)`)
+          .transition()
+          .duration(300)
+          .style("filter", `drop-shadow(0 0 1px ${color}40)`)
+          .transition()
+          .duration(200)
           .attr("opacity", 0.8)
           .style("filter", "none");
       });
@@ -191,17 +200,7 @@ export default function ProjectTimelineChart() {
       .delay((d: ProjectData, i: number) => i * 200 + 800)
       .attr("opacity", 1);
 
-    // Category legends
-    bars.append("circle")
-      .attr("cx", (d: ProjectData) => xScale(d.startDate) - 10)
-      .attr("cy", (d: ProjectData) => yScale(d.name)! + yScale.bandwidth() / 2)
-      .attr("r", 4)
-      .attr("fill", (d: ProjectData) => categoryColors[d.category])
-      .attr("opacity", 0)
-      .transition()
-      .duration(600)
-      .delay((d: ProjectData, i: number) => i * 200 + 400)
-      .attr("opacity", 1);
+    // Category legends (removed - dots were unnecessary)
 
     // Y-axis (project names)
     g.append("g")
