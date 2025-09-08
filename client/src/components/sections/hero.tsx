@@ -3,10 +3,6 @@ import { ChevronDown } from "lucide-react";
 import { AnimatedLogo, AnimatedArrow } from "@/components/animations/svg-path-animation";
 import ParallaxSection from "@/components/animations/parallax-section";
 import TypingAnimation from "@/components/ui/typing-animation";
-import StatsCounter from "@/components/ui/counter-animation";
-import TechFlowAnimation from "@/components/ui/tech-flow-animation";
-import TrustBadges from "@/components/ui/trust-badges";
-import ComplexPathAnimation from "@/components/ui/complex-path-animation";
 import videoSrc from "@assets/Blue Modern Technology YouTube Intro_1756887855888.mp4";
 
 export default function Hero() {
@@ -52,14 +48,8 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-primary/20 z-10" />
       <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-10" />
       
-      {/* Enhanced animated background elements */}
+      {/* Animated background elements */}
       <div className="absolute inset-0 z-20 overflow-hidden pointer-events-none">
-        {/* Complex Path Animation */}
-        <ComplexPathAnimation />
-        
-        {/* Tech Flow Animation */}
-        <TechFlowAnimation />
-        
         {/* Floating geometric shapes */}
         <motion.div 
           className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl"
@@ -87,7 +77,7 @@ export default function Hero() {
           }}
         />
         
-        {/* Enhanced animated grid pattern */}
+        {/* Animated grid pattern */}
         <div className="absolute inset-0">
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/5 rounded-full" />
           <motion.div 
@@ -95,26 +85,7 @@ export default function Hero() {
             animate={{ rotate: 360 }}
             transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
           />
-          <motion.div 
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] border border-primary/5 rounded-full"
-            animate={{ rotate: -360 }}
-            transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
-          />
         </div>
-        
-        {/* Pulse effect */}
-        <motion.div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full"
-          animate={{
-            scale: [1, 40, 1],
-            opacity: [0.8, 0, 0.8]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeOut"
-          }}
-        />
       </div>
       
       {/* Main content with enhanced animations */}
@@ -204,12 +175,6 @@ export default function Hero() {
             お客様の成長と成功に貢献する包括的なソリューションを提供いたします。
           </p>
         </motion.div>
-
-        {/* Stats Counter */}
-        <StatsCounter />
-
-        {/* Trust Badges */}
-        <TrustBadges />
 
         {/* Enhanced CTA buttons with refined spacing */}
         <motion.div
