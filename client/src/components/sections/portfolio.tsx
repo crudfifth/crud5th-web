@@ -231,7 +231,7 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
       data-testid={`service-node-${node.id}`}
     >
       {/* 左上角のアクセントデザイン（カードの外に独立） */}
-      <div className="absolute -top-3 -left-3 z-30">
+      <div className="absolute -top-1 -left-1 z-30">
         <div className="relative">
           {/* アウターリング */}
           <div className={`w-8 h-8 rounded-full border-2 transition-all duration-500 ${
