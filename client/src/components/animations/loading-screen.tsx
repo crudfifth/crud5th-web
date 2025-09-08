@@ -39,39 +39,52 @@ export default function LoadingScreen() {
           }}
           transition={{ duration: 0.8, ease: "easeInOut" }}
           className="fixed top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center z-[9999] overflow-hidden"
+          style={{
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden',
+            willChange: 'opacity, transform, filter'
+          }}
           data-testid="loading-screen"
         >
           {/* Background geometric patterns */}
           <div className="absolute inset-0 overflow-hidden">
             <motion.div 
               className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
+              style={{
+                transform: 'translateZ(0)',
+                willChange: 'transform, opacity'
+              }}
               animate={{ 
                 scale: [1, 1.2, 1],
                 opacity: [0.3, 0.6, 0.3]
               }}
               transition={{ 
-                duration: 4, 
+                duration: 3, 
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
             />
             <motion.div 
               className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl"
+              style={{
+                transform: 'translateZ(0)',
+                willChange: 'transform, opacity'
+              }}
               animate={{ 
                 scale: [1, 0.8, 1],
                 opacity: [0.2, 0.5, 0.2]
               }}
               transition={{ 
-                duration: 6, 
+                duration: 4, 
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: 2
+                delay: 1
               }}
             />
             
             {/* Animated concentric circles */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              {[...Array(3)].map((_, i) => (
+              {[...Array(2)].map((_, i) => (
                 <motion.div
                   key={i}
                   className="absolute border border-white/10 rounded-full"
@@ -79,15 +92,15 @@ export default function LoadingScreen() {
                     width: `${(i + 1) * 200}px`,
                     height: `${(i + 1) * 200}px`,
                     top: `-${(i + 1) * 100}px`,
-                    left: `-${(i + 1) * 100}px`
+                    left: `-${(i + 1) * 100}px`,
+                    transform: 'translateZ(0)',
+                    willChange: 'transform'
                   }}
                   animate={{ 
-                    rotate: 360,
-                    scale: [1, 1.1, 1],
+                    rotate: 360
                   }}
                   transition={{ 
-                    rotate: { duration: 20 + i * 10, repeat: Infinity, ease: "linear" },
-                    scale: { duration: 3 + i, repeat: Infinity, ease: "easeInOut" }
+                    rotate: { duration: 15 + i * 10, repeat: Infinity, ease: "linear" }
                   }}
                 />
               ))}
@@ -111,42 +124,52 @@ export default function LoadingScreen() {
                 {/* Animated progress ring */}
                 <motion.div
                   className="absolute inset-0 border-4 border-transparent border-t-primary rounded-full"
+                  style={{
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden'
+                  }}
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
                 />
                 
                 {/* Inner pulsing core */}
                 <motion.div
                   className="absolute inset-4 bg-gradient-to-br from-primary/60 to-accent/60 rounded-full"
+                  style={{
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden',
+                    willChange: 'transform, opacity'
+                  }}
                   animate={{ 
-                    scale: [0.8, 1.2, 0.8],
-                    opacity: [0.6, 1, 0.6]
+                    scale: [0.9, 1.1, 0.9],
+                    opacity: [0.7, 1, 0.7]
                   }}
                   transition={{ 
-                    duration: 2, 
+                    duration: 1.5, 
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
                 />
                 
                 {/* Floating particles */}
-                {[...Array(6)].map((_, i) => (
+                {[...Array(4)].map((_, i) => (
                   <motion.div
                     key={i}
                     className="absolute w-2 h-2 bg-primary/80 rounded-full"
                     style={{
                       top: `${50 + Math.sin(i * Math.PI / 3) * 40}%`,
-                      left: `${50 + Math.cos(i * Math.PI / 3) * 40}%`
+                      left: `${50 + Math.cos(i * Math.PI / 3) * 40}%`,
+                      transform: 'translateZ(0)',
+                      willChange: 'transform, opacity'
                     }}
                     animate={{
-                      y: [-10, 10, -10],
-                      opacity: [0.4, 1, 0.4],
-                      scale: [0.5, 1, 0.5]
+                      y: [-5, 5, -5],
+                      opacity: [0.5, 1, 0.5]
                     }}
                     transition={{
-                      duration: 2 + i * 0.2,
+                      duration: 1.5 + i * 0.1,
                       repeat: Infinity,
-                      delay: i * 0.3,
+                      delay: i * 0.2,
                       ease: "easeInOut"
                     }}
                   />
@@ -240,30 +263,31 @@ export default function LoadingScreen() {
           {/* Space-themed floating particles and stars */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             {/* Floating micro particles */}
-            {[...Array(50)].map((_, i) => (
+            {[...Array(15)].map((_, i) => (
               <motion.div
                 key={`particle-${i}`}
                 className="absolute w-1 h-1 bg-white/20 rounded-full"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
+                  transform: 'translateZ(0)',
+                  willChange: 'transform, opacity'
                 }}
                 animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.2, 0.8, 0.2],
-                  scale: [0.5, 1, 0.5]
+                  y: [0, -15, 0],
+                  opacity: [0.3, 0.7, 0.3]
                 }}
                 transition={{
-                  duration: 3 + Math.random() * 4,
+                  duration: 2 + Math.random() * 2,
                   repeat: Infinity,
-                  delay: Math.random() * 2,
+                  delay: Math.random() * 1,
                   ease: "easeInOut"
                 }}
               />
             ))}
             
             {/* Constellation stars */}
-            {[...Array(20)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
               <motion.div
                 key={`star-${i}`}
                 className="absolute bg-cyan-400/40 rounded-full"
@@ -272,15 +296,16 @@ export default function LoadingScreen() {
                   height: `${1 + Math.random() * 3}px`,
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
+                  transform: 'translateZ(0)',
+                  willChange: 'opacity'
                 }}
                 animate={{
-                  opacity: [0.3, 1, 0.3],
-                  scale: [1, 1.5, 1]
+                  opacity: [0.3, 1, 0.3]
                 }}
                 transition={{
-                  duration: 2 + Math.random() * 3,
+                  duration: 2 + Math.random() * 2,
                   repeat: Infinity,
-                  delay: Math.random() * 2,
+                  delay: Math.random() * 1,
                   ease: "easeInOut"
                 }}
               />
