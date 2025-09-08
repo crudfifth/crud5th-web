@@ -398,6 +398,23 @@ export default function Portfolio() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-200px" });
 
+  // 画面外クリック時のフォーカス解除
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsFocused(false);
+      }
+    };
+
+    if (isFocused) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isFocused]);
+
   // ズーム・パン機能（フォーカス時のみ）
   const handleWheel = (e: React.WheelEvent) => {
     if (!isFocused) return; // フォーカスがない場合は通常のスクロール
