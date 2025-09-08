@@ -138,8 +138,67 @@ export default function ProjectInsights() {
             </p>
           </div>
           
-          <div className="flex justify-center">
+          {/* Desktop: D3 Chart, Mobile: Simple Cards */}
+          <div className="hidden md:flex justify-center">
             <ProjectTimelineChart />
+          </div>
+          
+          {/* Mobile Timeline Cards */}
+          <div className="block md:hidden space-y-4">
+            <div className="bg-gradient-to-br from-primary/20 to-primary/10 backdrop-blur-sm border border-primary/30 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold text-primary">ECサイト構築</h4>
+                <span className="text-xs px-2 py-1 bg-primary/20 rounded-full text-primary">受託開発</span>
+              </div>
+              <div className="w-full bg-primary/20 rounded-full h-2 mb-2">
+                <div className="bg-primary h-2 rounded-full" style={{width: '100%'}}></div>
+              </div>
+              <div className="text-xs text-muted-foreground">完了率: 100% | 2025/02 - 2025/04</div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-green-500/20 to-green-500/10 backdrop-blur-sm border border-green-500/30 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold text-green-400">SaaS管理システム</h4>
+                <span className="text-xs px-2 py-1 bg-green-500/20 rounded-full text-green-400">自社サービス</span>
+              </div>
+              <div className="w-full bg-green-500/20 rounded-full h-2 mb-2">
+                <div className="bg-green-400 h-2 rounded-full" style={{width: '85%'}}></div>
+              </div>
+              <div className="text-xs text-muted-foreground">完了率: 85% | 2025/03 - 2025/06</div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-blue-500/20 to-blue-500/10 backdrop-blur-sm border border-blue-500/30 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold text-blue-400">DX導入支援</h4>
+                <span className="text-xs px-2 py-1 bg-blue-500/20 rounded-full text-blue-400">コンサル</span>
+              </div>
+              <div className="w-full bg-blue-500/20 rounded-full h-2 mb-2">
+                <div className="bg-blue-400 h-2 rounded-full" style={{width: '70%'}}></div>
+              </div>
+              <div className="text-xs text-muted-foreground">完了率: 70% | 2025/04 - 2025/07</div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-primary/20 to-primary/10 backdrop-blur-sm border border-primary/30 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold text-primary">モバイルアプリ開発</h4>
+                <span className="text-xs px-2 py-1 bg-primary/20 rounded-full text-primary">受託開発</span>
+              </div>
+              <div className="w-full bg-primary/20 rounded-full h-2 mb-2">
+                <div className="bg-primary h-2 rounded-full" style={{width: '60%'}}></div>
+              </div>
+              <div className="text-xs text-muted-foreground">完了率: 60% | 2025/05 - 2025/08</div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-green-500/20 to-green-500/10 backdrop-blur-sm border border-green-500/30 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold text-green-400">AIチャットボット</h4>
+                <span className="text-xs px-2 py-1 bg-green-500/20 rounded-full text-green-400">自社サービス</span>
+              </div>
+              <div className="w-full bg-green-500/20 rounded-full h-2 mb-2">
+                <div className="bg-green-400 h-2 rounded-full" style={{width: '40%'}}></div>
+              </div>
+              <div className="text-xs text-muted-foreground">完了率: 40% | 2025/06 - 2025/09</div>
+            </div>
           </div>
           
           <div className="mt-8 grid md:grid-cols-3 gap-6 text-center">
