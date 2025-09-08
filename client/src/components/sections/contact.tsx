@@ -139,7 +139,10 @@ export default function Contact() {
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
               data-testid="contact-form"
             >
-              <div className="bg-gradient-to-br from-card/50 to-card/20 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-2xl">
+              <div className="bg-black/20 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+                {/* Glass morphism overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
+                <div className="relative z-10">
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 contact-form">
                   <FormField
@@ -147,12 +150,12 @@ export default function Contact() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground font-medium text-base mb-3 block">お名前</FormLabel>
+                        <FormLabel className="text-white font-medium text-base mb-3 block">お名前</FormLabel>
                         <FormControl>
                           <Input 
                             {...field} 
                             placeholder="山田太郎" 
-                            className="bg-background/60 border-border hover:border-primary/60 focus:border-primary rounded-none text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 transition-all duration-300 h-12 px-4" 
+                            className="glass-input text-white placeholder:text-gray-400 h-12 px-4" 
                             data-testid="input-name"
                           />
                         </FormControl>
@@ -166,13 +169,13 @@ export default function Contact() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground font-medium text-base mb-3 block">メールアドレス</FormLabel>
+                        <FormLabel className="text-white font-medium text-base mb-3 block">メールアドレス</FormLabel>
                         <FormControl>
                           <Input 
                             {...field} 
                             type="email" 
                             placeholder="example@email.com" 
-                            className="bg-background/60 border-border hover:border-primary/60 focus:border-primary rounded-none text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 transition-all duration-300 h-12 px-4"
+                            className="glass-input text-white placeholder:text-gray-400 h-12 px-4"
                             data-testid="input-email"
                           />
                         </FormControl>
@@ -186,7 +189,7 @@ export default function Contact() {
                     name="type"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground font-medium text-base mb-3 block">お問い合わせ種別</FormLabel>
+                        <FormLabel className="text-white font-medium text-base mb-3 block">お問い合わせ種別</FormLabel>
                         <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger className="bg-background/60 border-border hover:border-primary/60 focus:border-primary rounded-none text-foreground focus:ring-2 focus:ring-primary/20 transition-all duration-300 h-12 px-4" data-testid="select-category">
@@ -210,13 +213,13 @@ export default function Contact() {
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground font-medium text-base mb-3 block">メッセージ</FormLabel>
+                        <FormLabel className="text-white font-medium text-base mb-3 block">メッセージ</FormLabel>
                         <FormControl>
                           <Textarea 
                             {...field} 
                             rows={5} 
                             placeholder="プロジェクトの詳細やご要望をお聞かせください..." 
-                            className="bg-background/60 border-border hover:border-primary/60 focus:border-primary rounded-none text-foreground placeholder:text-muted-foreground resize-none focus:ring-2 focus:ring-primary/20 transition-all duration-300 min-h-[140px] p-4"
+                            className="glass-input text-white placeholder:text-gray-400 resize-none min-h-[140px] p-4"
                             data-testid="textarea-message"
                           />
                         </FormControl>
@@ -235,6 +238,7 @@ export default function Contact() {
                     </Button>
                   </form>
                 </Form>
+                </div>
               </div>
             </motion.div>
           </div>

@@ -120,16 +120,21 @@
 
 @layer components {
 
-  /* Contact form specific styles - no border radius */
-  .contact-form input[type="text"],
-  .contact-form input[type="email"], 
-  .contact-form textarea,
-  .contact-form button[role="combobox"] {
-    border-radius: 0;
+  /* Glass morphism contact form */
+  .glass-input {
+    border-radius: 0 !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
   }
   
-  .contact-form .rounded-none {
-    border-radius: 0;
+  .glass-input:hover {
+    border-color: rgba(46, 184, 207, 0.6) !important;
+  }
+  
+  .glass-input:focus {
+    border-color: rgba(46, 184, 207, 1) !important;
+    box-shadow: 0 0 0 2px rgba(46, 184, 207, 0.3) !important;
   }
 
   /* Enhanced gradient text with modern styling */
