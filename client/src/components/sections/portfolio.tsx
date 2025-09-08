@@ -105,7 +105,7 @@ const serviceNodes: ServiceNode[] = [
     connections: ["crud5th-act", "personal-business", "raft-core"]
   },
 
-  // Creative Layer (Left Side)
+  // Creative Layer (Left Side - 分散配置)
   {
     id: "etheria",
     title: "Etheria",
@@ -113,7 +113,7 @@ const serviceNodes: ServiceNode[] = [
     description: "クリエイターオールインワンシステム", 
     technologies: ["Vue.js", "WebGL"],
     status: "active",
-    position: { x: 200, y: 400 },
+    position: { x: 300, y: 450 },
     icon: <Brain className="w-5 h-5" />,
     connections: ["design-system", "video-edit", "donation-system"]
   },
@@ -125,7 +125,7 @@ const serviceNodes: ServiceNode[] = [
     description: "デザインツール統合プラットフォーム",
     technologies: ["Canvas API", "WebGL"],
     status: "active",
-    position: { x: 50, y: 250 },
+    position: { x: 100, y: 300 },
     icon: <Code className="w-5 h-5" />,
     connections: ["etheria", "video-edit", "crud5th-web"]
   },
@@ -137,7 +137,7 @@ const serviceNodes: ServiceNode[] = [
     description: "Webベース動画編集プラットフォーム",
     technologies: ["WebAssembly", "FFmpeg"],
     status: "development",
-    position: { x: 100, y: 550 },
+    position: { x: 150, y: 650 },
     icon: <VideoIcon className="w-5 h-5" />,
     connections: ["etheria", "cloud-nas", "design-system"]
   },
@@ -162,7 +162,7 @@ const serviceNodes: ServiceNode[] = [
     description: "リアルタイム通信基盤",
     technologies: ["WebSocket", "WebRTC"],
     status: "active",
-    position: { x: 450, y: 500 },
+    position: { x: 500, y: 550 },
     icon: <Zap className="w-5 h-5" />,
     connections: ["meltin-vr", "raft-core", "donation-system"]
   },
@@ -174,7 +174,7 @@ const serviceNodes: ServiceNode[] = [
     description: "クリエイター支援プラットフォーム",
     technologies: ["Stripe", "React"],
     status: "active",
-    position: { x: 350, y: 700 },
+    position: { x: 400, y: 750 },
     icon: <Building2 className="w-5 h-5" />,
     connections: ["etheria", "communication-system"]
   },
@@ -187,7 +187,7 @@ const serviceNodes: ServiceNode[] = [
     description: "お婿養マッチングアプリ",
     technologies: ["Unity", "WebXR"],
     status: "development",
-    position: { x: 200, y: 750 },
+    position: { x: 100, y: 800 },
     icon: <Gamepad2 className="w-5 h-5" />,
     connections: ["communication-system", "etheria"]
   }
@@ -407,6 +407,7 @@ export default function Portfolio() {
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button === 0) { // 左クリックのみ
+      e.preventDefault();
       setIsDragging(true);
       setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
     }
@@ -414,10 +415,12 @@ export default function Portfolio() {
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isDragging) {
-      setPan({
+      e.preventDefault();
+      const newPan = {
         x: e.clientX - dragStart.x,
         y: e.clientY - dragStart.y
-      });
+      };
+      setPan(newPan);
     }
   };
 
@@ -518,7 +521,7 @@ export default function Portfolio() {
         >
           {/* Zoom/Pan Transform Container */}
           <div 
-            className="absolute inset-0 transition-transform duration-200 ease-out"
+            className={`absolute inset-0 ${isDragging ? '' : 'transition-transform duration-200 ease-out'}`}
             style={{
               transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
               transformOrigin: 'center center'
