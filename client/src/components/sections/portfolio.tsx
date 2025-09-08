@@ -78,6 +78,46 @@ const portfolioProjects: PortfolioProject[] = [
     status: "企画中",
     image: "/api/placeholder/400/300",
     achievements: ["プロトタイプ完成", "投資家説明会成功", "特許出願準備中"]
+  },
+  {
+    id: 7,
+    title: "IoTセンサー管理",
+    description: "リアルタイム監視システムとデータ分析プラットフォーム。スマートファクトリー実現をサポート。",
+    category: "受託開発",
+    technologies: ["React", "Python", "InfluxDB", "Grafana", "Arduino"],
+    status: "完了",
+    image: "/api/placeholder/400/300",
+    achievements: ["データ可視化100%", "予測精度90%", "コスト削減30%"]
+  },
+  {
+    id: 8,
+    title: "金融APIプラットフォーム",
+    description: "銀行・証券会社向けの次世代決済システム。セキュリティと高速処理を両立した革新的ソリューション。",
+    category: "コンサル",
+    technologies: ["Java", "Spring Security", "Oracle", "Kafka", "Redis"],
+    status: "進行中",
+    image: "/api/placeholder/400/300",
+    achievements: ["取引処理速度3倍", "セキュリティ強化", "法規制対応100%"]
+  },
+  {
+    id: 9,
+    title: "VR教育システム",
+    description: "没入型学習体験を提供するVR教育プラットフォーム。次世代の教育スタイルを創造。",
+    category: "自社サービス",
+    technologies: ["Unity", "C#", "WebRTC", "Three.js", "WebXR"],
+    status: "企画中",
+    image: "/api/placeholder/400/300",
+    achievements: ["学習効果200%向上", "集中力3倍", "満足度95%"]
+  },
+  {
+    id: 10,
+    title: "自動化RPAツール",
+    description: "業務プロセス自動化による効率化ソリューション。ルーティンワークを削減し、創造的業務に集中。",
+    category: "受託開発",
+    technologies: ["Python", "Selenium", "OpenCV", "TensorFlow", "Flask"],
+    status: "完了",
+    image: "/api/placeholder/400/300",
+    achievements: ["業務時間50%削減", "エラー率90%低下", "ROI300%"]
   }
 ];
 
@@ -107,7 +147,7 @@ export default function Portfolio() {
       if (cardListRef.current) {
         cardListRef.current.style.setProperty("--base-deg", `${latest}`);
         
-        // Apply back-side class to cards that are on the back side
+        // Apply back-side and front-center classes to cards
         const cards = cardListRef.current.querySelectorAll('.portfolio-sample-card');
         cards.forEach((card: Element, index: number) => {
           const cardElement = card as HTMLElement;
@@ -117,8 +157,17 @@ export default function Portfolio() {
           // Card is on back side if rotation is between 90 and 270 degrees
           if (normalizedRotation > 90 && normalizedRotation < 270) {
             cardElement.classList.add('back-side');
+            cardElement.classList.remove('front-center');
           } else {
             cardElement.classList.remove('back-side');
+            
+            // Card is in front-center if rotation is between -15 and 15 degrees
+            const frontCenterRange = 15;
+            if (Math.abs(normalizedRotation) <= frontCenterRange || Math.abs(normalizedRotation - 360) <= frontCenterRange) {
+              cardElement.classList.add('front-center');
+            } else {
+              cardElement.classList.remove('front-center');
+            }
           }
         });
       }

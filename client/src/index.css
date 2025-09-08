@@ -544,17 +544,17 @@
 
 .portfolio-sample-card {
   /* Circle configuration */
-  --r: 300px; /* Circle radius */
+  --r: 350px; /* Increased radius for better circle visibility */
   --z-offset: 400px; /* Z-axis offset for depth */
   --rotate-deg: calc(360 / var(--card-count)); /* Individual card rotation angle */
 
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 280px;
-  height: 350px;
-  margin-left: -140px; /* Half of width */
-  margin-top: -175px; /* Half of height */
+  width: 260px; /* Slightly smaller cards for better fit */
+  height: 340px;
+  margin-left: -130px; /* Half of width */
+  margin-top: -170px; /* Half of height */
   list-style: none;
   transform-style: preserve-3d;
 }
@@ -582,9 +582,62 @@
   transition: opacity 0.3s ease-out;
 }
 
-/* Simpler approach: reduce opacity for cards on back side through transform classes */
+/* Card visibility states */
 .portfolio-sample-card.back-side {
   opacity: 0.3;
+}
+
+/* Front center card - reduce glass effect for better visibility */
+.portfolio-sample-card.front-center .glassmorphism-card {
+  background: rgba(255, 255, 255, 0.25) !important; /* More solid background */
+  backdrop-filter: blur(8px); /* Less blur */
+  border: 2px solid rgba(255, 255, 255, 0.5); /* Stronger border */
+}
+
+/* Add 3D thickness to cards */
+.portfolio-sample-card .face {
+  transform-style: preserve-3d;
+}
+
+.portfolio-sample-card .glassmorphism-card {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* Create card thickness with pseudo-elements */
+.portfolio-sample-card .glassmorphism-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(0, 0, 0, 0.2) 100%);
+  border-radius: inherit;
+  transform: translateZ(-8px) translateX(4px) translateY(4px);
+  z-index: -1;
+  filter: blur(2px);
+  opacity: 0.8;
+}
+
+/* Side edges for thickness */
+.portfolio-sample-card .glassmorphism-card::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    rgba(0, 0, 0, 0.3) 0%, 
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(0, 0, 0, 0.3) 100%);
+  border-radius: inherit;
+  transform: translateZ(-4px);
+  z-index: -1;
+  opacity: 0.6;
 }
 
 /* Back face positioning */
