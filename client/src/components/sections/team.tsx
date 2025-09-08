@@ -3,7 +3,7 @@ import ScrollReveal, { RevealOnScroll, SlideInLeft, ScaleIn } from "@/components
 import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
 import { Github } from "lucide-react";
 import { SiX } from "react-icons/si";
-import takahashiImage from '@assets/image_1757302635700.jpeg';
+import takahashiImage from '@assets/C300E57E-954C-4E87-9DCC-28D7DB8B1E582025-01-21_20-48-20_000_1757304334173.png';
 
 const teamMembers = [
   {
