@@ -44,36 +44,52 @@ export default function Hero() {
       </motion.div>
       
       {/* Enhanced video overlays with depth */}
-      <div className="absolute inset-0 bg-black/70 z-10" />
-      <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-transparent to-primary/20 z-10" />
-      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent z-10" />
+      <div className="absolute inset-0 bg-black/60 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-primary/5 to-primary/20 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent z-10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent z-10" />
       
       {/* Animated background elements */}
       <div className="absolute inset-0 z-20 overflow-hidden pointer-events-none">
         {/* Floating geometric shapes */}
         <motion.div 
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl"
+          className="absolute top-1/4 left-1/4 w-80 h-80 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent rounded-full blur-3xl"
           animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3]
+            scale: [1, 1.3, 1],
+            opacity: [0.4, 0.8, 0.4],
+            rotate: [0, 180, 360]
           }}
           transition={{ 
-            duration: 4, 
+            duration: 8, 
             repeat: Infinity,
             ease: "easeInOut"
           }}
         />
         <motion.div 
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl"
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-tl from-accent/15 via-accent/8 to-transparent rounded-full blur-3xl"
           animate={{ 
-            scale: [1, 0.8, 1],
+            scale: [1, 0.7, 1],
+            opacity: [0.3, 0.6, 0.3],
+            rotate: [360, 180, 0]
+          }}
+          transition={{ 
+            duration: 10, 
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+        />
+        <motion.div 
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-primary/15 to-accent/15 rounded-full blur-2xl"
+          animate={{ 
+            scale: [0.8, 1.1, 0.8],
             opacity: [0.2, 0.5, 0.2]
           }}
           transition={{ 
             duration: 6, 
             repeat: Infinity,
             ease: "easeInOut",
-            delay: 2
+            delay: 1
           }}
         />
         
@@ -121,11 +137,11 @@ export default function Hero() {
               delay: 0.6,
               ease: [0.16, 1, 0.3, 1] 
             }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+            className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight"
             data-testid="hero-title"
           >
-            <span className="block gradient-text drop-shadow-2xl mb-2">EVOLUTION</span>
-            <span className="block gradient-text drop-shadow-2xl">PARTNER</span>
+            <span className="block bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent drop-shadow-2xl mb-2 font-extrabold tracking-tight">EVOLUTION</span>
+            <span className="block bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent drop-shadow-2xl font-extrabold tracking-tight">PARTNER</span>
           </motion.h1>
           
           <motion.span 
@@ -157,23 +173,29 @@ export default function Hero() {
           <TypingAnimation />
         </motion.div>
 
-        {/* Enhanced description with glass morphism */}
+        {/* Enhanced description with premium glass morphism */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ 
             delay: 2.4, 
             duration: 0.8,
             ease: [0.16, 1, 0.3, 1]
           }}
-          className="glass-card mx-auto max-w-4xl p-8 mb-12 backdrop-blur-xl"
+          className="relative mx-auto max-w-4xl p-8 mb-12 backdrop-blur-2xl bg-gradient-to-br from-white/10 via-white/5 to-transparent border border-white/20 rounded-2xl shadow-2xl shadow-primary/10"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, rgba(46,184,207,0.1) 100%)'
+          }}
         >
-          <p className="text-base md:text-lg text-white/85 leading-relaxed drop-shadow-lg max-w-3xl mx-auto"
-             data-testid="hero-description">
-            CRUD5thは、最新テクノロジーを駆使してビジネス変革を推進するエンジニアチームです。
-            受託開発・自社サービス開発・DX/ITコンサルティングを通じて、
-            お客様の成長と成功に貢献する包括的なソリューションを提供いたします。
-          </p>
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-50" />
+          <div className="relative z-10">
+            <p className="text-base md:text-lg text-white/90 leading-relaxed drop-shadow-lg max-w-3xl mx-auto font-medium"
+               data-testid="hero-description">
+              CRUD5thは、最新テクノロジーを駆使してビジネス変革を推進するエンジニアチームです。
+              受託開発・自社サービス開発・DX/ITコンサルティングを通じて、
+              お客様の成長と成功に貢献する包括的なソリューションを提供いたします。
+            </p>
+          </div>
         </motion.div>
 
         {/* Enhanced CTA buttons with refined spacing */}
@@ -190,45 +212,52 @@ export default function Hero() {
         >
           <motion.button
             onClick={scrollToServices}
-            className="glass-button px-6 py-3 text-base font-medium text-white border border-primary/40 hover:border-primary rounded-xl transition-all duration-300 group relative overflow-hidden min-w-[180px]"
+            className="relative px-8 py-4 text-base font-semibold text-white backdrop-blur-xl bg-gradient-to-r from-black/20 via-primary/10 to-black/20 border border-white/30 hover:border-primary/60 rounded-2xl transition-all duration-500 group overflow-hidden min-w-[200px]"
+            style={{
+              boxShadow: '0 8px 32px rgba(46, 184, 207, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+            }}
             whileHover={{ 
-              scale: 1.02,
-              y: -1,
-              boxShadow: "0 15px 30px rgba(29, 151, 176, 0.25)"
+              scale: 1.05,
+              y: -2,
+              boxShadow: "0 20px 40px rgba(46, 184, 207, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)"
             }}
             whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             data-testid="hero-services-button"
           >
-            <span className="relative z-10">サービス詳細</span>
+            <span className="relative z-10 tracking-wide">サービス詳細</span>
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-primary/15 to-accent/15"
-              initial={{ x: "-100%" }}
-              whileHover={{ x: "0%" }}
-              transition={{ duration: 0.3 }}
+              className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/30 to-primary/20 rounded-2xl"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileHover={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent rounded-2xl" />
           </motion.button>
           
           <motion.button
             onClick={scrollToContact}
-            className="glass-button px-6 py-3 text-base font-medium text-white bg-gradient-to-r from-primary/70 to-accent/70 rounded-xl group relative overflow-hidden min-w-[180px]"
+            className="relative px-8 py-4 text-base font-semibold text-white backdrop-blur-xl bg-gradient-to-r from-primary/40 via-primary/60 to-accent/40 border border-primary/50 hover:border-primary rounded-2xl group overflow-hidden min-w-[200px]"
+            style={{
+              boxShadow: '0 8px 32px rgba(46, 184, 207, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+            }}
             whileHover={{ 
-              scale: 1.02,
-              y: -1,
-              boxShadow: "0 15px 30px rgba(29, 151, 176, 0.3)"
+              scale: 1.05,
+              y: -2,
+              boxShadow: "0 20px 40px rgba(46, 184, 207, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25)"
             }}
             whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             data-testid="hero-contact-button"
           >
-            <span className="relative z-10">お問い合わせ</span>
+            <span className="relative z-10 tracking-wide">お問い合わせ</span>
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-accent/25 to-primary/25"
-              initial={{ scale: 0 }}
-              whileHover={{ scale: 1 }}
-              transition={{ duration: 0.3 }}
-              style={{ borderRadius: "inherit" }}
+              className="absolute inset-0 bg-gradient-to-r from-accent/30 to-primary/30 rounded-2xl"
+              initial={{ opacity: 0 }}
+              whileHover={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent rounded-2xl" />
           </motion.button>
         </motion.div>
 
