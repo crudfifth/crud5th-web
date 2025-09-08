@@ -522,11 +522,12 @@
   background: hsl(var(--primary) / 0.1);
 }
 
-/* Portfolio Circular 3D Effects - Based on reference implementation */
+/* Portfolio Circular 3D Effects - Fixed implementation */
 .portfolio-scrollable {
   width: 100%;
   height: 600px;
   overflow: hidden;
+  position: relative;
 }
 
 .portfolio-card-list {
@@ -535,67 +536,64 @@
   position: relative;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* Let card interactions pass through */
+  pointer-events: none;
   transform-style: preserve-3d;
-  perspective: 800px;
+  perspective: 1000px;
+  perspective-origin: center center;
 }
 
 .portfolio-sample-card {
   /* Circle configuration */
-  --r: 400px; /* Circle radius */
-  --z-offset: 500px; /* Z-axis offset for depth */
+  --r: 300px; /* Circle radius */
+  --z-offset: 400px; /* Z-axis offset for depth */
   --rotate-deg: calc(360 / var(--card-count)); /* Individual card rotation angle */
 
-  position: fixed;
-  top: 0;
-  left: calc(50% - 140px); /* Center horizontally (card width 280px / 2) */
-  list-style: none;
-  transform-style: preserve-3d;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 280px;
   height: 350px;
+  margin-left: -140px; /* Half of width */
+  margin-top: -175px; /* Half of height */
+  list-style: none;
+  transform-style: preserve-3d;
 }
 
 .portfolio-sample-card .face {
   position: absolute;
   backface-visibility: hidden;
-  pointer-events: auto; /* Enable interactions on cards */
+  pointer-events: auto;
   width: 100%;
   height: 100%;
+  top: 0;
+  left: 0;
 }
 
-/* Front face positioning */
+/* Front face positioning with corrected formula */
 .portfolio-sample-card .front {
   transform: 
     rotateY(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg))
-    translateX(calc(sin(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r)))
-    translateY(0px)
-    translateZ(calc(cos(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r) - var(--z-offset)));
+    translateZ(var(--r));
 }
 
 /* Back face positioning */
 .portfolio-sample-card .back {
   transform: 
     rotateY(calc((var(--base-deg) + (var(--index) * var(--rotate-deg)) + 180) * 1deg))
-    translateX(calc(sin(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r)))
-    translateY(0px)
-    translateZ(calc(cos(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r) - var(--z-offset)));
+    translateZ(var(--r));
 }
 
 /* Flipped state */
 .portfolio-sample-card.is-active .front {
   transform: 
     rotateY(calc((var(--base-deg) + (var(--index) * var(--rotate-deg)) + 179.9) * 1deg))
-    translateX(calc(sin(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r)))
-    translateY(0px)
-    translateZ(calc(cos(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r) - var(--z-offset)));
+    translateZ(var(--r));
 }
 
 .portfolio-sample-card.is-active .back {
   transform: 
     rotateY(calc((var(--base-deg) + (var(--index) * var(--rotate-deg)) + 359.9) * 1deg))
-    translateX(calc(sin(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r)))
-    translateY(0px)
-    translateZ(calc(cos(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r) - var(--z-offset)));
+    translateZ(var(--r));
 }
 
 /* Flip transition only when not scrolling */
