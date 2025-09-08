@@ -166,11 +166,34 @@ export default function Portfolio() {
     let velocity = 0;
 
     // Enhanced parameters for smoother snap
-    const LERP = 0.10;          // Reduced from 0.12
-    const SNAP_DELAY = 160;     // Increased from 120ms
+    const LERP = 0.10;
+    const SNAP_DELAY = 160;
     const DEADZONE = STEP * 0.22;
 
     const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
+
+    // Calculate optimal radius based on card width and count
+    function computeRadius() {
+      const root = document.documentElement;
+      const cardW = parseFloat(getComputedStyle(root).getPropertyValue('--card-w'));
+      const gap = parseFloat(getComputedStyle(root).getPropertyValue('--gap-px')) || 14;
+      const r = (cardW / 2 + gap) / Math.tan(Math.PI / N);
+      return Math.max(r, 420); // minimum radius
+    }
+
+    function setupCards() {
+      if (!ringRef.current) return;
+      
+      const R = computeRadius();
+      document.documentElement.style.setProperty('--radius', `${Math.round(R)}px`);
+      
+      const cards = ringRef.current.querySelectorAll('.card3d');
+      cards.forEach((card, i) => {
+        const element = card as HTMLElement;
+        element.style.setProperty('--i', i.toString());
+        element.style.transform = `rotateY(${i * STEP}deg) translateZ(${R}px)`;
+      });
+    }
 
     function updateTargetFromScroll() {
       if (!sectionRef.current) return;
@@ -202,12 +225,16 @@ export default function Portfolio() {
       updateTargetFromScroll();
       if (scrollStopTimer) clearTimeout(scrollStopTimer);
       scrollStopTimer = setTimeout(() => {
-        // Enhanced soft snap with deadzone
         const nearest = Math.round(targetRot / STEP) * STEP;
         if (Math.abs(targetRot - nearest) < DEADZONE) {
           targetRot = nearest;
         }
       }, SNAP_DELAY);
+    }
+
+    function onResize() {
+      setupCards();
+      updateTargetFromScroll();
     }
 
     function animate() {
@@ -218,8 +245,7 @@ export default function Portfolio() {
       prevTargetRot = targetRot;
 
       // Near-zero velocity quantization for sharp stop
-      const NEAR_ZERO = 0.08; // Threshold for angular velocity
-      if (Math.abs(velocity) < NEAR_ZERO) {
+      if (Math.abs(velocity) < 0.08) {
         targetRot = Math.round(targetRot / STEP) * STEP;
       }
 
@@ -238,16 +264,17 @@ export default function Portfolio() {
     }
 
     // Initialize
+    setupCards();
     updateTargetFromScroll();
     markActive();
     animate();
     
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', updateTargetFromScroll);
+    window.addEventListener('resize', onResize);
 
     return () => {
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', updateTargetFromScroll);
+      window.removeEventListener('resize', onResize);
       if (scrollStopTimer) clearTimeout(scrollStopTimer);
     };
   }, []);
