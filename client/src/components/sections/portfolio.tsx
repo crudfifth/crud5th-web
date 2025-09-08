@@ -156,14 +156,18 @@ export default function Portfolio() {
   useEffect(() => {
     if (!sectionRef.current || !ringRef.current) return;
 
-    const N = portfolioProjects.length;
+    const cards = [...ringRef.current.querySelectorAll('.card3d')];
+    const N = cards.length;
+    
+    // Nを実数に同期
+    document.documentElement.style.setProperty('--N', String(N));
     const STEP = 360 / N;
+
     let targetRot = 0;
     let currentRot = 0;
-    let lastActive = -1;
-    let scrollStopTimer: NodeJS.Timeout | null = null;
     let prevTargetRot = 0;
     let velocity = 0;
+    let scrollStopTimer: NodeJS.Timeout | null = null;
 
     // Enhanced parameters for smoother snap
     const LERP = 0.10;
@@ -172,27 +176,29 @@ export default function Portfolio() {
 
     const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
 
-    // Calculate optimal radius based on card width and count
-    function computeRadius() {
-      const root = document.documentElement;
-      const cardW = parseFloat(getComputedStyle(root).getPropertyValue('--card-w'));
-      const gap = parseFloat(getComputedStyle(root).getPropertyValue('--gap-px')) || 14;
-      const r = (cardW / 2 + gap) / Math.tan(Math.PI / N);
-      return Math.max(r, 420); // minimum radius
+    // indexをCSS変数で埋める（transformはCSS側の数式で決まる）
+    cards.forEach((c, i) => {
+      const element = c as HTMLElement;
+      element.style.setProperty('--i', i.toString());
+    });
+
+    // 半径を自動計算（重なり回避）
+    function pxVar(name: string): number {
+      const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      const n = parseFloat(v);
+      return isNaN(n) ? 0 : n;
     }
 
-    function setupCards() {
-      if (!ringRef.current) return;
-      
-      const R = computeRadius();
-      document.documentElement.style.setProperty('--radius', `${Math.round(R)}px`);
-      
-      const cards = ringRef.current.querySelectorAll('.card3d');
-      cards.forEach((card, i) => {
-        const element = card as HTMLElement;
-        element.style.setProperty('--i', i.toString());
-        element.style.transform = `rotateY(${i * STEP}deg) translateZ(${R}px)`;
-      });
+    function computeRadius(): number {
+      const w = pxVar('--card-w');
+      const gap = pxVar('--gap-px') || 12;
+      const r = (w / 2 + gap) / Math.tan(Math.PI / N);
+      return Math.max(r, 420);
+    }
+
+    function applyRadius() {
+      const r = Math.round(computeRadius());
+      document.documentElement.style.setProperty('--radius', r + 'px');
     }
 
     function updateTargetFromScroll() {
@@ -201,80 +207,63 @@ export default function Portfolio() {
       const vh = window.innerHeight;
       const total = (sectionRef.current.offsetHeight - vh) || 1;
       const passed = clamp((vh - rect.top) / total, 0, 1);
-      const turns = 1.0; // 1 full rotation
+      const turns = 1.0; // 1周
       targetRot = -passed * (turns * 360);
     }
 
-    function markActive() {
-      if (!ringRef.current) return;
-      let idx = Math.round(((currentRot % 360) + 360) % 360 / STEP);
-      idx = ((-idx % N) + N) % N;
-
-      if (idx !== lastActive) {
-        const cards = ringRef.current.querySelectorAll('.card3d');
-        cards.forEach((card, i) => {
-          const active = i === idx;
-          card.classList.toggle('is-active', active);
-          card.setAttribute('aria-hidden', active ? 'false' : 'true');
-        });
-        lastActive = idx;
+    function snapMaybe() {
+      const nearest = Math.round(targetRot / STEP) * STEP;
+      if (Math.abs(targetRot - nearest) < DEADZONE) {
+        targetRot = nearest;
       }
     }
 
     function onScroll() {
       updateTargetFromScroll();
       if (scrollStopTimer) clearTimeout(scrollStopTimer);
-      scrollStopTimer = setTimeout(() => {
-        const nearest = Math.round(targetRot / STEP) * STEP;
-        if (Math.abs(targetRot - nearest) < DEADZONE) {
-          targetRot = nearest;
-        }
-      }, SNAP_DELAY);
+      scrollStopTimer = setTimeout(snapMaybe, SNAP_DELAY);
     }
 
-    function onResize() {
-      setupCards();
-      updateTargetFromScroll();
+    function markActive() {
+      // 現在角度から正面indexを推定
+      const idx = ((-Math.round((currentRot % 360) / STEP)) % N + N) % N;
+      cards.forEach((c, i) => {
+        c.classList.toggle('is-active', i === idx);
+      });
     }
 
     function animate() {
       if (!ringRef.current) return;
       
-      // Enhanced velocity tracking for smooth stop
       velocity = targetRot - prevTargetRot;
       prevTargetRot = targetRot;
-
-      // Near-zero velocity quantization for sharp stop
+      
       if (Math.abs(velocity) < 0.08) {
         targetRot = Math.round(targetRot / STEP) * STEP;
       }
 
-      // Smooth interpolation with enhanced lerp
-      currentRot = currentRot + (targetRot - currentRot) * LERP;
+      currentRot += (targetRot - currentRot) * LERP;
       
-      // Stop micro-vibrations
       if (Math.abs(currentRot - targetRot) < 0.02) {
         currentRot = targetRot;
       }
-      
-      ringRef.current.style.setProperty('--rot', `${currentRot.toFixed(3)}deg`);
-      
+
+      ringRef.current.style.setProperty('--rot', currentRot.toFixed(3) + 'deg');
       markActive();
       requestAnimationFrame(animate);
     }
 
     // Initialize
-    setupCards();
+    applyRadius();
     updateTargetFromScroll();
-    markActive();
     animate();
     
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onResize);
+    window.addEventListener('resize', applyRadius);
 
     return () => {
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onResize);
+      window.removeEventListener('resize', applyRadius);
       if (scrollStopTimer) clearTimeout(scrollStopTimer);
     };
   }, []);

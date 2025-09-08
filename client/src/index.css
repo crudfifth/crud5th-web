@@ -841,13 +841,14 @@
 
 :root {
   /* レイアウト可変パラメータ */
-  --N: 12;                  /* カード枚数 */
+  --N: 10;                  /* カード枚数（JSで実数に更新） */
+  --angle: calc(360deg / var(--N));
   --card-w: clamp(220px, 24vw, 300px);   /* レスポンシブサイズ */
-  --card-ratio: 1.25;                     /* 4:5 比率 */
-  --card-h: calc(var(--card-w) * var(--card-ratio));
+  --card-ratio: 0.8;                      /* 4:5 比率 */
+  --card-h: calc(var(--card-w) / var(--card-ratio));
   --thickness: 16px;        /* 厚み：Z方向 */
   --gap-px: 14px;           /* カード間クリアランス */
-  --radius: 700px;          /* 円半径（JS自動計算） */
+  --radius: 620px;          /* 円半径（JS自動計算） */
   --perspective: 1800px;    /* 立体感 */
   --gap-v: 150vh;           /* ピン留め区間の高さ増分（＝回転距離） */
 
@@ -887,7 +888,7 @@
   height: 1px; /* 中心基準 */
   transform-style: preserve-3d;
   will-change: transform;
-  /* JSから --rot(deg) を更新して回す */
+  /* リングの回転（ここだけをJSで回す） */
   transform: rotateY(var(--rot, 0deg));
 }
 
@@ -897,22 +898,24 @@
   transform-style: preserve-3d;
   width: var(--card-w);
   height: var(--card-h);
-  /* index i に応じて円環上に配置 */
-  --angle: calc(360deg / var(--N));
-  transform:
-    rotateY(calc(var(--i) * var(--angle)))
-    translateZ(var(--radius));
-  /* アニメーション設定 */
-  transition: transform 160ms ease, opacity 160ms ease;
+  /* 円周上の等角度配置（上書き禁止） */
+  transform: rotateY(calc(var(--i) * var(--angle))) translateZ(var(--radius));
+  /* transformは子要素で行う */
+  transition: opacity 160ms ease;
   opacity: 0.95;
   backface-visibility: hidden;
 }
+/* スケールや前出しは子側(.box)で受ける */
+.card3d .box {
+  transform-style: preserve-3d;
+  transform: translateZ(var(--push, 0px)) scale(var(--scale, 1));
+}
+
+/* アクティブ時はCSS変数で調整（transformを再定義しない） */
 .card3d.is-active {
   opacity: 1;
-  transform:
-    rotateY(calc(var(--i) * var(--angle)))
-    translateZ(calc(var(--radius) + 1px))
-    scale(1.04);
+  --push: 1px;
+  --scale: 1.04;
 }
 
 /* ボックス（6面） */
