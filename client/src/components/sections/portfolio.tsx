@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
-import { ExternalLink, Github, Play, Award } from "lucide-react";
+import { ExternalLink, Github, Play, Award, RotateCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface PortfolioProject {
@@ -90,14 +90,37 @@ const categoryColors = {
 export default function Portfolio() {
   const { ref, isVisible } = useScrollAnimation();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
+  const baseDegree = useMotionValue(0);
+  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
 
-  // Spiral animation based on scroll
-  const spiralRotation = useTransform(scrollYProgress, [0, 1], [0, 360]);
-  const spiralY = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  // Circle rotation based on scroll
+  const circleRotation = useTransform(scrollYProgress, [0, 1], [0, 720]); // 2 full rotations
+
+  useEffect(() => {
+    const unsubscribe = circleRotation.on("change", (latest) => {
+      if (containerRef.current) {
+        containerRef.current.style.setProperty("--base-deg", `${latest}deg`);
+      }
+    });
+    return unsubscribe;
+  }, [circleRotation]);
+
+  const toggleCardFlip = (cardId: number) => {
+    setFlippedCards(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(cardId)) {
+        newSet.delete(cardId);
+      } else {
+        newSet.add(cardId);
+      }
+      return newSet;
+    });
+  };
 
   return (
     <section id="portfolio" className="py-24 bg-gradient-to-br from-background via-secondary/5 to-background relative overflow-hidden" ref={containerRef}>
@@ -148,142 +171,169 @@ export default function Portfolio() {
           </p>
         </motion.div>
 
-        {/* Spiral Portfolio Grid */}
-        <motion.div 
-          className="relative"
-          style={{
-            transform: `perspective(1000px) rotateX(20deg)`,
-          }}
-        >
+        {/* Circular Portfolio Cards */}
+        <div className="portfolio-container" ref={containerRef} style={{ "--base-deg": "0deg" } as React.CSSProperties}>
           <motion.div
-            className="portfolio-spiral"
-            style={{
-              rotateZ: spiralRotation,
-              y: spiralY
-            }}
+            className="portfolio-circle"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
           >
             {portfolioProjects.map((project, index) => {
-              // Calculate spiral position
-              const angle = (index * 60) * (Math.PI / 180); // 60 degrees between each item
-              const radius = 300 + (index * 30); // Expanding spiral
-              const x = Math.cos(angle) * radius;
-              const z = Math.sin(angle) * radius;
-              const y = index * -80; // Vertical spacing
-
+              const isFlipped = flippedCards.has(project.id);
+              
               return (
-                <motion.div
+                <div
                   key={project.id}
-                  className="portfolio-card absolute"
-                  style={{
-                    transform: `translate3d(${x}px, ${y}px, ${z}px)`,
-                    transformStyle: "preserve-3d"
-                  }}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ 
-                    scale: 1.05,
-                    rotateY: 5,
-                    z: 50
-                  }}
+                  className={`portfolio-card ${isFlipped ? 'is-flipped' : ''}`}
+                  style={{ 
+                    "--index": index,
+                    "--card-count": portfolioProjects.length
+                  } as React.CSSProperties}
+                  onClick={() => toggleCardFlip(project.id)}
                   data-testid={`portfolio-card-${index}`}
                 >
-                  <div className="glassmorphism-card w-80 h-96 p-6 rounded-2xl border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl relative overflow-hidden group">
-                    {/* Background gradient based on category */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl`} />
-                    
-                    {/* Content */}
-                    <div className="relative z-10 h-full flex flex-col">
-                      {/* Status badge */}
-                      <div className="flex justify-between items-start mb-4">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          project.status === "完了" ? "bg-green-500/20 text-green-300 border border-green-500/30" :
-                          project.status === "進行中" ? "bg-blue-500/20 text-blue-300 border border-blue-500/30" :
-                          "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                        }`}>
-                          {project.status}
-                        </span>
-                        <span className="text-xs text-muted-foreground bg-secondary/30 px-2 py-1 rounded-full">
-                          {project.category}
-                        </span>
-                      </div>
-
-                      {/* Title and description */}
-                      <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">
-                        {project.title}
-                      </h3>
-                      <p className="text-sm text-gray-300 mb-4 leading-relaxed flex-1">
-                        {project.description}
-                      </p>
-
-                      {/* Technologies */}
-                      <div className="mb-4">
-                        <div className="flex flex-wrap gap-1">
-                          {project.technologies.slice(0, 3).map((tech, techIndex) => (
-                            <span 
-                              key={techIndex}
-                              className="text-xs px-2 py-1 bg-white/10 rounded-full text-cyan-200 border border-white/20"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                          {project.technologies.length > 3 && (
-                            <span className="text-xs px-2 py-1 bg-white/5 rounded-full text-gray-400">
-                              +{project.technologies.length - 3}
-                            </span>
-                          )}
+                  {/* Front Face */}
+                  <div className="card-face front">
+                    <div className="glassmorphism-card w-72 h-80 p-5 rounded-2xl border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl relative overflow-hidden group cursor-pointer">
+                      {/* Background gradient based on category */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl`} />
+                      
+                      {/* Content */}
+                      <div className="relative z-10 h-full flex flex-col">
+                        {/* Status badge */}
+                        <div className="flex justify-between items-start mb-3">
+                          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                            project.status === "完了" ? "bg-green-500/20 text-green-300 border border-green-500/30" :
+                            project.status === "進行中" ? "bg-blue-500/20 text-blue-300 border border-blue-500/30" :
+                            "bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                          }`}>
+                            {project.status}
+                          </span>
+                          <span className="text-xs text-muted-foreground bg-secondary/30 px-2 py-1 rounded-full">
+                            {project.category}
+                          </span>
                         </div>
-                      </div>
 
-                      {/* Achievements */}
-                      {project.achievements && (
-                        <div className="mb-4">
-                          <div className="flex items-center gap-1 mb-2">
-                            <Award className="w-3 h-3 text-yellow-400" />
-                            <span className="text-xs font-medium text-yellow-300">主な成果</span>
-                          </div>
-                          <ul className="text-xs text-gray-300 space-y-1">
-                            {project.achievements.slice(0, 2).map((achievement, achIndex) => (
-                              <li key={achIndex} className="flex items-center gap-2">
-                                <div className="w-1 h-1 bg-cyan-400 rounded-full" />
-                                {achievement}
-                              </li>
+                        {/* Title and description */}
+                        <h3 className="text-lg font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors line-clamp-2">
+                          {project.title}
+                        </h3>
+                        <p className="text-sm text-gray-300 mb-3 leading-relaxed flex-1 line-clamp-3">
+                          {project.description}
+                        </p>
+
+                        {/* Technologies */}
+                        <div className="mb-3">
+                          <div className="flex flex-wrap gap-1">
+                            {project.technologies.slice(0, 3).map((tech, techIndex) => (
+                              <span 
+                                key={techIndex}
+                                className="text-xs px-2 py-1 bg-white/10 rounded-full text-cyan-200 border border-white/20"
+                              >
+                                {tech}
+                              </span>
                             ))}
-                          </ul>
+                            {project.technologies.length > 3 && (
+                              <span className="text-xs px-2 py-1 bg-white/5 rounded-full text-gray-400">
+                                +{project.technologies.length - 3}
+                              </span>
+                            )}
+                          </div>
                         </div>
-                      )}
 
-                      {/* Action buttons */}
-                      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <Button size="sm" variant="ghost" className="flex-1 text-xs bg-white/10 hover:bg-white/20 border border-white/20">
-                          <Play className="w-3 h-3 mr-1" />
-                          詳細
-                        </Button>
-                        <Button size="sm" variant="ghost" className="bg-white/10 hover:bg-white/20 border border-white/20">
-                          <ExternalLink className="w-3 h-3" />
-                        </Button>
+                        {/* Flip indicator */}
+                        <div className="flex items-center justify-center gap-2 text-white/60 text-xs">
+                          <RotateCw className="w-3 h-3" />
+                          <span>クリックで詳細</span>
+                        </div>
+                      </div>
+
+                      {/* Holographic effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/5 to-purple-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+                    </div>
+                  </div>
+
+                  {/* Back Face */}
+                  <div className="card-face back">
+                    <div className="glassmorphism-card w-72 h-80 p-5 rounded-2xl border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl relative overflow-hidden group cursor-pointer">
+                      {/* Background gradient */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-30 rounded-2xl`} />
+                      
+                      {/* Content */}
+                      <div className="relative z-10 h-full flex flex-col">
+                        <div className="text-center mb-4">
+                          <h3 className="text-lg font-bold text-white mb-2">{project.title}</h3>
+                          <div className="w-12 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-400 mx-auto" />
+                        </div>
+
+                        {/* All Technologies */}
+                        <div className="mb-4">
+                          <h4 className="text-sm font-semibold text-cyan-300 mb-2">使用技術</h4>
+                          <div className="flex flex-wrap gap-1">
+                            {project.technologies.map((tech, techIndex) => (
+                              <span 
+                                key={techIndex}
+                                className="text-xs px-2 py-1 bg-white/15 rounded-full text-white border border-white/30"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Achievements */}
+                        {project.achievements && (
+                          <div className="mb-4 flex-1">
+                            <div className="flex items-center gap-1 mb-2">
+                              <Award className="w-3 h-3 text-yellow-400" />
+                              <h4 className="text-sm font-semibold text-yellow-300">主な成果</h4>
+                            </div>
+                            <ul className="text-xs text-gray-200 space-y-1">
+                              {project.achievements.map((achievement, achIndex) => (
+                                <li key={achIndex} className="flex items-center gap-2">
+                                  <div className="w-1 h-1 bg-cyan-400 rounded-full flex-shrink-0" />
+                                  {achievement}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {/* Action buttons */}
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="ghost" className="flex-1 text-xs bg-white/10 hover:bg-white/20 border border-white/20">
+                            <Play className="w-3 h-3 mr-1" />
+                            詳細
+                          </Button>
+                          <Button size="sm" variant="ghost" className="bg-white/10 hover:bg-white/20 border border-white/20">
+                            <ExternalLink className="w-3 h-3" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
-
-                    {/* Holographic effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/5 to-purple-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </motion.div>
 
-          {/* Central hub */}
+          {/* Central logo/indicator */}
           <motion.div 
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20"
-            style={{ y: spiralY }}
+            className="portfolio-center"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            viewport={{ once: true }}
           >
-            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-cyan-400/30 to-purple-400/30 backdrop-blur-xl border border-white/30 flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 animate-pulse" />
+            <div className="w-24 h-24 rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20 backdrop-blur-xl border border-white/30 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 flex items-center justify-center">
+                <span className="text-white font-bold text-sm">CRUD5th</span>
+              </div>
             </div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
