@@ -609,7 +609,7 @@ export default function Portfolio() {
           </div>
 
           {/* Zoom Level Indicator */}
-          <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-lg px-3 py-2 text-xs text-white/70">
+          <div className="absolute top-16 right-4 bg-black/50 backdrop-blur-sm rounded-lg px-3 py-2 text-xs text-white/70">
             ズーム: {Math.round(zoom * 100)}%
           </div>
         </div>
@@ -619,7 +619,7 @@ export default function Portfolio() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 1 }}
-          className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
+          className="mt-12 flex flex-wrap items-center justify-center gap-6"
         >
           {Object.entries(categoryColors).map(([category, gradient]) => (
             <div key={category} className="flex items-center gap-2">
