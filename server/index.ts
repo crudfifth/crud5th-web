@@ -36,6 +36,14 @@ app.use((req, res, next) => {
   next();
 });
 
+// HTTPS redirect middleware - force all HTTP traffic to HTTPS
+app.use((req, res, next) => {
+  if (req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV === 'production') {
+    return res.redirect(301, `https://${req.headers.host}${req.originalUrl}`);
+  }
+  next();
+});
+
 (async () => {
   const server = await registerRoutes(app);
 
