@@ -160,8 +160,9 @@
   }
   
   .contact-form [role="option"][data-state="checked"] {
-    background: rgba(46, 184, 207, 0.15) !important;
+    background: rgba(46, 184, 207, 0.25) !important;
     color: white !important;
+    font-weight: 500 !important;
   }
 
   /* Enhanced gradient text with modern styling */
