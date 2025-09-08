@@ -692,40 +692,38 @@
 
 /* Portfolio section responsive adjustments */
 @media (max-width: 768px) {
-  .portfolio-container {
+  .portfolio-scrollable {
     height: 500px;
-    perspective: 1200px;
   }
   
-  .portfolio-card {
-    --r: 200px; /* Smaller radius for mobile */
-    width: 200px;
-    height: 280px;
-    margin-left: -100px;
-    margin-top: -140px;
+  .portfolio-card-list {
+    perspective: 600px;
   }
   
-  .portfolio-center {
-    transform: translate(-50%, -50%) translateZ(30px) scale(0.8);
+  .portfolio-sample-card {
+    --r: 300px; /* Smaller radius for mobile */
+    --z-offset: 400px;
+    width: 240px;
+    height: 300px;
+    left: calc(50% - 120px);
   }
 }
 
 @media (max-width: 480px) {
-  .portfolio-container {
+  .portfolio-scrollable {
     height: 400px;
-    perspective: 1000px;
   }
   
-  .portfolio-card {
-    --r: 150px;
-    width: 180px;
-    height: 250px;
-    margin-left: -90px;
-    margin-top: -125px;
+  .portfolio-card-list {
+    perspective: 500px;
   }
   
-  .portfolio-center {
-    transform: translate(-50%, -50%) translateZ(20px) scale(0.7);
+  .portfolio-sample-card {
+    --r: 250px;
+    --z-offset: 300px;
+    width: 200px;
+    height: 280px;
+    left: calc(50% - 100px);
   }
 }
 
