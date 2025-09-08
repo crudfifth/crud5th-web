@@ -158,38 +158,57 @@ export default function Portfolio() {
   useEffect(() => {
     if (!wrapperRef.current || !cardListRef.current) return;
 
-    // Initialize Lenis for smooth scrolling
+    // Initialize Lenis with optimized settings for smooth rotation
     const lenis = new Lenis({
       autoRaf: true,
       wrapper: wrapperRef.current,
-      wheelMultiplier: 0.3,
-      touchMultiplier: 0.5,
-      syncTouchLerp: 0.01,
+      wheelMultiplier: 0.15, // Reduced for smoother control
+      touchMultiplier: 0.3,
+      syncTouchLerp: 0.08, // Increased for smoother interpolation
       syncTouch: true,
       gestureOrientation: "both",
       infinite: true,
+      smoothWheel: true, // Enhanced smooth scrolling
+      lerp: 0.1, // Smooth interpolation
     });
 
     lenisRef.current = lenis;
 
     // Set initial rotation angle
-    const baseDeg = 0;
-    cardListRef.current.style.setProperty("--base-deg", `${baseDeg}`);
+    let currentRotation = 0;
+    cardListRef.current.style.setProperty("--base-deg", `${currentRotation}`);
 
-    // Scroll acceleration to rotation coefficient
-    const STRENGTH = 0.3;
+    // Optimized rotation with requestAnimationFrame
+    const STRENGTH = 0.2; // Reduced strength for smoother motion
+    let animationId: number;
+    let targetRotation = 0;
+
+    // Smooth rotation update function
+    const updateRotation = () => {
+      if (!cardListRef.current) return;
+      
+      // Smooth interpolation to target rotation
+      currentRotation += (targetRotation - currentRotation) * 0.1;
+      
+      // Apply rotation with requestAnimationFrame for smooth updates
+      cardListRef.current.style.setProperty("--base-deg", `${currentRotation}`);
+      
+      animationId = requestAnimationFrame(updateRotation);
+    };
+
+    // Start animation loop
+    updateRotation();
 
     // Listen to scroll events with Lenis
     lenis.on("scroll", (event: any) => {
-      if (!cardListRef.current) return;
-      
-      const currentDeg = parseFloat(cardListRef.current.style.getPropertyValue("--base-deg") || "0");
-      // Add scroll velocity to current rotation angle
-      const newBaseDeg = currentDeg - event.velocity * STRENGTH;
-      cardListRef.current.style.setProperty("--base-deg", `${newBaseDeg}`);
+      // Update target rotation based on scroll velocity
+      targetRotation -= event.velocity * STRENGTH;
     });
 
     return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
       lenis.destroy();
     };
   }, []);
