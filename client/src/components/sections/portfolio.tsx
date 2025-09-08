@@ -105,7 +105,7 @@ const serviceNodes: ServiceNode[] = [
     connections: ["crud5th-act", "personal-business", "raft-core"]
   },
 
-  // Creative Layer (Left Side - 分散配置)
+  // Creative Layer (Left Side - 広範囲分散配置)
   {
     id: "etheria",
     title: "Etheria",
@@ -113,7 +113,7 @@ const serviceNodes: ServiceNode[] = [
     description: "クリエイターオールインワンシステム", 
     technologies: ["Vue.js", "WebGL"],
     status: "active",
-    position: { x: 300, y: 450 },
+    position: { x: 350, y: 400 },
     icon: <Brain className="w-5 h-5" />,
     connections: ["design-system", "video-edit", "donation-system"]
   },
@@ -125,7 +125,7 @@ const serviceNodes: ServiceNode[] = [
     description: "デザインツール統合プラットフォーム",
     technologies: ["Canvas API", "WebGL"],
     status: "active",
-    position: { x: 100, y: 300 },
+    position: { x: 80, y: 250 },
     icon: <Code className="w-5 h-5" />,
     connections: ["etheria", "video-edit", "crud5th-web"]
   },
@@ -137,7 +137,7 @@ const serviceNodes: ServiceNode[] = [
     description: "Webベース動画編集プラットフォーム",
     technologies: ["WebAssembly", "FFmpeg"],
     status: "development",
-    position: { x: 150, y: 650 },
+    position: { x: 250, y: 700 },
     icon: <VideoIcon className="w-5 h-5" />,
     connections: ["etheria", "cloud-nas", "design-system"]
   },
@@ -162,7 +162,7 @@ const serviceNodes: ServiceNode[] = [
     description: "リアルタイム通信基盤",
     technologies: ["WebSocket", "WebRTC"],
     status: "active",
-    position: { x: 500, y: 550 },
+    position: { x: 550, y: 500 },
     icon: <Zap className="w-5 h-5" />,
     connections: ["meltin-vr", "raft-core", "donation-system"]
   },
@@ -174,7 +174,7 @@ const serviceNodes: ServiceNode[] = [
     description: "クリエイター支援プラットフォーム",
     technologies: ["Stripe", "React"],
     status: "active",
-    position: { x: 400, y: 750 },
+    position: { x: 500, y: 750 },
     icon: <Building2 className="w-5 h-5" />,
     connections: ["etheria", "communication-system"]
   },
@@ -187,7 +187,7 @@ const serviceNodes: ServiceNode[] = [
     description: "お婿養マッチングアプリ",
     technologies: ["Unity", "WebXR"],
     status: "development",
-    position: { x: 100, y: 800 },
+    position: { x: 80, y: 800 },
     icon: <Gamepad2 className="w-5 h-5" />,
     connections: ["communication-system", "etheria"]
   }
@@ -388,17 +388,19 @@ function ConnectionLine({ from, to, isActive }: { from: ServiceNode, to: Service
 export default function Portfolio() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [zoom, setZoom] = useState(0.65); // デフォルトで少し縮小して全体が見える
+  const [zoom, setZoom] = useState(0.5); // デフォルトで50%ズーム
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [isFocused, setIsFocused] = useState(false);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-200px" });
 
-  // ズーム・パン機能
+  // ズーム・パン機能（フォーカス時のみ）
   const handleWheel = (e: React.WheelEvent) => {
+    if (!isFocused) return; // フォーカスがない場合は通常のスクロール
     e.preventDefault();
     const delta = e.deltaY * -0.001;
     const newZoom = Math.min(Math.max(0.3, zoom + delta), 2.0);
@@ -430,7 +432,7 @@ export default function Portfolio() {
 
   // ズーム・パンのリセット
   const resetView = () => {
-    setZoom(0.65);
+    setZoom(0.5);
     setPan({ x: 0, y: 0 });
   };
 
@@ -489,7 +491,7 @@ export default function Portfolio() {
             </div>
             <div className="flex items-center gap-2">
               <Workflow className="w-4 h-4" />
-              ホイールでズーム
+              クリックでフォーカス → ズーム操作
             </div>
             <div className="flex items-center gap-2">
               <ArrowRight className="w-4 h-4" />
@@ -508,11 +510,16 @@ export default function Portfolio() {
         {/* Service Network Visualization */}
         <div 
           ref={containerRef}
-          className="relative w-full h-[700px] mx-auto bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-3xl border border-white/10 overflow-hidden cursor-grab"
+          className={`relative w-full h-[700px] mx-auto bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-3xl border border-white/10 overflow-hidden cursor-grab outline-none ${
+            isFocused ? 'ring-2 ring-cyan-500/50' : ''
+          }`}
           style={{ 
             perspective: '1000px',
             cursor: isDragging ? 'grabbing' : 'grab'
           }}
+          tabIndex={0}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           onWheel={handleWheel}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
