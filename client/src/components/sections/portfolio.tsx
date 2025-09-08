@@ -195,50 +195,47 @@ export default function Portfolio() {
 
     // GSAP: pin & scrub
     const STEP = 360 / activeCards.length;
-    const setRot = gsap.quickSetter(ring, "--rot", "deg");
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#portfolio",
-        start: "top top",
-        end: () => "+=" + window.innerHeight * 3, // ピン滞在量（3画面分）
-        pin: true,
-        scrub: 0.35, // スクロールに追従
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        fastScrollEnd: true,
-        snap: {
-          snapTo: (value) => {
-            // progress(0..1) → 角度(-360..0) → 最寄りのカードへ
-            const deg = -value * 360;
-            const snapped = Math.round(deg / STEP) * STEP;
-            return -snapped / 360;
-          },
-          duration: { min: 0.08, max: 0.25 },
-          ease: "power1.inOut"
+    
+    // ScrollTriggerでピン留め+スクロール連動
+    ScrollTrigger.create({
+      trigger: "#portfolio",
+      start: "top top",
+      end: () => "+=" + window.innerHeight * 3, // ピン滞在量（3画面分）
+      pin: true,
+      scrub: 0.35, // スクロールに追従
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      fastScrollEnd: true,
+      snap: {
+        snapTo: (value) => {
+          // progress(0..1) → 角度(-360..0) → 最寄りのカードへ
+          const deg = -value * 360;
+          const snapped = Math.round(deg / STEP) * STEP;
+          return -snapped / 360;
         },
-        onUpdate: (self) => {
-          // アクティブカード更新
-          const progress = self.progress;
-          const currentDeg = -progress * 360;
-          const idx = ((-Math.round(currentDeg / STEP)) % activeCards.length + activeCards.length) % activeCards.length;
-          activeCards.forEach((c, i) => {
-            c.classList.toggle('is-active', i === idx);
-          });
+        duration: { min: 0.08, max: 0.25 },
+        ease: "power1.inOut"
+      },
+      animation: gsap.fromTo(ring, 
+        { "--rot": "0deg" },
+        { 
+          "--rot": "-360deg",
+          ease: "none"
         }
-      }
-    });
-
-    // progress を角度に写像（0→-360deg）
-    tl.fromTo({ v: 0 }, { 
-      v: -360,
-      onUpdate() { 
-        setRot((this as any).targets()[0].v); 
+      ),
+      onUpdate: (self) => {
+        // アクティブカード更新
+        const progress = self.progress;
+        const currentDeg = -progress * 360;
+        const idx = ((-Math.round(currentDeg / STEP)) % activeCards.length + activeCards.length) % activeCards.length;
+        activeCards.forEach((c, i) => {
+          c.classList.toggle('is-active', i === idx);
+        });
       }
     });
 
     return () => { 
       ro.disconnect(); 
-      tl.kill(); 
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
