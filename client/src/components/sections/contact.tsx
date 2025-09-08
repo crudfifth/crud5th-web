@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import { Mail, Phone, Twitter, Github } from "lucide-react";
+import { Mail, Phone, MapPin, Twitter, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -103,6 +103,18 @@ export default function Contact() {
                   <div>
                     <div className="text-sm text-muted-foreground mb-1">電話</div>
                     <div className="text-foreground font-semibold text-lg">090-9423-8717</div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-5 group hover:bg-secondary/30 p-4 rounded-xl transition-all duration-300" data-testid="contact-address">
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/30 to-primary/10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <MapPin className="w-7 h-7 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-muted-foreground mb-1">事務所住所</div>
+                    <div className="text-foreground font-semibold text-lg">
+                      〒106-0032<br />
+                      東京都港区六本木7-17-12-513
+                    </div>
                   </div>
                 </div>
               </div>
