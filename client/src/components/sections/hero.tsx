@@ -249,8 +249,8 @@ export default function Hero() {
                           initial={{ opacity: 0, y: 8 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{
-                            duration: 0.08,
-                            delay: 2.8 + (currentCharIndex * 0.025),
+                            duration: 0.05,
+                            delay: 2.8 + (currentCharIndex * 0.015),
                             ease: "easeOut"
                           }}
                           className={`${char === " " ? "inline-block w-1" : "inline-block"} ${
@@ -259,6 +259,8 @@ export default function Hero() {
                               : ""
                           }`}
                           style={{
+                            willChange: currentCharIndex < 20 ? 'transform, opacity' : 'auto',
+                            transform: 'translateZ(0)',
                             textShadow: isCRUD5thChar ? '0 0 20px rgba(46, 184, 207, 0.6), 0 0 40px rgba(46, 184, 207, 0.3)' : undefined
                           }}
                         >
