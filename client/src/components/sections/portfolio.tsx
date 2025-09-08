@@ -113,7 +113,7 @@ const serviceNodes: ServiceNode[] = [
     description: "クリエイターオールインワンシステム", 
     technologies: ["Vue.js", "WebGL"],
     status: "active",
-    position: { x: 350, y: 400 },
+    position: { x: 200, y: 350 },
     icon: <Brain className="w-5 h-5" />,
     connections: ["design-system", "video-edit", "donation-system"]
   },
@@ -125,7 +125,7 @@ const serviceNodes: ServiceNode[] = [
     description: "デザインツール統合プラットフォーム",
     technologies: ["Canvas API", "WebGL"],
     status: "active",
-    position: { x: 80, y: 250 },
+    position: { x: 50, y: 180 },
     icon: <Code className="w-5 h-5" />,
     connections: ["etheria", "video-edit", "crud5th-web"]
   },
@@ -137,7 +137,7 @@ const serviceNodes: ServiceNode[] = [
     description: "Webベース動画編集プラットフォーム",
     technologies: ["WebAssembly", "FFmpeg"],
     status: "development",
-    position: { x: 250, y: 700 },
+    position: { x: 100, y: 600 },
     icon: <VideoIcon className="w-5 h-5" />,
     connections: ["etheria", "cloud-nas", "design-system"]
   },
@@ -162,7 +162,7 @@ const serviceNodes: ServiceNode[] = [
     description: "リアルタイム通信基盤",
     technologies: ["WebSocket", "WebRTC"],
     status: "active",
-    position: { x: 550, y: 500 },
+    position: { x: 400, y: 520 },
     icon: <Zap className="w-5 h-5" />,
     connections: ["meltin-vr", "raft-core", "donation-system"]
   },
@@ -174,7 +174,7 @@ const serviceNodes: ServiceNode[] = [
     description: "クリエイター支援プラットフォーム",
     technologies: ["Stripe", "React"],
     status: "active",
-    position: { x: 500, y: 750 },
+    position: { x: 600, y: 650 },
     icon: <Building2 className="w-5 h-5" />,
     connections: ["etheria", "communication-system"]
   },
@@ -187,7 +187,7 @@ const serviceNodes: ServiceNode[] = [
     description: "お婿養マッチングアプリ",
     technologies: ["Unity", "WebXR"],
     status: "development",
-    position: { x: 80, y: 800 },
+    position: { x: 200, y: 750 },
     icon: <Gamepad2 className="w-5 h-5" />,
     connections: ["communication-system", "etheria"]
   }
@@ -410,6 +410,7 @@ export default function Portfolio() {
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button === 0) { // 左クリックのみ
       e.preventDefault();
+      setIsFocused(true); // クリック時にフォーカス設定
       setIsDragging(true);
       setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
     }
@@ -498,7 +499,10 @@ export default function Portfolio() {
               ドラッグで移動
             </div>
             <button 
-              onClick={resetView}
+              onClick={() => {
+                resetView();
+                setIsFocused(true);
+              }}
               className="flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
             >
               <Eye className="w-4 h-4" />
@@ -517,9 +521,6 @@ export default function Portfolio() {
             perspective: '1000px',
             cursor: isDragging ? 'grabbing' : 'grab'
           }}
-          tabIndex={0}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
           onWheel={handleWheel}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
