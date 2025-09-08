@@ -389,7 +389,7 @@ export default function Portfolio() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [zoom, setZoom] = useState(0.6); // デフォルトで60%ズーム
-  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [pan, setPan] = useState({ x: -50, y: -50 }); // 初期値を左上に調整
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [isFocused, setIsFocused] = useState(false);
@@ -451,7 +451,7 @@ export default function Portfolio() {
   // ズーム・パンのリセット
   const resetView = () => {
     setZoom(0.6);
-    setPan({ x: 0, y: 0 });
+    setPan({ x: -50, y: -50 });
   };
 
   const highlightedConnections = new Set<string>();
@@ -497,35 +497,11 @@ export default function Portfolio() {
           className="text-center mb-16"
         >
           <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-cyan-200 to-purple-200 bg-clip-text text-transparent">
-            Service Ecosystem
+            サービスエコシステム
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-4">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             CRUD5thの技術サービス群とその相互関係
           </p>
-          <div className="flex items-center justify-center gap-6 text-sm text-gray-400">
-            <div className="flex items-center gap-2">
-              <MousePointer className="w-4 h-4" />
-              ホバーで関係性表示
-            </div>
-            <div className="flex items-center gap-2">
-              <Workflow className="w-4 h-4" />
-              クリックでフォーカス → ズーム操作
-            </div>
-            <div className="flex items-center gap-2">
-              <ArrowRight className="w-4 h-4" />
-              ドラッグで移動
-            </div>
-            <button 
-              onClick={() => {
-                resetView();
-                setIsFocused(true);
-              }}
-              className="flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
-            >
-              <Eye className="w-4 h-4" />
-              全体表示
-            </button>
-          </div>
         </motion.div>
 
         {/* Service Network Visualization */}
@@ -544,6 +520,17 @@ export default function Portfolio() {
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
         >
+          {/* 全体表示ボタン（マップ内） */}
+          <button 
+            onClick={() => {
+              resetView();
+              setIsFocused(true);
+            }}
+            className="absolute top-4 right-4 z-10 flex items-center gap-2 px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-colors text-sm text-white"
+          >
+            <Eye className="w-4 h-4" />
+            全体表示
+          </button>
           {/* Zoom/Pan Transform Container */}
           <div 
             className={`absolute inset-0 ${isDragging ? '' : 'transition-transform duration-200 ease-out'}`}
