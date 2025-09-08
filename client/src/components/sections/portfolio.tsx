@@ -162,9 +162,15 @@ export default function Portfolio() {
     let currentRot = 0;
     let lastActive = -1;
     let scrollStopTimer: NodeJS.Timeout | null = null;
+    let prevTargetRot = 0;
+    let velocity = 0;
+
+    // Enhanced parameters for smoother snap
+    const LERP = 0.10;          // Reduced from 0.12
+    const SNAP_DELAY = 160;     // Increased from 120ms
+    const DEADZONE = STEP * 0.22;
 
     const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
     function updateTargetFromScroll() {
       if (!sectionRef.current) return;
@@ -196,17 +202,35 @@ export default function Portfolio() {
       updateTargetFromScroll();
       if (scrollStopTimer) clearTimeout(scrollStopTimer);
       scrollStopTimer = setTimeout(() => {
-        // Soft snap to nearest card
+        // Enhanced soft snap with deadzone
         const nearest = Math.round(targetRot / STEP) * STEP;
-        targetRot = nearest;
-      }, 120);
+        if (Math.abs(targetRot - nearest) < DEADZONE) {
+          targetRot = nearest;
+        }
+      }, SNAP_DELAY);
     }
 
     function animate() {
       if (!ringRef.current) return;
       
-      // Smooth interpolation with no layout reads/writes
-      currentRot = lerp(currentRot, targetRot, 0.12);
+      // Enhanced velocity tracking for smooth stop
+      velocity = targetRot - prevTargetRot;
+      prevTargetRot = targetRot;
+
+      // Near-zero velocity quantization for sharp stop
+      const NEAR_ZERO = 0.08; // Threshold for angular velocity
+      if (Math.abs(velocity) < NEAR_ZERO) {
+        targetRot = Math.round(targetRot / STEP) * STEP;
+      }
+
+      // Smooth interpolation with enhanced lerp
+      currentRot = currentRot + (targetRot - currentRot) * LERP;
+      
+      // Stop micro-vibrations
+      if (Math.abs(currentRot - targetRot) < 0.02) {
+        currentRot = targetRot;
+      }
+      
       ringRef.current.style.setProperty('--rot', `${currentRot.toFixed(3)}deg`);
       
       markActive();
