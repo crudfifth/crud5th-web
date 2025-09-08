@@ -156,7 +156,7 @@ export default function Portfolio() {
   useEffect(() => {
     if (!sectionRef.current || !ringRef.current) return;
 
-    const cards = [...ringRef.current.querySelectorAll('.card3d')];
+    const cards = Array.from(ringRef.current.querySelectorAll('.card3d'));
     const N = cards.length;
     
     // Nを実数に同期
