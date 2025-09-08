@@ -21,21 +21,13 @@ const teamMembers = [
     name: "かえる",
     role: "Creative Engineer",
     description: "UI/UX デザインとフロントエンド開発のスペシャリスト。ユーザー体験の向上に情熱を注ぐ。",
-    initials: "カ",
-    social: {
-      twitter: "https://x.com/CRUD5th",
-      github: "https://github.com/crudfifth"
-    }
+    initials: "カ"
   },
   {
     name: "mir",
     role: "Backend Engineer",
     description: "サーバーサイド開発とインフラ構築のエキスパート。スケーラブルなシステム設計を得意とする。",
-    initials: "M",
-    social: {
-      twitter: "https://x.com/CRUD5th",
-      github: "https://github.com/crudfifth"
-    }
+    initials: "M"
   }
 ];
 
@@ -147,25 +139,27 @@ function TeamCard({ member, index }: { member: typeof teamMembers[0], index: num
           {member.description}
         </motion.p>
         
-        {/* Social links with hover effects */}
-        <div className="flex justify-center space-x-4 relative z-20" data-testid={`team-social-${index}`}>
-          <a
-            href={member.social.twitter}
-            className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social hover:scale-110 inline-block relative z-30"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <SiX className="w-5 h-5 text-muted-foreground group-hover/social:text-primary transition-colors" />
-          </a>
-          <a
-            href={member.social.github}
-            className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social hover:scale-110 inline-block relative z-30"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Github className="w-5 h-5 text-muted-foreground group-hover/social:text-primary transition-colors" />
-          </a>
-        </div>
+        {/* Social links with hover effects - only show if social exists */}
+        {member.social && (
+          <div className="flex justify-center space-x-4 relative z-20" data-testid={`team-social-${index}`}>
+            <a
+              href={member.social.twitter}
+              className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social hover:scale-110 inline-block relative z-30"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SiX className="w-5 h-5 text-muted-foreground group-hover/social:text-primary transition-colors" />
+            </a>
+            <a
+              href={member.social.github}
+              className="p-3 rounded-full bg-muted/50 hover:bg-primary/20 transition-colors duration-200 group/social hover:scale-110 inline-block relative z-30"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Github className="w-5 h-5 text-muted-foreground group-hover/social:text-primary transition-colors" />
+            </a>
+          </div>
+        )}
         
         {/* Glass morphism overlay */}
         <motion.div
