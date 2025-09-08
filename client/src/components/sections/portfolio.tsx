@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useAnimation, AnimatePresence } from "framer-motion";
-import { ExternalLink, Github, Star, Zap, Eye } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { motion, useAnimation, AnimatePresence, useInView } from "framer-motion";
+import { ExternalLink, Github, Star, Zap, Eye, Code, Award } from "lucide-react";
 
 interface PortfolioProject {
   id: number;
@@ -78,418 +78,256 @@ const portfolioProjects: PortfolioProject[] = [
   }
 ];
 
-interface MagneticCardProps {
+interface FlipCardProps {
   project: PortfolioProject;
   index: number;
-  mousePos: { x: number; y: number };
-  containerRef: React.RefObject<HTMLDivElement>;
-  onHover: (id: number | null) => void;
-  hoveredCard: number | null;
 }
 
-function MagneticCard({ project, index, mousePos, containerRef, onHover, hoveredCard }: MagneticCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [velocity, setVelocity] = useState({ x: 0, y: 0 });
-  const controls = useAnimation();
-  
-  // Physics constants
-  const MAGNETIC_STRENGTH = 0.3;
-  const REPULSION_STRENGTH = 1000;
-  const FRICTION = 0.85;
-  const MAX_VELOCITY = 8;
-  
-  useEffect(() => {
-    // Initialize random position
-    const initialX = (Math.random() - 0.5) * 600;
-    const initialY = (Math.random() - 0.5) * 400;
-    setPosition({ x: initialX, y: initialY });
-  }, []);
+function FlipCard({ project, index }: FlipCardProps) {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  useEffect(() => {
-    const animate = () => {
-      if (!cardRef.current || !containerRef.current) return;
-      
-      const rect = containerRef.current.getBoundingClientRect();
-      const cardRect = cardRef.current.getBoundingClientRect();
-      
-      // Convert mouse position to container-relative coordinates
-      const relativeMouseX = mousePos.x - rect.left - rect.width / 2;
-      const relativeMouseY = mousePos.y - rect.top - rect.height / 2;
-      
-      // Current card center relative to container center
-      const cardCenterX = position.x;
-      const cardCenterY = position.y;
-      
-      // Magnetic force towards mouse
-      const deltaX = relativeMouseX - cardCenterX;
-      const deltaY = relativeMouseY - cardCenterY;
-      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-      
-      let forceX = 0;
-      let forceY = 0;
-      
-      if (distance > 0) {
-        const magneticForce = Math.min(MAGNETIC_STRENGTH / Math.max(distance / 200, 1), 2);
-        forceX += (deltaX / distance) * magneticForce;
-        forceY += (deltaY / distance) * magneticForce;
-      }
-      
-      // Repulsion from other cards
-      portfolioProjects.forEach((otherProject, otherIndex) => {
-        if (otherIndex === index) return;
-        
-        const otherElement = document.querySelector(`[data-card-id="${otherProject.id}"]`) as HTMLDivElement;
-        if (!otherElement) return;
-        
-        const otherRect = otherElement.getBoundingClientRect();
-        const otherX = parseFloat(otherElement.style.transform?.match(/translateX\(([^)]+)px\)/)?.[1] || "0");
-        const otherY = parseFloat(otherElement.style.transform?.match(/translateY\(([^)]+)px\)/)?.[1] || "0");
-        
-        const repelDeltaX = cardCenterX - otherX;
-        const repelDeltaY = cardCenterY - otherY;
-        const repelDistance = Math.sqrt(repelDeltaX * repelDeltaX + repelDeltaY * repelDeltaY);
-        
-        if (repelDistance > 0 && repelDistance < 300) {
-          const repelForce = REPULSION_STRENGTH / (repelDistance * repelDistance);
-          forceX += (repelDeltaX / repelDistance) * repelForce;
-          forceY += (repelDeltaY / repelDistance) * repelForce;
-        }
-      });
-      
-      // Boundary forces (soft walls)
-      const maxX = rect.width / 2 - 150;
-      const maxY = rect.height / 2 - 100;
-      
-      if (Math.abs(cardCenterX) > maxX) {
-        forceX -= (cardCenterX / Math.abs(cardCenterX)) * 0.5;
-      }
-      if (Math.abs(cardCenterY) > maxY) {
-        forceY -= (cardCenterY / Math.abs(cardCenterY)) * 0.5;
-      }
-      
-      // Update velocity
-      setVelocity(prev => {
-        const newVelX = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, (prev.x + forceX) * FRICTION));
-        const newVelY = Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, (prev.y + forceY) * FRICTION));
-        return { x: newVelX, y: newVelY };
-      });
-      
-      // Update position
-      setPosition(prev => ({
-        x: prev.x + velocity.x,
-        y: prev.y + velocity.y
-      }));
-    };
-    
-    const interval = setInterval(animate, 16); // ~60fps
-    return () => clearInterval(interval);
-  }, [mousePos, position, velocity, index]);
-
-  const isHovered = hoveredCard === project.id;
   const categoryColors: Record<string, string> = {
-    "受託開発": "from-blue-500/30 to-cyan-500/20",
-    "自社サービス": "from-purple-500/30 to-pink-500/20", 
-    "コンサル": "from-green-500/30 to-emerald-500/20"
+    "受託開発": "from-blue-500/20 to-cyan-500/10",
+    "自社サービス": "from-purple-500/20 to-pink-500/10", 
+    "コンサル": "from-green-500/20 to-emerald-500/10"
+  };
+
+  const statusColors: Record<string, string> = {
+    "完了": "bg-green-500/20 text-green-300 border-green-500/40",
+    "進行中": "bg-blue-500/20 text-blue-300 border-blue-500/40",
+    "企画中": "bg-purple-500/20 text-purple-300 border-purple-500/40"
   };
 
   return (
     <motion.div
-      ref={cardRef}
-      data-card-id={project.id}
-      className="absolute w-72 h-48 cursor-pointer group"
-      style={{
-        left: '50%',
-        top: '50%',
-        transform: `translate(${position.x - 144}px, ${position.y - 96}px)`,
-        zIndex: isHovered ? 50 : 10
-      }}
-      onMouseEnter={() => onHover(project.id)}
-      onMouseLeave={() => onHover(null)}
-      whileHover={{ 
-        scale: 1.1,
-        rotateY: 5,
-        rotateX: 5,
-        transition: { duration: 0.3 }
-      }}
+      ref={ref}
+      className="relative w-full h-80 perspective-1000"
+      initial={{ opacity: 0, y: 50, rotateX: -20 }}
+      animate={isInView ? { 
+        opacity: 1, 
+        y: 0, 
+        rotateX: 0,
+        transition: { 
+          duration: 0.6, 
+          delay: index * 0.1,
+          ease: "easeOut"
+        }
+      } : {}}
+      whileHover={{ scale: 1.05, z: 20 }}
+      onHoverStart={() => setIsFlipped(true)}
+      onHoverEnd={() => setIsFlipped(false)}
       data-testid={`portfolio-card-${index}`}
     >
-      {/* Main Card */}
-      <div className={`relative h-full bg-gradient-to-br ${categoryColors[project.category]} backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden shadow-2xl transform-gpu`}>
-        {/* Glow Effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        
-        {/* Content */}
-        <div className="relative p-6 h-full flex flex-col justify-between">
-          {/* Header */}
-          <div className="flex justify-between items-start mb-3">
-            <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-              project.status === "完了" ? "bg-green-500/30 text-green-200 border border-green-400/50" :
-              project.status === "進行中" ? "bg-blue-500/30 text-blue-200 border border-blue-400/50" :
-              "bg-purple-500/30 text-purple-200 border border-purple-400/50"
-            }`}>
+      <motion.div
+        className="relative w-full h-full transform-style-preserve-3d"
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+      >
+        {/* Front Side */}
+        <div className={`absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br ${categoryColors[project.category]} backdrop-blur-sm border border-white/10 rounded-2xl p-6 flex flex-col`}>
+          {/* Status & Category */}
+          <div className="flex justify-between items-start mb-4">
+            <span className={`px-3 py-1 rounded-full text-xs font-bold border ${statusColors[project.status]}`}>
               {project.status}
             </span>
-            <span className="text-xs text-white/60 bg-black/20 px-2 py-1 rounded-full backdrop-blur-sm">
+            <span className="text-xs text-white/60 bg-black/20 px-3 py-1 rounded-full">
               {project.category}
             </span>
           </div>
 
+          {/* Project Image Placeholder */}
+          <div className="w-full h-32 bg-gradient-to-br from-white/10 to-white/5 rounded-xl mb-4 flex items-center justify-center">
+            <Code className="w-8 h-8 text-white/40" />
+          </div>
+
           {/* Title & Description */}
-          <div className="flex-1">
-            <h3 className="text-lg font-bold text-white mb-2 leading-tight">{project.title}</h3>
-            <p className="text-sm text-white/80 leading-relaxed line-clamp-2">{project.description}</p>
-          </div>
+          <h3 className="text-xl font-bold text-white mb-3 leading-tight">{project.title}</h3>
+          <p className="text-sm text-white/80 leading-relaxed flex-1">{project.description}</p>
 
+          {/* Hover Indicator */}
+          <div className="mt-4 flex items-center justify-center text-white/50 text-xs">
+            <Eye className="w-4 h-4 mr-2" />
+            ホバーで詳細表示
+          </div>
+        </div>
+
+        {/* Back Side */}
+        <div className={`absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br ${categoryColors[project.category]} backdrop-blur-sm border border-white/10 rounded-2xl p-6 flex flex-col`} style={{ transform: 'rotateY(180deg)' }}>
+          <h3 className="text-lg font-bold text-white mb-4">{project.title}</h3>
+          
           {/* Technologies */}
-          <div className="flex flex-wrap gap-1 mb-4">
-            {project.technologies.slice(0, 3).map((tech, techIndex) => (
-              <span key={techIndex} className="text-xs px-2 py-1 bg-white/15 rounded-full text-white/90 border border-white/20">
-                {tech}
-              </span>
-            ))}
-            {project.technologies.length > 3 && (
-              <span className="text-xs px-2 py-1 bg-white/10 rounded-full text-white/70">
-                +{project.technologies.length - 3}
-              </span>
-            )}
+          <div className="mb-4">
+            <h4 className="text-sm font-semibold text-cyan-300 mb-2 flex items-center">
+              <Zap className="w-4 h-4 mr-1" />
+              使用技術
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {project.technologies.map((tech, techIndex) => (
+                <span key={techIndex} className="text-xs px-2 py-1 bg-white/15 rounded-full text-white border border-white/20">
+                  {tech}
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex gap-2">
-            <motion.button 
-              className="flex-1 bg-white/20 text-white text-sm font-medium py-2 px-4 rounded-lg border border-white/30 backdrop-blur-sm hover:bg-white/30 transition-colors"
-              whileTap={{ scale: 0.95 }}
-            >
-              <Eye className="w-4 h-4 inline mr-2" />
-              詳細
-            </motion.button>
-            <motion.button 
-              className="px-3 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg hover:from-cyan-400 hover:to-blue-400 transition-colors"
-              whileTap={{ scale: 0.95 }}
-            >
-              <Star className="w-4 h-4" />
-            </motion.button>
-          </div>
-        </div>
-        
-        {/* Energy Lines */}
-        <div className="absolute inset-0 pointer-events-none">
-          {isHovered && (
-            <>
-              <div className="absolute top-0 left-1/2 w-px h-4 bg-gradient-to-b from-cyan-400 to-transparent animate-pulse" />
-              <div className="absolute bottom-0 left-1/2 w-px h-4 bg-gradient-to-t from-cyan-400 to-transparent animate-pulse" />
-              <div className="absolute left-0 top-1/2 w-4 h-px bg-gradient-to-r from-cyan-400 to-transparent animate-pulse" />
-              <div className="absolute right-0 top-1/2 w-4 h-px bg-gradient-to-l from-cyan-400 to-transparent animate-pulse" />
-            </>
+          {/* Achievements */}
+          {project.achievements && (
+            <div className="flex-1">
+              <h4 className="text-sm font-semibold text-yellow-300 mb-2 flex items-center">
+                <Award className="w-4 h-4 mr-1" />
+                主な成果
+              </h4>
+              <ul className="text-xs text-gray-200 space-y-2">
+                {project.achievements.map((achievement, achIndex) => (
+                  <li key={achIndex} className="flex items-start gap-2">
+                    <Star className="w-3 h-3 text-yellow-400 flex-shrink-0 mt-0.5" />
+                    {achievement}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
-        </div>
-      </div>
-      
-      {/* Floating particles around hovered card */}
-      <AnimatePresence>
-        {isHovered && (
-          <div className="absolute inset-0 pointer-events-none">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-cyan-400/60 rounded-full"
-                initial={{ 
-                  opacity: 0,
-                  x: 144,
-                  y: 96,
-                  scale: 0
-                }}
-                animate={{
-                  opacity: [0, 1, 0],
-                  x: 144 + Math.cos(i * Math.PI / 4) * 80,
-                  y: 96 + Math.sin(i * Math.PI / 4) * 80,
-                  scale: [0, 1, 0]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: i * 0.1
-                }}
-              />
-            ))}
+
+          {/* Action Buttons */}
+          <div className="flex gap-2 mt-4">
+            <motion.button 
+              className="flex-1 bg-white/20 text-white text-sm font-medium py-2 px-4 rounded-lg border border-white/30 hover:bg-white/30 transition-colors flex items-center justify-center"
+              whileTap={{ scale: 0.95 }}
+            >
+              <ExternalLink className="w-4 h-4 mr-2" />
+              デモ
+            </motion.button>
+            <motion.button 
+              className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg hover:from-cyan-400 hover:to-blue-400 transition-colors"
+              whileTap={{ scale: 0.95 }}
+            >
+              <Github className="w-4 h-4" />
+            </motion.button>
           </div>
-        )}
-      </AnimatePresence>
+        </div>
+      </motion.div>
+
+      {/* Glow Effect */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 rounded-2xl blur-xl opacity-0"
+        animate={{ opacity: isFlipped ? 0.6 : 0 }}
+        transition={{ duration: 0.3 }}
+        style={{ zIndex: -1 }}
+      />
     </motion.div>
   );
 }
 
 export default function Portfolio() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [isInteracting, setIsInteracting] = useState(false);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-      setIsInteracting(true);
-    };
-
-    const handleMouseLeave = () => {
-      setIsInteracting(false);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseleave', handleMouseLeave);
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, []);
-
-  const handleCardHover = useCallback((cardId: number | null) => {
-    setHoveredCard(cardId);
-  }, []);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-200px" });
 
   return (
-    <section id="portfolio" className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 relative overflow-hidden">
-      {/* Dynamic Background */}
+    <section 
+      ref={sectionRef}
+      id="portfolio" 
+      className="py-24 bg-gradient-to-br from-slate-900 via-purple-900/10 to-slate-900 relative overflow-hidden"
+    >
+      {/* Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
-        {/* Animated background grid */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `
-              linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px)
-            `,
-            backgroundSize: '50px 50px',
-            animation: 'grid-move 20s linear infinite'
-          }} />
+        {/* Animated Grid */}
+        <div className="absolute inset-0 opacity-10">
+          <div 
+            className="absolute inset-0 bg-grid-pattern"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: '60px 60px',
+            }}
+          />
         </div>
-        
-        {/* Flowing particles */}
-        {Array.from({ length: 50 }).map((_, i) => (
+
+        {/* Floating Orbs */}
+        {Array.from({ length: 5 }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-cyan-400/30 rounded-full"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-            }}
+            className="absolute w-4 h-4 bg-cyan-400/30 rounded-full blur-sm"
             animate={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x: [0, 100, 0],
+              y: [0, -50, 0],
+              opacity: [0.3, 0.8, 0.3]
             }}
             transition={{
-              duration: 10 + Math.random() * 20,
+              duration: 8 + i * 2,
               repeat: Infinity,
-              ease: "linear"
+              ease: "easeInOut",
+              delay: i * 1.5
+            }}
+            style={{
+              left: `${20 + i * 15}%`,
+              top: `${30 + i * 10}%`
             }}
           />
         ))}
-
-        {/* Energy field visualization */}
-        {isInteracting && (
-          <motion.div
-            className="absolute w-4 h-4 border border-cyan-400/50 rounded-full"
-            style={{
-              left: mousePos.x - 8,
-              top: mousePos.y - 8,
-            }}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.2 }}
-          >
-            <div className="absolute inset-0 border border-cyan-400/30 rounded-full animate-ping" />
-          </motion.div>
-        )}
       </div>
 
-      <div className="relative z-10 px-6 py-20">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
-          <h2 className="text-6xl font-bold mb-6 bg-gradient-to-r from-white via-cyan-200 to-purple-200 bg-clip-text text-transparent">
+          <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-cyan-200 to-purple-200 bg-clip-text text-transparent">
             Portfolio
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            磁場シミュレーションで体験する、インタラクティブなプロジェクトポートフォリオ
+            革新的なソリューションで創り上げた、プロジェクト実績をご紹介
           </p>
-          <div className="mt-8 text-sm text-gray-400">
-            <Zap className="inline w-4 h-4 mr-2" />
-            マウスを動かして、カードとインタラクションしてみてください
+          <div className="mt-6 text-sm text-gray-400">
+            カードにホバーして詳細をご覧ください
           </div>
         </motion.div>
 
-        {/* Magnetic Field Container */}
-        <div 
-          ref={containerRef}
-          className="relative w-full h-[600px] mx-auto"
-          style={{ perspective: '1000px' }}
-        >
+        {/* Portfolio Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {portfolioProjects.map((project, index) => (
-            <MagneticCard
-              key={project.id}
-              project={project}
-              index={index}
-              mousePos={mousePos}
-              containerRef={containerRef}
-              onHover={handleCardHover}
-              hoveredCard={hoveredCard}
-            />
+            <FlipCard key={project.id} project={project} index={index} />
           ))}
         </div>
 
-        {/* Information Panel */}
-        <AnimatePresence>
-          {hoveredCard && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-xl border border-white/20 rounded-2xl p-6 max-w-md z-50"
-            >
-              {(() => {
-                const project = portfolioProjects.find(p => p.id === hoveredCard);
-                return project ? (
-                  <>
-                    <h3 className="text-white font-bold mb-2">{project.title}</h3>
-                    <p className="text-gray-300 text-sm mb-3">{project.description}</p>
-                    {project.achievements && (
-                      <div>
-                        <h4 className="text-cyan-300 text-sm font-semibold mb-2">主な成果</h4>
-                        <ul className="text-gray-400 text-xs space-y-1">
-                          {project.achievements.map((achievement, index) => (
-                            <li key={index} className="flex items-center gap-2">
-                              <Star className="w-3 h-3 text-yellow-400 flex-shrink-0" />
-                              {achievement}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </>
-                ) : null;
-              })()}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Additional Info */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="text-center mt-16"
+        >
+          <p className="text-gray-400 mb-6">
+            これらのプロジェクトは、お客様のビジネス成長と技術革新への貢献の証です
+          </p>
+          <motion.button
+            className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-8 py-3 rounded-full font-semibold hover:from-cyan-400 hover:to-purple-400 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            もっと見る
+          </motion.button>
+        </motion.div>
       </div>
 
       <style dangerouslySetInnerHTML={{
         __html: `
-          @keyframes grid-move {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
+          .perspective-1000 {
+            perspective: 1000px;
           }
           
-          .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+          .transform-style-preserve-3d {
+            transform-style: preserve-3d;
+          }
+          
+          .backface-hidden {
+            backface-visibility: hidden;
           }
         `
       }} />
