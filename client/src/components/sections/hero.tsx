@@ -231,12 +231,10 @@ export default function Hero() {
                           }}
                           className={`${char === " " ? "inline-block w-1" : "inline-block"} ${
                             isCRUD5thChar 
-                              ? "text-transparent font-bold text-lg tracking-wider" 
+                              ? "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-bold text-xl tracking-wider drop-shadow-lg" 
                               : ""
                           }`}
                           style={{
-                            WebkitTextStroke: isCRUD5thChar ? '2px rgba(46, 184, 207, 0.9)' : undefined,
-                            textStroke: isCRUD5thChar ? '2px rgba(46, 184, 207, 0.9)' : undefined,
                             textShadow: isCRUD5thChar ? '0 0 20px rgba(46, 184, 207, 0.6), 0 0 40px rgba(46, 184, 207, 0.3)' : undefined
                           }}
                         >
