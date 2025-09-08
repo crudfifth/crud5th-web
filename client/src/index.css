@@ -696,41 +696,39 @@
 /* Portfolio section responsive adjustments */
 @media (max-width: 768px) {
   .portfolio-container {
-    height: 400px;
+    height: 500px;
+    perspective: 1200px;
   }
   
   .portfolio-card {
-    --r: 250px; /* Smaller radius for mobile */
-    --z-offset: 300px; /* Reduced depth */
-    left: calc(50% - 120px); /* Smaller card width centering */
-  }
-  
-  .glassmorphism-card {
-    width: 240px;
-    height: 300px;
-    padding: 1rem;
+    --r: 200px; /* Smaller radius for mobile */
+    width: 200px;
+    height: 280px;
+    margin-left: -100px;
+    margin-top: -140px;
   }
   
   .portfolio-center {
-    transform: translate(-50%, -50%) scale(0.8);
+    transform: translate(-50%, -50%) translateZ(30px) scale(0.8);
   }
 }
 
 @media (max-width: 480px) {
   .portfolio-container {
-    height: 350px;
+    height: 400px;
+    perspective: 1000px;
   }
   
   .portfolio-card {
-    --r: 180px;
-    --z-offset: 200px;
-    left: calc(50% - 100px);
+    --r: 150px;
+    width: 180px;
+    height: 250px;
+    margin-left: -90px;
+    margin-top: -125px;
   }
   
-  .glassmorphism-card {
-    width: 200px;
-    height: 280px;
-    padding: 0.8rem;
+  .portfolio-center {
+    transform: translate(-50%, -50%) translateZ(20px) scale(0.7);
   }
 }
 
