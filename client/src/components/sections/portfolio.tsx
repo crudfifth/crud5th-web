@@ -187,7 +187,7 @@ function MagneticCard({ project, index, mousePos, containerRef, onHover, hovered
   }, [mousePos, position, velocity, index]);
 
   const isHovered = hoveredCard === project.id;
-  const categoryColors = {
+  const categoryColors: Record<string, string> = {
     "受託開発": "from-blue-500/30 to-cyan-500/20",
     "自社サービス": "from-purple-500/30 to-pink-500/20", 
     "コンサル": "from-green-500/30 to-emerald-500/20"
@@ -478,19 +478,21 @@ export default function Portfolio() {
         </AnimatePresence>
       </div>
 
-      <style jsx>{`
-        @keyframes grid-move {
-          0% { transform: translate(0, 0); }
-          100% { transform: translate(50px, 50px); }
-        }
-        
-        .line-clamp-2 {
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-      `}</style>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+          }
+          
+          .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+        `
+      }} />
     </section>
   );
 }
