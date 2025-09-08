@@ -140,13 +140,28 @@
   /* Select content and items styling */
   .contact-form [role="listbox"] {
     border-radius: 4px !important;
-    background: rgba(0, 0, 0, 0.9) !important;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
   }
   
   .contact-form [role="option"] {
-    border-radius: 4px !important;
+    border-radius: 2px !important;
+    color: white !important;
+    background: transparent !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  .contact-form [role="option"]:hover,
+  .contact-form [role="option"][data-highlighted] {
+    background: rgba(46, 184, 207, 0.2) !important;
+    color: white !important;
+  }
+  
+  .contact-form [role="option"][data-state="checked"] {
+    background: rgba(46, 184, 207, 0.3) !important;
+    color: white !important;
   }
 
   /* Enhanced gradient text with modern styling */

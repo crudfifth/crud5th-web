@@ -192,15 +192,15 @@ export default function Contact() {
                         <FormLabel className="text-white font-medium text-base mb-3 block">お問い合わせ種別</FormLabel>
                         <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
-                            <SelectTrigger className="bg-background/60 border-border hover:border-primary/60 focus:border-primary rounded-none text-foreground focus:ring-2 focus:ring-primary/20 transition-all duration-300 h-12 px-4" data-testid="select-category">
+                            <SelectTrigger className="glass-input text-white h-12 px-4" data-testid="select-category">
                               <SelectValue placeholder="選択してください" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent>
-                            <SelectItem value="受託開発" data-testid="option-freelance-development">受託開発</SelectItem>
-                            <SelectItem value="自社サービス開発" data-testid="option-web-service-development">自社サービス開発</SelectItem>
-                            <SelectItem value="DX・ITコンサル" data-testid="option-dx-consulting">DX・ITコンサル</SelectItem>
-                            <SelectItem value="その他" data-testid="option-other">その他</SelectItem>
+                          <SelectContent className="bg-black/85 backdrop-blur-xl border-white/15 text-white">
+                            <SelectItem value="受託開発" data-testid="option-freelance-development" className="text-white hover:bg-primary/20 focus:bg-primary/20">受託開発</SelectItem>
+                            <SelectItem value="自社サービス開発" data-testid="option-web-service-development" className="text-white hover:bg-primary/20 focus:bg-primary/20">自社サービス開発</SelectItem>
+                            <SelectItem value="DX・ITコンサル" data-testid="option-dx-consulting" className="text-white hover:bg-primary/20 focus:bg-primary/20">DX・ITコンサル</SelectItem>
+                            <SelectItem value="その他" data-testid="option-other" className="text-white hover:bg-primary/20 focus:bg-primary/20">その他</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage className="text-destructive mt-2" />
