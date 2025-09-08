@@ -3,6 +3,7 @@ import ScrollReveal, { RevealOnScroll, SlideInLeft, ScaleIn } from "@/components
 import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
 import { Github } from "lucide-react";
 import { SiX } from "react-icons/si";
+import takahashiImage from '@assets/image_1757302635700.jpeg';
 
 const teamMembers = [
   {
@@ -10,7 +11,7 @@ const teamMembers = [
     role: "Lead Engineer",
     description: "フルスタック開発とプロジェクトマネジメントを得意とし、チーム全体の技術戦略を牽引。",
     initials: "高綱",
-    image: "/attached_assets/image_1757302635700.jpeg",
+    image: takahashiImage,
     social: {
       twitter: "https://x.com/CRUD5th",
       github: "https://github.com/crudfifth"
