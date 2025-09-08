@@ -333,11 +333,12 @@ export default function Portfolio() {
         <div className="helix" ref={sectionRef}>
           <div className="pin">
             <div className="stage">
-              <div 
-                className="ring" 
-                ref={ringRef}
-                style={{ "--rot": "0deg" } as React.CSSProperties}
-              >
+              <div className="hub">
+                <div 
+                  className="ring" 
+                  ref={ringRef}
+                  style={{ "--rot": "0deg" } as React.CSSProperties}
+                >
                 {portfolioProjects.map((project, index) => {
                   const isActive = activeCards.has(project.id);
                   
@@ -416,6 +417,7 @@ export default function Portfolio() {
                     </article>
                   );
                 })}
+                </div>
               </div>
             </div>
           </div>
