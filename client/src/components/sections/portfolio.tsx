@@ -622,9 +622,9 @@ export default function Portfolio() {
           className="mt-12 flex flex-wrap justify-center items-center gap-6"
         >
           {Object.entries(categoryColors).map(([category, gradient]) => (
-            <div key={category} className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full">
-              <div className={`w-3 h-3 rounded-full bg-gradient-to-br ${gradient} border border-white/20`} />
-              <span className="text-sm text-gray-300 capitalize whitespace-nowrap">{category}</span>
+            <div key={category} className="flex items-center gap-2">
+              <div className={`w-4 h-4 rounded bg-gradient-to-br ${gradient} border border-white/20`} />
+              <span className="text-sm text-gray-400 capitalize whitespace-nowrap">{category}</span>
             </div>
           ))}
         </motion.div>
