@@ -522,21 +522,86 @@
   background: hsl(var(--primary) / 0.1);
 }
 
-/* Portfolio Spiral 3D Effects */
-.portfolio-spiral {
-  transform-style: preserve-3d;
-  perspective: 1200px;
+/* Portfolio Circular 3D Effects */
+.portfolio-container {
   position: relative;
   width: 100%;
   height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.portfolio-circle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
 }
 
 .portfolio-card {
+  --r: 350px; /* Circle radius */
+  --z-offset: 500px; /* Z-axis offset for 3D depth */
+  --rotate-deg: calc(360 / var(--card-count)); /* Individual card rotation (degrees) */
+  
+  position: absolute;
+  top: 0;
+  left: calc(50% - 144px); /* Center horizontally (card width 288px / 2) */
   transform-style: preserve-3d;
+  list-style: none;
+}
+
+.portfolio-card .card-face {
+  position: absolute;
   backface-visibility: hidden;
+  pointer-events: auto;
+}
+
+/* Front face positioning with circular layout */
+.portfolio-card .front {
+  transform: 
+    rotateY(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg))
+    translateZ(calc(cos(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r) - var(--z-offset)))
+    translateX(calc(sin(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r)));
+}
+
+/* Back face positioning (180 degrees rotated) */
+.portfolio-card .back {
+  transform: 
+    rotateY(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg)) + 180) * 1deg))
+    translateZ(calc(cos(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r) - var(--z-offset)))
+    translateX(calc(sin(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r)));
+}
+
+/* Flipped state */
+.portfolio-card.is-flipped .front {
+  transform: 
+    rotateY(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg)) + 179.9) * 1deg))
+    translateZ(calc(cos(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r) - var(--z-offset)))
+    translateX(calc(sin(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r)));
+}
+
+.portfolio-card.is-flipped .back {
+  transform: 
+    rotateY(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg)) + 359.9) * 1deg))
+    translateZ(calc(cos(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r) - var(--z-offset)))
+    translateX(calc(sin(calc((var(--base-deg, 0deg) + (var(--index) * var(--rotate-deg))) * 1deg)) * var(--r)));
+}
+
+/* Flip transition only when not scrolling */
+.portfolio-card:not(.scrolling) .card-face {
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.portfolio-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  pointer-events: none;
 }
 
 /* Glassmorphism Card Effects */

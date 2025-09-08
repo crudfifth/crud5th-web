@@ -81,7 +81,7 @@ const portfolioProjects: PortfolioProject[] = [
   }
 ];
 
-const categoryColors = {
+const categoryColors: Record<string, string> = {
   "受託開発": "from-blue-500/20 to-cyan-500/20",
   "自社サービス": "from-purple-500/20 to-pink-500/20", 
   "コンサル": "from-green-500/20 to-emerald-500/20"
