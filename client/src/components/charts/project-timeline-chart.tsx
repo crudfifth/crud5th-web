@@ -131,20 +131,44 @@ export default function ProjectTimelineChart() {
       .attr("stroke", "rgba(255, 255, 255, 0.2)")
       .attr("stroke-width", 1);
 
-    // Progress bars
-    bars.append("rect")
+    // Progress bars with neon glow effect
+    const progressBars = bars.append("rect")
       .attr("x", (d: ProjectData) => xScale(d.startDate))
       .attr("y", (d: ProjectData) => yScale(d.name)!)
       .attr("width", 0)
       .attr("height", yScale.bandwidth())
       .attr("fill", (d: ProjectData) => categoryColors[d.category])
       .attr("rx", 8)
-      .attr("opacity", 0.8)
+      .attr("opacity", 0)
+      .style("filter", (d: ProjectData) => `drop-shadow(0 0 8px ${categoryColors[d.category]}) drop-shadow(0 0 16px ${categoryColors[d.category]}40)`)
       .transition()
-      .duration(2000)
+      .duration(1500)
       .delay((d: ProjectData, i: number) => i * 300)
-      .ease(d3.easeElasticOut.amplitude(1).period(0.3))
-      .attr("width", (d: ProjectData) => (xScale(d.endDate) - xScale(d.startDate)) * (d.progress / 100));
+      .ease(d3.easeCubicOut)
+      .attr("width", (d: ProjectData) => (xScale(d.endDate) - xScale(d.startDate)) * (d.progress / 100))
+      .attr("opacity", 1)
+      .on("end", function(d: ProjectData, i: number) {
+        // Neon flicker effect after initial animation
+        const element = d3.select(this);
+        const color = categoryColors[d.category];
+        element
+          .transition()
+          .duration(150)
+          .attr("opacity", 0.6)
+          .style("filter", `drop-shadow(0 0 4px ${color}) drop-shadow(0 0 12px ${color}60)`)
+          .transition()
+          .duration(100)
+          .attr("opacity", 1)
+          .style("filter", `drop-shadow(0 0 12px ${color}) drop-shadow(0 0 24px ${color}80)`)
+          .transition()
+          .duration(200)
+          .attr("opacity", 0.8)
+          .style("filter", `drop-shadow(0 0 8px ${color}) drop-shadow(0 0 16px ${color}40)`)
+          .transition()
+          .duration(150)
+          .attr("opacity", 1)
+          .style("filter", `drop-shadow(0 0 10px ${color}) drop-shadow(0 0 20px ${color}60)`);
+      });
 
     // Progress text
     bars.append("text")
