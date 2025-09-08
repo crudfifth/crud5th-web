@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
 import OpeningAnimation from "@/components/animations/opening-animation";
+import Preloader from "@/components/preloader";
 
 function Router() {
   return (
@@ -18,7 +19,12 @@ function Router() {
 }
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
   const [showOpening, setShowOpening] = useState(true);
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+  };
 
   const handleOpeningComplete = () => {
     setShowOpening(false);
@@ -28,7 +34,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        {showOpening ? (
+        {isLoading ? (
+          <Preloader onComplete={handleLoadingComplete} />
+        ) : showOpening ? (
           <OpeningAnimation onComplete={handleOpeningComplete} />
         ) : (
           <Router />

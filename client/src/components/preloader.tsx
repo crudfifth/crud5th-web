@@ -28,11 +28,21 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         setLoadingText('Loading video assets...');
         const videoPromise = new Promise((resolve, reject) => {
           const video = document.createElement('video');
-          video.src = '/src/assets/Blue Modern Technology YouTube Intro_1756887855888.mp4';
-          video.preload = 'auto';
-          video.onloadeddata = resolve;
-          video.onerror = reject;
-          video.load();
+          // Video will be loaded via Hero component
+          // We'll check if it exists and is ready
+          setTimeout(() => {
+            const heroVideo = document.querySelector('video');
+            if (heroVideo) {
+              if (heroVideo.readyState >= 3) {
+                resolve(true);
+              } else {
+                heroVideo.addEventListener('loadeddata', () => resolve(true), { once: true });
+              }
+            } else {
+              // If no video element yet, just continue
+              resolve(true);
+            }
+          }, 100);
         });
         
         await videoPromise;
