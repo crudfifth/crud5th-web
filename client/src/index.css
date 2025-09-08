@@ -841,13 +841,13 @@
 
 :root {
   /* レイアウト可変パラメータ */
-  --N: 10;                  /* カード枚数（JSで実数に更新） */
+  --N: 5;                   /* ★ ひとまず5枚 */
   --angle: calc(360deg / var(--N));
-  --card-w: clamp(220px, 24vw, 300px);   /* レスポンシブサイズ */
+  --card-w: clamp(220px, 22vw, 280px);   /* レスポンシブサイズ */
   --card-ratio: 0.8;                      /* 4:5 比率 */
   --card-h: calc(var(--card-w) / var(--card-ratio));
   --thickness: 16px;        /* 厚み：Z方向 */
-  --gap-px: 14px;           /* カード間クリアランス */
+  --gap-px: 16px;           /* センター間に最低の余白 */
   --radius: 620px;          /* 円半径（JS自動計算） */
   --perspective: 1800px;    /* 立体感 */
   --gap-v: 150vh;           /* ピン留め区間の高さ増分（＝回転距離） */
@@ -874,22 +874,34 @@
   overflow: visible;
 }
 .stage {
-  position: absolute; 
+  position: absolute;
   inset: 0;
-  display: grid; 
+  display: grid;
   place-items: center;
   perspective: var(--perspective);
+  perspective-origin: 50% 50%; /* ★ 追加 */
   /* 祖先にtransformを付けない：3Dを潰さないため */
   overflow: visible;
 }
+/* 中央に"ハブ"を置いてから、その内側だけを回転させる */
+.hub {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: visible;
+}
+
 .ring {
-  position: relative;
-  width: 1px; 
-  height: 1px; /* 中心基準 */
+  width: 0;
+  height: 0; /* 中心点のみ */
+  transform-origin: 50% 50% 0; /* ★ 回転の基点を固定 */
+  transform: translate(-50%, -50%) rotateY(var(--rot, 0deg)); /* ★ 中央固定+回転 */
+  position: absolute;
+  left: 50%;
+  top: 50%; /* ★ 物理的に中央へ */
   transform-style: preserve-3d;
   will-change: transform;
-  /* リングの回転（ここだけをJSで回す） */
-  transform: rotateY(var(--rot, 0deg));
 }
 
 /* ========= 3Dカード本体（6面体） ========= */
