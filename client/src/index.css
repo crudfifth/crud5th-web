@@ -3,6 +3,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* GPU acceleration for animations */
+.animate-fade-in,
+.animate-slide-up,
+.animate-scale,
+[data-animate] {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
 :root {
   /* Modern Dark Theme - matches opening animation */
   --background: hsl(217 20% 8%);
