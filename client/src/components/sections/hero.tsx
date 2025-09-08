@@ -28,7 +28,10 @@ export default function Hero() {
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Enhanced Background Video with parallax */}
       <motion.div 
-        style={{ y }}
+        style={{ 
+          y,
+          willChange: 'transform'
+        }}
         className="absolute inset-0 w-full h-full"
       >
         <video 
@@ -36,7 +39,12 @@ export default function Hero() {
           muted 
           loop 
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover z-0 scale-110"
+          style={{
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden'
+          }}
           data-testid="hero-background-video"
         >
           <source src={videoSrc} type="video/mp4" />
@@ -54,6 +62,10 @@ export default function Hero() {
         {/* Floating geometric shapes */}
         <motion.div 
           className="absolute top-1/4 left-1/4 w-80 h-80 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent rounded-full blur-3xl"
+          style={{
+            willChange: 'transform, opacity',
+            transform: 'translateZ(0)'
+          }}
           animate={{ 
             scale: [1, 1.3, 1],
             opacity: [0.4, 0.8, 0.4],
@@ -67,6 +79,10 @@ export default function Hero() {
         />
         <motion.div 
           className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-tl from-accent/15 via-accent/8 to-transparent rounded-full blur-3xl"
+          style={{
+            willChange: 'transform, opacity',
+            transform: 'translateZ(0)'
+          }}
           animate={{ 
             scale: [1, 0.7, 1],
             opacity: [0.3, 0.6, 0.3],
@@ -81,6 +97,10 @@ export default function Hero() {
         />
         <motion.div 
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-primary/15 to-accent/15 rounded-full blur-2xl"
+          style={{
+            willChange: 'transform, opacity',
+            transform: 'translate3d(-50%, -50%, 0)'
+          }}
           animate={{ 
             scale: [0.8, 1.1, 0.8],
             opacity: [0.2, 0.5, 0.2]
@@ -98,6 +118,10 @@ export default function Hero() {
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/5 rounded-full" />
           <motion.div 
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-white/3 rounded-full"
+            style={{
+              willChange: 'transform',
+              transform: 'translate3d(-50%, -50%, 0)'
+            }}
             animate={{ rotate: 360 }}
             transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
           />
