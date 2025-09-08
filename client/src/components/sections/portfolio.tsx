@@ -16,13 +16,6 @@ interface ServiceNode {
   position: { x: number; y: number };
   icon: React.ReactNode;
   connections: string[];
-  details?: {
-    overview: string;
-    features: string[];
-    githubUrl?: string;
-    demoUrl?: string;
-    techStack: string[];
-  };
 }
 
 const serviceNodes: ServiceNode[] = [
@@ -36,13 +29,7 @@ const serviceNodes: ServiceNode[] = [
     status: "active",
     position: { x: 800, y: 150 },
     icon: <Globe className="w-5 h-5" />,
-    connections: ["raft-core", "etheria", "cloud-nas"],
-    details: {
-      overview: "CRUD5thの公式コーポレートサイト。最新技術を駆使したモダンなWebサイトです。",
-      features: ["レスポンシブデザイン", "高速表示", "SEO最適化", "アクセシビリティ対応"],
-      demoUrl: "/",
-      techStack: ["React 18", "TypeScript", "Vite", "Tailwind CSS", "Framer Motion"]
-    }
+    connections: ["raft-core", "etheria", "cloud-nas"]
   },
 
   {
@@ -128,13 +115,7 @@ const serviceNodes: ServiceNode[] = [
     status: "active",
     position: { x: 200, y: 350 },
     icon: <Brain className="w-5 h-5" />,
-    connections: ["design-system", "video-edit", "donation-system"],
-    details: {
-      overview: "クリエイターのための包括的なプラットフォーム。作品制作から収益化まで一貫してサポートします。",
-      features: ["作品管理", "コラボレーション機能", "収益分析", "ファン交流"],
-      githubUrl: "https://github.com/crud5th/etheria",
-      techStack: ["Vue.js 3", "WebGL", "Three.js", "Node.js", "PostgreSQL"]
-    }
+    connections: ["design-system", "video-edit", "donation-system"]
   },
 
   {
@@ -226,103 +207,12 @@ interface NodeCardProps {
   isHighlighted: boolean;
   onHover: (nodeId: string | null) => void;
   highlightedConnections: Set<string>;
-  onClick?: (nodeId: string) => void;
-  isDetailView?: boolean;
 }
 
-function NodeCard({ node, isHighlighted, onHover, highlightedConnections, onClick, isDetailView }: NodeCardProps) {
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (onClick) {
-      onClick(node.id);
-    }
-  };
-
-  if (isDetailView && node.details) {
-    // 詳細表示モード
-    return (
-      <motion.div
-        className="absolute cursor-pointer z-50"
-        style={{
-          left: node.position.x,
-          top: node.position.y,
-          transform: 'translate(-50%, -50%)'
-        }}
-        onMouseEnter={() => onHover(node.id)}
-        onMouseLeave={() => onHover(null)}
-        onClick={handleClick}
-        initial={{ scale: 1 }}
-        animate={{ scale: 1.5, zIndex: 100 }}
-        transition={{ duration: 0.3 }}
-      >
-        <div 
-          className={`
-            w-[240px] min-h-[140px] rounded-xl border-2
-            bg-gradient-to-br ${categoryColors[node.category]}
-            backdrop-blur-sm
-            border-cyan-400/70 shadow-xl shadow-cyan-400/30
-          `}
-        >
-          <div className="p-4 h-full flex flex-col">
-            {/* Header */}
-            <div className="flex items-center gap-2 mb-3">
-              <div className="p-1.5 bg-white/15 rounded-lg">
-                {node.icon}
-              </div>
-              <span className="text-sm font-bold text-white">
-                {node.title}
-              </span>
-            </div>
-
-            {/* Overview */}
-            <p className="text-xs text-gray-200 mb-3 leading-relaxed">
-              {node.details.overview}
-            </p>
-
-            {/* Features */}
-            <div className="mb-3">
-              <h4 className="text-xs font-semibold text-cyan-300 mb-1">主要機能</h4>
-              <ul className="text-[10px] text-gray-300 space-y-0.5">
-                {node.details.features.slice(0, 3).map((feature, index) => (
-                  <li key={index}>• {feature}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Links */}
-            <div className="flex gap-2 mt-auto">
-              {node.details.githubUrl && (
-                <a 
-                  href={node.details.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-2 py-1 text-[10px] bg-black/30 text-cyan-300 rounded border border-cyan-400/30 hover:bg-cyan-400/20 transition-colors"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  GitHub
-                </a>
-              )}
-              {node.details.demoUrl && (
-                <a 
-                  href={node.details.demoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-2 py-1 text-[10px] bg-black/30 text-green-300 rounded border border-green-400/30 hover:bg-green-400/20 transition-colors"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Demo
-                </a>
-              )}
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    );
-  }
-  // 通常表示モード
+function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: NodeCardProps) {
   return (
     <motion.div
-      className={`absolute w-[72px] h-[40px] cursor-pointer group ${isHighlighted ? 'z-30' : 'z-10'}`}
+      className={`absolute w-72 h-40 cursor-pointer group ${isHighlighted ? 'z-30' : 'z-10'}`}
       style={{
         left: node.position.x,
         top: node.position.y,
@@ -330,7 +220,6 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections, onClic
       }}
       onMouseEnter={() => onHover(node.id)}
       onMouseLeave={() => onHover(null)}
-      onClick={handleClick}
       whileHover={{ scale: 1.05, z: 50 }}
       animate={{
         scale: isHighlighted ? 1.02 : 1,
@@ -341,66 +230,96 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections, onClic
       transition={{ duration: 0.3 }}
       data-testid={`service-node-${node.id}`}
     >
-      <div 
-        className={`
-          w-[72px] h-[40px] rounded-xl border
-          bg-gradient-to-br ${categoryColors[node.category]}
-          backdrop-blur-sm transition-all duration-300
-          ${isHighlighted 
-            ? 'border-cyan-400/70 shadow-lg shadow-cyan-400/20 scale-110' 
-            : 'border-white/30 hover:border-white/50'
-          }
-        `}
-      >
+      <div className={`relative h-full bg-gradient-to-br ${categoryColors[node.category]} backdrop-blur-md border border-white/20 rounded-2xl p-4 overflow-hidden`}>
+        {/* Glow Effect */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-2xl"
+          animate={{ opacity: isHighlighted ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+        />
+
         {/* Status Indicator */}
-        <div className={`absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 border-slate-800 ${
-          node.status === 'active' ? 'bg-green-400' :
-          node.status === 'development' ? 'bg-yellow-400' :
-          'bg-gray-400'
-        }`} />
+        <div className="absolute top-3 right-3">
+          <div className={`w-3 h-3 rounded-full ${
+            node.status === "active" ? "bg-green-400 animate-pulse" :
+            node.status === "development" ? "bg-yellow-400 animate-pulse" :
+            "bg-purple-400 animate-pulse"
+          }`} />
+        </div>
 
-        <div className="p-2 h-full flex flex-col">
-          {/* Header */}
-          <div className="flex items-center gap-1 mb-1">
+        {/* Icon & Title */}
+        <div className="flex items-start gap-3 mb-2">
+          <div className="p-2 bg-white/15 rounded-lg border border-white/20">
             {node.icon}
-            <span className="text-xs font-semibold text-white truncate flex-1">
-              {node.title}
-            </span>
           </div>
-
-          {/* Description */}
-          <p className="text-[10px] text-gray-200 line-clamp-3 leading-tight mb-1">
-            {node.description}
-          </p>
-
-          {/* Technologies */}
-          <div className="flex flex-wrap gap-0.5 mt-auto">
-            {node.technologies.slice(0, 4).map((tech, index) => (
-              <span 
-                key={index}
-                className="px-1 py-0.5 text-[8px] bg-black/20 text-gray-200 rounded border border-white/20"
-              >
-                {tech}
-              </span>
-            ))}
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base font-bold text-white truncate">{node.title}</h3>
+            <p className="text-sm text-white/70 capitalize">{node.category}</p>
           </div>
         </div>
 
-        {/* Connection Points */}
-        {node.connections.map((_, index) => {
+        {/* Description */}
+        <p className="text-sm text-white/80 leading-relaxed mb-4 line-clamp-3">
+          {node.description}
+        </p>
+
+        {/* Technologies */}
+        <div className="flex flex-wrap gap-1.5">
+          {node.technologies.slice(0, 4).map((tech, index) => (
+            <span key={index} className="text-xs px-2.5 py-1 bg-white/15 rounded-full text-white/90 border border-white/20">
+              {tech}
+            </span>
+          ))}
+          {node.technologies.length > 4 && (
+            <span className="text-xs px-2.5 py-1 bg-white/10 rounded-full text-white/60">
+              +{node.technologies.length - 4}
+            </span>
+          )}
+        </div>
+
+        {/* Connection Points - positioned on card edges */}
+        {node.connections.map((connectionId, index) => {
+          // カードの境界線上に配置（上下左右の辺に分散）
           const totalConnections = node.connections.length;
-          const angle = (index / totalConnections) * 2 * Math.PI;
-          const radius = 36; // Half of width/height
-          const x = Math.cos(angle) * radius;
-          const y = Math.sin(angle) * radius;
+          const cardWidth = 288; // w-72 = 288px
+          const cardHeight = 160; // h-40 = 160px
+          
+          let x, y;
+          
+          // 接続数に応じて辺に分散配置
+          if (index < Math.ceil(totalConnections / 4)) {
+            // 上辺
+            x = (cardWidth / (Math.ceil(totalConnections / 4) + 1)) * (index + 1) - cardWidth / 2;
+            y = -cardHeight / 2;
+          } else if (index < Math.ceil(totalConnections / 2)) {
+            // 右辺
+            const rightIndex = index - Math.ceil(totalConnections / 4);
+            x = cardWidth / 2;
+            y = (cardHeight / (Math.ceil(totalConnections / 4) + 1)) * (rightIndex + 1) - cardHeight / 2;
+          } else if (index < Math.ceil(totalConnections * 3 / 4)) {
+            // 下辺
+            const bottomIndex = index - Math.ceil(totalConnections / 2);
+            x = cardWidth / 2 - (cardWidth / (Math.ceil(totalConnections / 4) + 1)) * (bottomIndex + 1);
+            y = cardHeight / 2;
+          } else {
+            // 左辺
+            const leftIndex = index - Math.ceil(totalConnections * 3 / 4);
+            x = -cardWidth / 2;
+            y = cardHeight / 2 - (cardHeight / (Math.ceil(totalConnections / 4) + 1)) * (leftIndex + 1);
+          }
           
           return (
             <div
-              key={index}
-              className="absolute w-1.5 h-1.5 bg-cyan-400/60 rounded-full border border-white/40"
+              key={connectionId}
+              className={`absolute w-3 h-3 rounded-full border-2 border-white/60 transition-all duration-300 ${
+                highlightedConnections.has(connectionId) 
+                  ? 'bg-cyan-400 border-cyan-300 shadow-lg shadow-cyan-400/50' 
+                  : 'bg-white/30'
+              }`}
               style={{
-                left: `calc(50% + ${x}px - 3px)`,
-                top: `calc(50% + ${y}px - 3px)`,
+                left: `calc(50% + ${x}px)`,
+                top: `calc(50% + ${y}px)`,
+                transform: 'translate(-50%, -50%)'
               }}
             />
           );
@@ -469,7 +388,6 @@ function ConnectionLine({ from, to, isActive }: { from: ServiceNode, to: Service
 export default function Portfolio() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [detailViewNode, setDetailViewNode] = useState<string | null>(null);
   const [zoom, setZoom] = useState(0.6); // デフォルトで60%ズーム
   const [pan, setPan] = useState({ x: -50, y: -50 }); // 初期値を左上に調整
   const [isDragging, setIsDragging] = useState(false);
@@ -480,23 +398,22 @@ export default function Portfolio() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-200px" });
 
-  // 画面外クリック時のフォーカス解除と詳細表示解除
+  // 画面外クリック時のフォーカス解除
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsFocused(false);
-        setDetailViewNode(null);
       }
     };
 
-    if (isFocused || detailViewNode) {
+    if (isFocused) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isFocused, detailViewNode]);
+  }, [isFocused]);
 
   // ズーム・パン機能（フォーカス時のみ）
   const handleWheel = (e: React.WheelEvent) => {
@@ -555,15 +472,8 @@ export default function Portfolio() {
     <section 
       ref={sectionRef}
       id="portfolio" 
-      className="relative overflow-hidden"
+      className="py-24 bg-gradient-to-br from-slate-900 via-purple-900/10 to-slate-900 relative overflow-hidden"
     >
-      {/* グラデーションブラー境界 */}
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-transparent to-slate-900/50" />
-      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-slate-900 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-900 to-transparent" />
-      
-      <div className="relative py-24 bg-gradient-to-br from-slate-900/90 via-purple-900/5 to-slate-900/90">
-      
       {/* Background Grid */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
         <div 
@@ -692,8 +602,6 @@ export default function Portfolio() {
                     isHighlighted={hoveredNode === node.id || selectedNode === node.id || highlightedConnections.has(node.id)}
                     onHover={setHoveredNode}
                     highlightedConnections={highlightedConnections}
-                    onClick={setDetailViewNode}
-                    isDetailView={detailViewNode === node.id}
                   />
                 </motion.div>
               ))}
@@ -701,7 +609,7 @@ export default function Portfolio() {
           </div>
 
           {/* Zoom Level Indicator */}
-          <div className="absolute top-16 right-4 bg-black/50 backdrop-blur-sm rounded-lg px-3 py-2 text-xs text-white/70">
+          <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-lg px-3 py-2 text-xs text-white/70">
             ズーム: {Math.round(zoom * 100)}%
           </div>
         </div>
@@ -711,7 +619,7 @@ export default function Portfolio() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 1 }}
-          className="mt-12 flex flex-wrap items-center justify-center gap-6"
+          className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
         >
           {Object.entries(categoryColors).map(([category, gradient]) => (
             <div key={category} className="flex items-center gap-2">
@@ -720,7 +628,6 @@ export default function Portfolio() {
             </div>
           ))}
         </motion.div>
-      </div>
       </div>
 
       <style dangerouslySetInnerHTML={{
