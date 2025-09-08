@@ -4,7 +4,6 @@ import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
 import { ExternalLink, Github, Play, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Lenis from "lenis";
 
 interface PortfolioProject {
   id: number;
@@ -150,72 +149,86 @@ const categoryColors: Record<string, string> = {
 
 export default function Portfolio() {
   const { ref, isVisible } = useScrollAnimation();
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const cardListRef = useRef<HTMLUListElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
   const [activeCards, setActiveCards] = useState<Set<number>>(new Set());
-  const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    if (!wrapperRef.current || !cardListRef.current) return;
+    if (!sectionRef.current || !ringRef.current) return;
 
-    // Initialize Lenis with optimized settings for smooth rotation
-    const lenis = new Lenis({
-      autoRaf: true,
-      wrapper: wrapperRef.current,
-      wheelMultiplier: 0.15, // Reduced for smoother control
-      touchMultiplier: 0.3,
-      syncTouchLerp: 0.08, // Increased for smoother interpolation
-      syncTouch: true,
-      gestureOrientation: "both",
-      infinite: true,
-      smoothWheel: true, // Enhanced smooth scrolling
-      lerp: 0.1, // Smooth interpolation
-    });
+    const N = portfolioProjects.length;
+    const STEP = 360 / N;
+    let targetRot = 0;
+    let currentRot = 0;
+    let lastActive = -1;
+    let scrollStopTimer: NodeJS.Timeout | null = null;
 
-    lenisRef.current = lenis;
+    const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-    // Set initial rotation angle
-    let currentRotation = 0;
-    cardListRef.current.style.setProperty("--base-deg", `${currentRotation}`);
+    function updateTargetFromScroll() {
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const total = (sectionRef.current.offsetHeight - vh) || 1;
+      const passed = clamp((vh - rect.top) / total, 0, 1);
+      const turns = 1.0; // 1 full rotation
+      targetRot = -passed * (turns * 360);
+    }
 
-    // Optimized rotation with requestAnimationFrame
-    const STRENGTH = 0.2; // Reduced strength for smoother motion
-    let animationId: number;
-    let targetRotation = 0;
+    function markActive() {
+      if (!ringRef.current) return;
+      let idx = Math.round(((currentRot % 360) + 360) % 360 / STEP);
+      idx = ((-idx % N) + N) % N;
 
-    // Smooth rotation update function
-    const updateRotation = () => {
-      if (!cardListRef.current) return;
+      if (idx !== lastActive) {
+        const cards = ringRef.current.querySelectorAll('.card3d');
+        cards.forEach((card, i) => {
+          const active = i === idx;
+          card.classList.toggle('is-active', active);
+          card.setAttribute('aria-hidden', active ? 'false' : 'true');
+        });
+        lastActive = idx;
+      }
+    }
+
+    function onScroll() {
+      updateTargetFromScroll();
+      if (scrollStopTimer) clearTimeout(scrollStopTimer);
+      scrollStopTimer = setTimeout(() => {
+        // Soft snap to nearest card
+        const nearest = Math.round(targetRot / STEP) * STEP;
+        targetRot = nearest;
+      }, 120);
+    }
+
+    function animate() {
+      if (!ringRef.current) return;
       
-      // Smooth interpolation to target rotation
-      currentRotation += (targetRotation - currentRotation) * 0.1;
+      // Smooth interpolation with no layout reads/writes
+      currentRot = lerp(currentRot, targetRot, 0.12);
+      ringRef.current.style.setProperty('--rot', `${currentRot.toFixed(3)}deg`);
       
-      // Apply rotation with requestAnimationFrame for smooth updates
-      cardListRef.current.style.setProperty("--base-deg", `${currentRotation}`);
-      
-      animationId = requestAnimationFrame(updateRotation);
-    };
+      markActive();
+      requestAnimationFrame(animate);
+    }
 
-    // Start animation loop
-    updateRotation();
-
-    // Listen to scroll events with Lenis
-    lenis.on("scroll", (event: any) => {
-      // Update target rotation based on scroll velocity
-      targetRotation -= event.velocity * STRENGTH;
-    });
+    // Initialize
+    updateTargetFromScroll();
+    markActive();
+    animate();
+    
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', updateTargetFromScroll);
 
     return () => {
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-      }
-      lenis.destroy();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', updateTargetFromScroll);
+      if (scrollStopTimer) clearTimeout(scrollStopTimer);
     };
   }, []);
 
   const toggleCardFlip = (cardId: number) => {
-    if (lenisRef.current?.isScrolling) return; // Don't flip during scroll
-    
     setActiveCards(prev => {
       const newSet = new Set(prev);
       if (newSet.has(cardId)) {
@@ -276,147 +289,96 @@ export default function Portfolio() {
           </p>
         </motion.div>
 
-        {/* Circular Portfolio Cards - Exact reference implementation */}
-        <div className="scrollable" ref={wrapperRef}>
-          <ul 
-            className="cardList" 
-            ref={cardListRef}
-            style={{ "--card-count": portfolioProjects.length } as React.CSSProperties}
-          >
-            {portfolioProjects.map((project, index) => {
-              const isActive = activeCards.has(project.id);
-              
-              return (
-                <li
-                  key={project.id}
-                  className={`sampleCard ${isActive ? 'isActive' : ''}`}
-                  style={{ "--index": index } as React.CSSProperties}
-                  onClick={() => toggleCardFlip(project.id)}
-                  data-testid={`portfolio-card-${index}`}
-                >
-                  {/* Front Face */}
-                  <div className="face front">
-                    <div className="w-full h-full p-4 rounded-xl border border-gray-600 bg-slate-800 shadow-2xl relative overflow-hidden group cursor-pointer">
-                      {/* Background gradient based on category */}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-0 group-hover:opacity-30 transition-opacity duration-300 rounded-xl`} />
-                      
-                      {/* Content */}
-                      <div className="relative z-10 h-full flex flex-col">
-                        {/* Status badge */}
-                        <div className="flex justify-between items-start mb-3">
-                          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                            project.status === "完了" ? "bg-green-500/20 text-green-300 border border-green-500/30" :
-                            project.status === "進行中" ? "bg-blue-500/20 text-blue-300 border border-blue-500/30" :
-                            "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                          }`}>
-                            {project.status}
-                          </span>
-                          <span className="text-xs text-muted-foreground bg-secondary/30 px-2 py-1 rounded-full">
-                            {project.category}
-                          </span>
-                        </div>
-
-                        {/* Title and description */}
-                        <h3 className="text-lg font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">
-                          {project.title}
-                        </h3>
-                        <p className="text-sm text-gray-300 mb-3 leading-relaxed flex-1">
-                          {project.description}
-                        </p>
-
-                        {/* Technologies */}
-                        <div className="mb-3">
-                          <div className="flex flex-wrap gap-1">
-                            {project.technologies.slice(0, 3).map((tech, techIndex) => (
-                              <span 
-                                key={techIndex}
-                                className="text-xs px-2 py-1 bg-white/10 rounded-full text-cyan-200 border border-white/20"
-                              >
-                                {tech}
+        {/* Stable Circular Portfolio Cards with pin section */}
+        <div className="helix" ref={sectionRef}>
+          <div className="pin">
+            <div className="stage">
+              <div 
+                className="ring" 
+                ref={ringRef}
+                style={{ "--rot": "0deg" } as React.CSSProperties}
+              >
+                {portfolioProjects.map((project, index) => {
+                  const isActive = activeCards.has(project.id);
+                  
+                  return (
+                    <article
+                      key={project.id}
+                      className={`card3d ${isActive ? 'is-active' : ''}`}
+                      style={{ "--i": index } as React.CSSProperties}
+                      onClick={() => toggleCardFlip(project.id)}
+                      data-testid={`portfolio-card-${index}`}
+                    >
+                      <div className="box">
+                        {/* Front Face */}
+                        <div className="face front">
+                          <div className="content">
+                            <div className="flex justify-between items-start mb-3">
+                              <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                project.status === "完了" ? "bg-green-500/20 text-green-300 border border-green-500/30" :
+                                project.status === "進行中" ? "bg-blue-500/20 text-blue-300 border border-blue-500/30" :
+                                "bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                              }`}>
+                                {project.status}
                               </span>
-                            ))}
-                            {project.technologies.length > 3 && (
-                              <span className="text-xs px-2 py-1 bg-white/5 rounded-full text-gray-400">
-                                +{project.technologies.length - 3}
+                              <span className="text-xs text-muted-foreground bg-secondary/30 px-2 py-1 rounded-full">
+                                {project.category}
                               </span>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Flip indicator */}
-                        <div className="flex items-center justify-center gap-2 text-white/60 text-xs">
-                          <span>クリックで詳細</span>
-                        </div>
-                      </div>
-
-                      {/* Subtle glow effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/10 to-purple-400/0 opacity-0 group-hover:opacity-50 transition-opacity duration-500 rounded-xl" />
-                    </div>
-                  </div>
-
-                  {/* Back Face */}
-                  <div className="face back">
-                    <div className="w-full h-full p-4 rounded-xl border border-gray-600 bg-slate-800 shadow-2xl relative overflow-hidden group cursor-pointer">
-                      {/* Background gradient */}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-20 rounded-xl`} />
-                      
-                      {/* Content */}
-                      <div className="relative z-10 h-full flex flex-col">
-                        <div className="text-center mb-3">
-                          <h3 className="text-lg font-bold text-white mb-2">{project.title}</h3>
-                          <div className="w-12 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-400 mx-auto" />
-                        </div>
-
-                        {/* All Technologies */}
-                        <div className="mb-3">
-                          <h4 className="text-sm font-semibold text-cyan-300 mb-2">使用技術</h4>
-                          <div className="flex flex-wrap gap-1">
-                            {project.technologies.map((tech, techIndex) => (
-                              <span 
-                                key={techIndex}
-                                className="text-xs px-2 py-1 bg-white/15 rounded-full text-white border border-white/30"
-                              >
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Achievements */}
-                        {project.achievements && (
-                          <div className="mb-3 flex-1">
-                            <div className="flex items-center gap-1 mb-2">
-                              <Award className="w-3 h-3 text-yellow-400" />
-                              <h4 className="text-sm font-semibold text-yellow-300">主な成果</h4>
                             </div>
-                            <ul className="text-xs text-gray-200 space-y-1">
-                              {project.achievements.map((achievement, achIndex) => (
-                                <li key={achIndex} className="flex items-center gap-2">
-                                  <div className="w-1 h-1 bg-cyan-400 rounded-full flex-shrink-0" />
-                                  {achievement}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
 
-                        {/* Action buttons */}
-                        <div className="flex gap-2">
-                          <Button size="sm" variant="ghost" className="flex-1 text-xs bg-white/10 hover:bg-white/20 border border-white/20">
-                            <Play className="w-3 h-3 mr-1" />
-                            詳細
-                          </Button>
-                          <Button size="sm" variant="ghost" className="bg-white/10 hover:bg-white/20 border border-white/20">
-                            <ExternalLink className="w-3 h-3" />
-                          </Button>
+                            <h3 className="title">{project.title}</h3>
+                            <p className="desc">{project.description}</p>
+                            
+                            <div className="cta">
+                              <button className="btn secondary">詳細</button>
+                              <button className="btn">開く</button>
+                            </div>
+                          </div>
                         </div>
+                        
+                        {/* Back Face */}
+                        <div className="face back">
+                          <div className="content">
+                            <h3 className="title">{project.title}</h3>
+                            <div className="desc">
+                              <h4 className="text-sm font-semibold text-cyan-300 mb-2">使用技術</h4>
+                              <div className="flex flex-wrap gap-1 mb-3">
+                                {project.technologies.map((tech, techIndex) => (
+                                  <span key={techIndex} className="text-xs px-2 py-1 bg-white/15 rounded-full text-white border border-white/30">
+                                    {tech}
+                                  </span>
+                                ))}
+                              </div>
+                              
+                              {project.achievements && (
+                                <div>
+                                  <h4 className="text-sm font-semibold text-yellow-300 mb-2">主な成果</h4>
+                                  <ul className="text-xs text-gray-200 space-y-1">
+                                    {project.achievements.map((achievement, achIndex) => (
+                                      <li key={achIndex} className="flex items-center gap-2">
+                                        <div className="w-1 h-1 bg-cyan-400 rounded-full flex-shrink-0" />
+                                        {achievement}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Side faces for 3D thickness */}
+                        <div className="face left"></div>
+                        <div className="face right"></div>
+                        <div className="face top"></div>
+                        <div className="face bottom"></div>
                       </div>
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
