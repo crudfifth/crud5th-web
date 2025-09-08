@@ -230,7 +230,7 @@ export default function Contact() {
                   
                     <Button 
                       type="submit" 
-                      className="w-full bg-black/30 backdrop-blur-sm border border-white/20 text-white hover:bg-white/10 hover:border-primary/60 focus:bg-white/10 focus:border-primary transition-all duration-300 py-4 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none glass-input" 
+                      className="w-full bg-gradient-to-r from-primary/80 to-primary/60 backdrop-blur-sm border border-primary/40 text-white hover:from-primary hover:to-primary/80 hover:border-primary hover:shadow-primary/25 focus:from-primary focus:to-primary/80 focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all duration-300 py-4 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none rounded-md" 
                       disabled={contactMutation.isPending}
                       data-testid="button-submit"
                     >
