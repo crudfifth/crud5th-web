@@ -3,7 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { AnimatedLogo, AnimatedArrow } from "@/components/animations/svg-path-animation";
 import ParallaxSection from "@/components/animations/parallax-section";
 import TypingAnimation from "@/components/ui/typing-animation";
-import videoSrc from "@assets/Blue Modern Technology YouTube Intro_1756887855888.mp4";
+import videoSrc from "@assets/Blue Modern Technology YouTube Intro (1)_1757317613904.mp4";
 
 export default function Hero() {
   const { scrollY } = useScroll();

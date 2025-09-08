@@ -32,7 +32,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           video.muted = true;
           
           // Import video source dynamically
-          import('@assets/Blue Modern Technology YouTube Intro_1756887855888.mp4').then(module => {
+          import('@assets/Blue Modern Technology YouTube Intro (1)_1757317613904.mp4').then(module => {
             video.src = module.default;
             
             const handleLoad = () => {
