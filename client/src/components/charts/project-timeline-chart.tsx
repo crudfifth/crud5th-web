@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { motion } from 'framer-motion';
 
@@ -57,9 +57,31 @@ const categoryColors: Record<string, string> = {
 export default function ProjectTimelineChart() {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Intersection Observer for scroll-triggered animation
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isVisible) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.3, // Trigger when 30% of the element is visible
+        rootMargin: '-50px 0px' // Start animation slightly before entering viewport
+      }
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, [isVisible]);
 
   useEffect(() => {
-    if (!svgRef.current || !containerRef.current) return;
+    if (!svgRef.current || !containerRef.current || !isVisible) return;
 
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
@@ -242,7 +264,7 @@ export default function ProjectTimelineChart() {
       .delay(1000)
       .attr("opacity", 1);
 
-  }, []);
+  }, [isVisible]);
 
   return (
     <motion.div 
