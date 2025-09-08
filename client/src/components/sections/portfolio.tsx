@@ -88,7 +88,7 @@ const serviceNodes: ServiceNode[] = [
     description: "フリーランス向け業務管理",
     technologies: ["React", "Express"],
     status: "active",
-    position: { x: 1300, y: 650 },
+    position: { x: 1400, y: 700 },
     icon: <Shield className="w-5 h-5" />,
     connections: ["crud5th-act", "enda"]
   },
@@ -150,7 +150,7 @@ const serviceNodes: ServiceNode[] = [
     description: "SES営業推進・案件マッチング支援",
     technologies: ["React", "AI/ML"],
     status: "active",
-    position: { x: 650, y: 350 },
+    position: { x: 650, y: 420 },
     icon: <Users className="w-5 h-5" />,
     connections: ["crud5th-act", "communication-system", "enda"]
   },
