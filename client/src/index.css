@@ -122,7 +122,7 @@
 
   /* Glass morphism contact form */
   .glass-input {
-    border-radius: 0 !important;
+    border-radius: 4px !important;
     background: rgba(0, 0, 0, 0.3) !important;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
@@ -135,6 +135,18 @@
   .glass-input:focus {
     border-color: rgba(46, 184, 207, 1) !important;
     box-shadow: 0 0 0 2px rgba(46, 184, 207, 0.3) !important;
+  }
+
+  /* Select content and items styling */
+  .contact-form [role="listbox"] {
+    border-radius: 4px !important;
+    background: rgba(0, 0, 0, 0.9) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .contact-form [role="option"] {
+    border-radius: 4px !important;
   }
 
   /* Enhanced gradient text with modern styling */
