@@ -155,12 +155,12 @@
   
   .contact-form [role="option"]:hover,
   .contact-form [role="option"][data-highlighted] {
-    background: rgba(46, 184, 207, 0.2) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
     color: white !important;
   }
   
   .contact-form [role="option"][data-state="checked"] {
-    background: rgba(46, 184, 207, 0.3) !important;
+    background: rgba(46, 184, 207, 0.15) !important;
     color: white !important;
   }
 

@@ -197,10 +197,10 @@ export default function Contact() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="bg-black/85 backdrop-blur-xl border-white/15 text-white">
-                            <SelectItem value="受託開発" data-testid="option-freelance-development" className="text-white hover:bg-primary/20 focus:bg-primary/20">受託開発</SelectItem>
-                            <SelectItem value="自社サービス開発" data-testid="option-web-service-development" className="text-white hover:bg-primary/20 focus:bg-primary/20">自社サービス開発</SelectItem>
-                            <SelectItem value="DX・ITコンサル" data-testid="option-dx-consulting" className="text-white hover:bg-primary/20 focus:bg-primary/20">DX・ITコンサル</SelectItem>
-                            <SelectItem value="その他" data-testid="option-other" className="text-white hover:bg-primary/20 focus:bg-primary/20">その他</SelectItem>
+                            <SelectItem value="受託開発" data-testid="option-freelance-development" className="text-white hover:bg-white/10 focus:bg-white/10">受託開発</SelectItem>
+                            <SelectItem value="自社サービス開発" data-testid="option-web-service-development" className="text-white hover:bg-white/10 focus:bg-white/10">自社サービス開発</SelectItem>
+                            <SelectItem value="DX・ITコンサル" data-testid="option-dx-consulting" className="text-white hover:bg-white/10 focus:bg-white/10">DX・ITコンサル</SelectItem>
+                            <SelectItem value="その他" data-testid="option-other" className="text-white hover:bg-white/10 focus:bg-white/10">その他</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage className="text-destructive mt-2" />
