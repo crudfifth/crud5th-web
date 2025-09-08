@@ -543,8 +543,8 @@ export default function Portfolio() {
             <svg 
               className="absolute pointer-events-none" 
               style={{ 
-                width: '1500px', 
-                height: '850px',
+                width: '1800px', 
+                height: '950px',
                 left: '50%',
                 top: '50%',
                 transform: 'translate(-50%, -50%)',
@@ -575,8 +575,8 @@ export default function Portfolio() {
             <div 
               className="absolute pointer-events-none"
               style={{
-                width: '1500px',
-                height: '850px',
+                width: '1800px',
+                height: '950px',
                 left: '50%',
                 top: '50%',
                 transform: 'translate(-50%, -50%)'
