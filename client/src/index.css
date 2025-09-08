@@ -836,3 +836,86 @@
   }
 }
 
+/* ===== Circular Cards Portfolio Implementation ===== */
+/* Based on reference: https://web-motion-catalog.com/samples/circlecards/ */
+
+.scrollable {
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  position: relative;
+}
+
+.cardList {
+  --base-deg: 0; /* 円周の回転角度（度） */
+  
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* カード要素へのインタラクションを有効化するため、ラッパー要素はインタラクションが透過するよう設定 */
+  transform-style: preserve-3d;
+  perspective: 500px;
+}
+
+.sampleCard {
+  /* 実際に配置する大きさなどに応じて適宜変更してください */
+  --r: 450px; /* 円周の半径 */
+  --z-offset: 600px; /* 円周の奥行き方向の距離 */
+  --rotate-deg: calc(360 / var(--card-count)); /* 個別のカードの回転角度（度） */
+
+  position: fixed;
+  top: 50%;
+  left: calc(50% - 120px); /* 50%の位置からカードの横幅の半分で中央寄せにする */
+  width: 240px;
+  height: 320px;
+  list-style: none;
+  transform-style: preserve-3d;
+}
+
+.sampleCard .face {
+  position: absolute;
+  backface-visibility: hidden;
+  pointer-events: auto; /* カード要素へのインタラクションを有効化する */
+}
+
+.sampleCard .front {
+  rotate: 0 1 0 calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg);
+  translate: calc(
+      sin(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg)) *
+        var(--r)
+    )
+    0
+    calc(
+      cos(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg)) *
+        var(--r) - var(--z-offset)
+    );
+}
+
+.sampleCard .back {
+  rotate: 0 1 0 calc(((var(--base-deg) + (var(--index) * var(--rotate-deg)) + 180)) * 1deg);
+  translate: calc(
+      sin(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg)) *
+        var(--r)
+    )
+    0
+    calc(
+      cos(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg)) *
+        var(--r) - var(--z-offset)
+    );
+}
+
+/* フリップ時 */
+.sampleCard.isActive .front {
+  rotate: 0 1 0 calc((var(--base-deg) + (var(--index) * var(--rotate-deg)) + 179.9) * 1deg);
+}
+
+.sampleCard.isActive .back {
+  rotate: 0 1 0 calc((var(--base-deg) + (var(--index) * var(--rotate-deg)) + 359.9) * 1deg);
+}
+
+/* フリップ時（スクロールしていない時）のみトランジションを有効化 */
+.lenis:not(.lenis-scrolling) .face {
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  transition: rotate 0.8s var(--ease-out-quart);
+}
+

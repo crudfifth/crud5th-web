@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
-import { ExternalLink, Github, Play, Award, RotateCw } from "lucide-react";
+import { ExternalLink, Github, Play, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Lenis from "lenis";
 
 interface PortfolioProject {
   id: number;
@@ -21,103 +22,123 @@ interface PortfolioProject {
 const portfolioProjects: PortfolioProject[] = [
   {
     id: 1,
-    title: "ECサイト構築プロジェクト",
-    description: "最新技術を駆使した高性能Eコマースプラットフォーム。ユーザビリティとパフォーマンスを重視した設計で、売上向上を実現。",
+    title: "ECサイト構築",
+    description: "最新技術を駆使した高性能Eコマースプラットフォーム",
     category: "受託開発",
-    technologies: ["React", "TypeScript", "Node.js", "PostgreSQL", "AWS"],
+    technologies: ["React", "TypeScript", "Node.js", "PostgreSQL"],
     status: "完了",
     image: "/api/placeholder/400/300",
-    achievements: ["月間売上30%向上", "ページ速度50%改善", "ユーザー満足度4.8/5"]
+    achievements: ["月間売上30%向上", "ページ速度50%改善"]
   },
   {
     id: 2,
     title: "SaaS管理システム",
-    description: "企業向け統合管理ソリューション。複雑な業務フローを効率化し、生産性向上をサポート。",
+    description: "企業向け統合管理ソリューション",
     category: "自社サービス",
-    technologies: ["Vue.js", "FastAPI", "MongoDB", "Docker", "AWS"],
+    technologies: ["Vue.js", "FastAPI", "MongoDB"],
     status: "進行中",
     image: "/api/placeholder/400/300",
-    achievements: ["業務効率40%向上", "コスト削減25%", "導入企業50社突破"]
+    achievements: ["業務効率40%向上", "コスト削減25%"]
   },
   {
     id: 3,
-    title: "AIチャットボット開発",
-    description: "自然言語処理を活用したインテリジェントなカスタマーサポートシステム。24/7対応でサービス品質向上。",
+    title: "AIチャットボット",
+    description: "自然言語処理を活用したカスタマーサポート",
     category: "自社サービス",
-    technologies: ["Python", "TensorFlow", "FastAPI", "Redis", "React"],
+    technologies: ["Python", "TensorFlow", "FastAPI"],
     status: "完了",
     image: "/api/placeholder/400/300",
-    achievements: ["応答精度95%", "サポート業務70%削減", "顧客満足度向上"]
+    achievements: ["応答精度95%", "サポート業務70%削減"]
   },
   {
     id: 4,
-    title: "DX導入支援システム",
-    description: "レガシーシステムからモダンな環境への移行をサポート。段階的なデジタル化戦略でリスクを最小化。",
+    title: "DX導入支援",
+    description: "レガシーシステムからモダン環境への移行",
     category: "コンサル",
-    technologies: ["Angular", "Spring Boot", "MySQL", "Kubernetes", "Azure"],
+    technologies: ["Angular", "Spring Boot", "MySQL"],
     status: "進行中",
     image: "/api/placeholder/400/300",
-    achievements: ["移行成功率100%", "業務継続性確保", "従業員研修完了"]
+    achievements: ["移行成功率100%", "業務継続性確保"]
   },
   {
     id: 5,
-    title: "モバイルアプリ開発",
-    description: "クロスプラットフォーム対応の革新的なモバイルアプリケーション。直感的なUIと高いパフォーマンスを実現。",
+    title: "モバイルアプリ",
+    description: "クロスプラットフォーム対応アプリケーション",
     category: "受託開発",
-    technologies: ["React Native", "TypeScript", "Firebase", "GraphQL"],
+    technologies: ["React Native", "TypeScript", "Firebase"],
     status: "完了",
     image: "/api/placeholder/400/300",
-    achievements: ["App Store評価4.9", "ダウンロード10万突破", "アクティブ率85%"]
+    achievements: ["App Store評価4.9", "ダウンロード10万突破"]
   },
   {
     id: 6,
-    title: "ブロックチェーン基盤",
-    description: "次世代分散アプリケーションのための堅牢なブロックチェーンインフラ。セキュリティと透明性を重視。",
+    title: "ブロックチェーン",
+    description: "次世代分散アプリケーション基盤",
     category: "自社サービス",
-    technologies: ["Solidity", "Web3.js", "Node.js", "IPFS", "Ethereum"],
+    technologies: ["Solidity", "Web3.js", "Node.js"],
     status: "企画中",
     image: "/api/placeholder/400/300",
-    achievements: ["プロトタイプ完成", "投資家説明会成功", "特許出願準備中"]
+    achievements: ["プロトタイプ完成", "投資家説明会成功"]
   },
   {
     id: 7,
     title: "IoTセンサー管理",
-    description: "リアルタイム監視システムとデータ分析プラットフォーム。スマートファクトリー実現をサポート。",
+    description: "リアルタイム監視システム",
     category: "受託開発",
-    technologies: ["React", "Python", "InfluxDB", "Grafana", "Arduino"],
+    technologies: ["React", "Python", "InfluxDB"],
     status: "完了",
     image: "/api/placeholder/400/300",
-    achievements: ["データ可視化100%", "予測精度90%", "コスト削減30%"]
+    achievements: ["データ可視化100%", "予測精度90%"]
   },
   {
     id: 8,
-    title: "金融APIプラットフォーム",
-    description: "銀行・証券会社向けの次世代決済システム。セキュリティと高速処理を両立した革新的ソリューション。",
+    title: "金融API",
+    description: "銀行・証券会社向け決済システム",
     category: "コンサル",
-    technologies: ["Java", "Spring Security", "Oracle", "Kafka", "Redis"],
+    technologies: ["Java", "Spring Security", "Oracle"],
     status: "進行中",
     image: "/api/placeholder/400/300",
-    achievements: ["取引処理速度3倍", "セキュリティ強化", "法規制対応100%"]
+    achievements: ["取引処理速度3倍", "セキュリティ強化"]
   },
   {
     id: 9,
     title: "VR教育システム",
-    description: "没入型学習体験を提供するVR教育プラットフォーム。次世代の教育スタイルを創造。",
+    description: "没入型学習体験プラットフォーム",
     category: "自社サービス",
-    technologies: ["Unity", "C#", "WebRTC", "Three.js", "WebXR"],
+    technologies: ["Unity", "C#", "WebRTC"],
     status: "企画中",
     image: "/api/placeholder/400/300",
-    achievements: ["学習効果200%向上", "集中力3倍", "満足度95%"]
+    achievements: ["学習効果200%向上", "集中力3倍"]
   },
   {
     id: 10,
-    title: "自動化RPAツール",
-    description: "業務プロセス自動化による効率化ソリューション。ルーティンワークを削減し、創造的業務に集中。",
+    title: "自動化RPA",
+    description: "業務プロセス自動化ソリューション",
     category: "受託開発",
-    technologies: ["Python", "Selenium", "OpenCV", "TensorFlow", "Flask"],
+    technologies: ["Python", "Selenium", "OpenCV"],
     status: "完了",
     image: "/api/placeholder/400/300",
-    achievements: ["業務時間50%削減", "エラー率90%低下", "ROI300%"]
+    achievements: ["業務時間50%削減", "エラー率90%低下"]
+  },
+  {
+    id: 11,
+    title: "クラウド移行",
+    description: "大規模システムのクラウド最適化",
+    category: "コンサル",
+    technologies: ["AWS", "Docker", "Kubernetes"],
+    status: "完了",
+    image: "/api/placeholder/400/300",
+    achievements: ["コスト50%削減", "可用性99.9%"]
+  },
+  {
+    id: 12,
+    title: "データ分析基盤",
+    description: "機械学習を活用したBIシステム",
+    category: "自社サービス",
+    technologies: ["Python", "Apache Spark", "TensorFlow"],
+    status: "進行中",
+    image: "/api/placeholder/400/300",
+    achievements: ["予測精度95%", "処理速度10倍向上"]
   }
 ];
 
@@ -129,80 +150,52 @@ const categoryColors: Record<string, string> = {
 
 export default function Portfolio() {
   const { ref, isVisible } = useScrollAnimation();
-  const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const cardListRef = useRef<HTMLUListElement>(null);
   const [activeCards, setActiveCards] = useState<Set<number>>(new Set());
-  const [isScrolling, setIsScrolling] = useState(false);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
-  });
-
-  // GSAP ScrollTrigger-like snap effect
-  const snapRotation = useTransform(
-    scrollYProgress, 
-    [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-    [0, 108, 216, 324, 432, 540, 648, 756, 864, 972, 1080] // Snapped values (every 36 degrees for 10 cards)
-  );
+  const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    const unsubscribe = snapRotation.on("change", (latest) => {
-      if (cardListRef.current) {
-        // Apply with requestAnimationFrame for smooth updates
-        requestAnimationFrame(() => {
-          if (cardListRef.current) {
-            cardListRef.current.style.setProperty("--base-deg", `${latest}`);
-            
-            // Apply back-side and front-center classes to cards
-            const cards = cardListRef.current.querySelectorAll('.portfolio-sample-card');
-            cards.forEach((card: Element, index: number) => {
-              const cardElement = card as HTMLElement;
-              const cardRotation = (latest + (index * (360 / portfolioProjects.length))) % 360;
-              const normalizedRotation = cardRotation < 0 ? cardRotation + 360 : cardRotation;
-              
-              // Card is on back side if rotation is between 90 and 270 degrees
-              if (normalizedRotation > 90 && normalizedRotation < 270) {
-                cardElement.classList.add('back-side');
-                cardElement.classList.remove('front-center');
-              } else {
-                cardElement.classList.remove('back-side');
-                
-                // Card is in front-center if rotation is between -10 and 10 degrees (tighter snap range)
-                const frontCenterRange = 10;
-                if (Math.abs(normalizedRotation) <= frontCenterRange || Math.abs(normalizedRotation - 360) <= frontCenterRange) {
-                  cardElement.classList.add('front-center');
-                } else {
-                  cardElement.classList.remove('front-center');
-                }
-              }
-            });
-          }
-        });
-      }
+    if (!wrapperRef.current || !cardListRef.current) return;
+
+    // Initialize Lenis for smooth scrolling
+    const lenis = new Lenis({
+      autoRaf: true,
+      wrapper: wrapperRef.current,
+      wheelMultiplier: 0.3,
+      touchMultiplier: 0.5,
+      syncTouchLerp: 0.01,
+      syncTouch: true,
+      gestureOrientation: "both",
+      infinite: true,
     });
-    return unsubscribe;
-  }, [snapRotation]);
 
-  // Scroll state management
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolling(true);
-      clearTimeout((window as any).scrollTimeout);
-      (window as any).scrollTimeout = setTimeout(() => {
-        setIsScrolling(false);
-      }, 150);
-    };
+    lenisRef.current = lenis;
 
-    window.addEventListener('scroll', handleScroll);
+    // Set initial rotation angle
+    const baseDeg = 0;
+    cardListRef.current.style.setProperty("--base-deg", `${baseDeg}`);
+
+    // Scroll acceleration to rotation coefficient
+    const STRENGTH = 0.3;
+
+    // Listen to scroll events with Lenis
+    lenis.on("scroll", (event: any) => {
+      if (!cardListRef.current) return;
+      
+      const currentDeg = parseFloat(cardListRef.current.style.getPropertyValue("--base-deg") || "0");
+      // Add scroll velocity to current rotation angle
+      const newBaseDeg = currentDeg - event.velocity * STRENGTH;
+      cardListRef.current.style.setProperty("--base-deg", `${newBaseDeg}`);
+    });
+
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout((window as any).scrollTimeout);
+      lenis.destroy();
     };
   }, []);
 
   const toggleCardFlip = (cardId: number) => {
-    if (isScrolling) return; // Don't flip during scroll
+    if (lenisRef.current?.isScrolling) return; // Don't flip during scroll
     
     setActiveCards(prev => {
       const newSet = new Set(prev);
@@ -216,7 +209,7 @@ export default function Portfolio() {
   };
 
   return (
-    <section id="portfolio" className="py-24 bg-gradient-to-br from-background via-secondary/5 to-background relative overflow-hidden" ref={containerRef}>
+    <section id="portfolio" className="py-24 bg-gradient-to-br from-background via-secondary/5 to-background relative overflow-hidden">
       {/* Space Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/6 w-2 h-2 bg-cyan-400/60 rounded-full animate-pulse" />
@@ -264,10 +257,10 @@ export default function Portfolio() {
           </p>
         </motion.div>
 
-        {/* Circular Portfolio Cards - Based on reference implementation */}
-        <div className={`portfolio-scrollable ${isScrolling ? 'scrolling' : ''}`} ref={containerRef}>
+        {/* Circular Portfolio Cards - Exact reference implementation */}
+        <div className="scrollable" ref={wrapperRef}>
           <ul 
-            className="portfolio-card-list" 
+            className="cardList" 
             ref={cardListRef}
             style={{ "--card-count": portfolioProjects.length } as React.CSSProperties}
           >
@@ -277,7 +270,7 @@ export default function Portfolio() {
               return (
                 <li
                   key={project.id}
-                  className={`portfolio-sample-card ${isActive ? 'is-active' : ''}`}
+                  className={`sampleCard ${isActive ? 'isActive' : ''}`}
                   style={{ "--index": index } as React.CSSProperties}
                   onClick={() => toggleCardFlip(project.id)}
                   data-testid={`portfolio-card-${index}`}
@@ -333,7 +326,6 @@ export default function Portfolio() {
 
                         {/* Flip indicator */}
                         <div className="flex items-center justify-center gap-2 text-white/60 text-xs">
-                          <RotateCw className="w-3 h-3" />
                           <span>クリックで詳細</span>
                         </div>
                       </div>
