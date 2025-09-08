@@ -53,9 +53,9 @@
   --font-mono: Menlo, monospace;
   
   /* Modern design tokens */
-  --radius: 0px;
-  --radius-lg: 0px;
-  --radius-xl: 0px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
   
   /* Enhanced shadows for depth */
   --shadow-2xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -120,11 +120,16 @@
 
 @layer components {
 
-  /* Force no border radius for contact form elements */
-  .contact-form input,
+  /* Contact form specific styles - no border radius */
+  .contact-form input[type="text"],
+  .contact-form input[type="email"], 
   .contact-form textarea,
   .contact-form button[role="combobox"] {
-    border-radius: 0 !important;
+    border-radius: 0;
+  }
+  
+  .contact-form .rounded-none {
+    border-radius: 0;
   }
 
   /* Enhanced gradient text with modern styling */

@@ -151,7 +151,7 @@ export default function Contact() {
                           <Input 
                             {...field} 
                             placeholder="山田太郎" 
-                            className="!bg-gray-900/60 !border-gray-700 !rounded-sm text-foreground placeholder:text-muted-foreground hover:!border-primary/50 focus:!border-primary focus:!ring-2 focus:!ring-primary/20 transition-all" 
+                            className="bg-gray-900/60 border-gray-700 rounded-none text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
                             data-testid="input-name"
                           />
                         </FormControl>
@@ -171,7 +171,7 @@ export default function Contact() {
                             {...field} 
                             type="email" 
                             placeholder="example@email.com" 
-                            className="!bg-gray-900/60 !border-gray-700 !rounded-sm text-foreground placeholder:text-muted-foreground hover:!border-primary/50 focus:!border-primary focus:!ring-2 focus:!ring-primary/20 transition-all"
+                            className="bg-gray-900/60 border-gray-700 rounded-none text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                             data-testid="input-email"
                           />
                         </FormControl>
@@ -188,7 +188,7 @@ export default function Contact() {
                         <FormLabel className="text-foreground">お問い合わせ種別</FormLabel>
                         <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
-                            <SelectTrigger className="!bg-gray-900/60 !border-gray-700 !rounded-sm text-foreground hover:!border-primary/50 focus:!border-primary focus:!ring-2 focus:!ring-primary/20 transition-all" data-testid="select-category">
+                            <SelectTrigger className="bg-gray-900/60 border-gray-700 rounded-none text-foreground hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" data-testid="select-category">
                               <SelectValue placeholder="選択してください" />
                             </SelectTrigger>
                           </FormControl>
@@ -215,7 +215,7 @@ export default function Contact() {
                             {...field} 
                             rows={5} 
                             placeholder="プロジェクトの詳細やご要望をお聞かせください..." 
-                            className="!bg-gray-900/60 !border-gray-700 !rounded-sm text-foreground placeholder:text-muted-foreground resize-none hover:!border-primary/50 focus:!border-primary focus:!ring-2 focus:!ring-primary/20 transition-all min-h-[120px]"
+                            className="bg-gray-900/60 border-gray-700 rounded-none text-foreground placeholder:text-muted-foreground resize-none hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all min-h-[120px]"
                             data-testid="textarea-message"
                           />
                         </FormControl>
