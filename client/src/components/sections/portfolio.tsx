@@ -90,28 +90,48 @@ const categoryColors: Record<string, string> = {
 export default function Portfolio() {
   const { ref, isVisible } = useScrollAnimation();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
-  const baseDegree = useMotionValue(0);
+  const cardListRef = useRef<HTMLUListElement>(null);
+  const [activeCards, setActiveCards] = useState<Set<number>>(new Set());
+  const [isScrolling, setIsScrolling] = useState(false);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
 
-  // Circle rotation based on scroll
-  const circleRotation = useTransform(scrollYProgress, [0, 1], [0, 720]); // 2 full rotations
+  // Circle rotation based on scroll with more dramatic effect
+  const circleRotation = useTransform(scrollYProgress, [0, 1], [0, 1080]); // 3 full rotations
 
   useEffect(() => {
     const unsubscribe = circleRotation.on("change", (latest) => {
-      if (containerRef.current) {
-        containerRef.current.style.setProperty("--base-deg", `${latest}deg`);
+      if (cardListRef.current) {
+        cardListRef.current.style.setProperty("--base-deg", `${latest}`);
       }
     });
     return unsubscribe;
   }, [circleRotation]);
 
+  // Scroll state management
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolling(true);
+      clearTimeout((window as any).scrollTimeout);
+      (window as any).scrollTimeout = setTimeout(() => {
+        setIsScrolling(false);
+      }, 150);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout((window as any).scrollTimeout);
+    };
+  }, []);
+
   const toggleCardFlip = (cardId: number) => {
-    setFlippedCards(prev => {
+    if (isScrolling) return; // Don't flip during scroll
+    
+    setActiveCards(prev => {
       const newSet = new Set(prev);
       if (newSet.has(cardId)) {
         newSet.delete(cardId);
@@ -171,34 +191,29 @@ export default function Portfolio() {
           </p>
         </motion.div>
 
-        {/* Circular Portfolio Cards */}
-        <div className="portfolio-container" ref={containerRef} style={{ "--base-deg": "0deg" } as React.CSSProperties}>
-          <motion.div
-            className="portfolio-circle"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
+        {/* Circular Portfolio Cards - Based on reference implementation */}
+        <div className={`portfolio-scrollable ${isScrolling ? 'scrolling' : ''}`} ref={containerRef}>
+          <ul 
+            className="portfolio-card-list" 
+            ref={cardListRef}
+            style={{ "--card-count": portfolioProjects.length } as React.CSSProperties}
           >
             {portfolioProjects.map((project, index) => {
-              const isFlipped = flippedCards.has(project.id);
+              const isActive = activeCards.has(project.id);
               
               return (
-                <div
+                <li
                   key={project.id}
-                  className={`portfolio-card ${isFlipped ? 'is-flipped' : ''}`}
-                  style={{ 
-                    "--index": index,
-                    "--card-count": portfolioProjects.length
-                  } as React.CSSProperties}
+                  className={`portfolio-sample-card ${isActive ? 'is-active' : ''}`}
+                  style={{ "--index": index } as React.CSSProperties}
                   onClick={() => toggleCardFlip(project.id)}
                   data-testid={`portfolio-card-${index}`}
                 >
                   {/* Front Face */}
-                  <div className="card-face front">
+                  <div className="face front">
                     <div className="glassmorphism-card w-full h-full p-4 rounded-xl border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl relative overflow-hidden group cursor-pointer">
                       {/* Background gradient based on category */}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl`} />
+                      <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl`} />
                       
                       {/* Content */}
                       <div className="relative z-10 h-full flex flex-col">
@@ -217,10 +232,10 @@ export default function Portfolio() {
                         </div>
 
                         {/* Title and description */}
-                        <h3 className="text-lg font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors line-clamp-2">
+                        <h3 className="text-lg font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">
                           {project.title}
                         </h3>
-                        <p className="text-sm text-gray-300 mb-3 leading-relaxed flex-1 line-clamp-3">
+                        <p className="text-sm text-gray-300 mb-3 leading-relaxed flex-1">
                           {project.description}
                         </p>
 
@@ -251,25 +266,25 @@ export default function Portfolio() {
                       </div>
 
                       {/* Holographic effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/5 to-purple-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/5 to-purple-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" />
                     </div>
                   </div>
 
                   {/* Back Face */}
-                  <div className="card-face back">
+                  <div className="face back">
                     <div className="glassmorphism-card w-full h-full p-4 rounded-xl border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl relative overflow-hidden group cursor-pointer">
                       {/* Background gradient */}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-30 rounded-2xl`} />
+                      <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-30 rounded-xl`} />
                       
                       {/* Content */}
                       <div className="relative z-10 h-full flex flex-col">
-                        <div className="text-center mb-4">
+                        <div className="text-center mb-3">
                           <h3 className="text-lg font-bold text-white mb-2">{project.title}</h3>
                           <div className="w-12 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-400 mx-auto" />
                         </div>
 
                         {/* All Technologies */}
-                        <div className="mb-4">
+                        <div className="mb-3">
                           <h4 className="text-sm font-semibold text-cyan-300 mb-2">使用技術</h4>
                           <div className="flex flex-wrap gap-1">
                             {project.technologies.map((tech, techIndex) => (
@@ -285,7 +300,7 @@ export default function Portfolio() {
 
                         {/* Achievements */}
                         {project.achievements && (
-                          <div className="mb-4 flex-1">
+                          <div className="mb-3 flex-1">
                             <div className="flex items-center gap-1 mb-2">
                               <Award className="w-3 h-3 text-yellow-400" />
                               <h4 className="text-sm font-semibold text-yellow-300">主な成果</h4>
@@ -314,25 +329,10 @@ export default function Portfolio() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </li>
               );
             })}
-          </motion.div>
-
-          {/* Central logo/indicator */}
-          <motion.div 
-            className="portfolio-center"
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <div className="w-24 h-24 rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20 backdrop-blur-xl border border-white/30 flex items-center justify-center">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 flex items-center justify-center">
-                <span className="text-white font-bold text-sm">CRUD5th</span>
-              </div>
-            </div>
-          </motion.div>
+          </ul>
         </div>
       </div>
     </section>
