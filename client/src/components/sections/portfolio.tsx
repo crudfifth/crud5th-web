@@ -100,7 +100,7 @@ const serviceNodes: ServiceNode[] = [
     description: "リアルタイム動態管理",
     technologies: ["IoT", "WebSocket"],
     status: "active",
-    position: { x: 900, y: 700 },
+    position: { x: 1000, y: 750 },
     icon: <Server className="w-5 h-5" />,
     connections: ["crud5th-act", "personal-business", "raft-core"]
   },
@@ -125,7 +125,7 @@ const serviceNodes: ServiceNode[] = [
     description: "デザインツール統合プラットフォーム",
     technologies: ["Canvas API", "WebGL"],
     status: "active",
-    position: { x: 20, y: 180 },
+    position: { x: 20, y: 120 },
     icon: <Code className="w-5 h-5" />,
     connections: ["etheria", "video-edit", "crud5th-web"]
   },
@@ -137,7 +137,7 @@ const serviceNodes: ServiceNode[] = [
     description: "Webベース動画編集プラットフォーム",
     technologies: ["WebAssembly", "FFmpeg"],
     status: "development",
-    position: { x: 20, y: 600 },
+    position: { x: -10, y: 600 },
     icon: <VideoIcon className="w-5 h-5" />,
     connections: ["etheria", "cloud-nas", "design-system"]
   },
