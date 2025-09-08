@@ -4,6 +4,9 @@ import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
 import { ExternalLink, Github, Play, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 
 interface PortfolioProject {
   id: number;
@@ -156,123 +159,87 @@ export default function Portfolio() {
   useEffect(() => {
     if (!sectionRef.current || !ringRef.current) return;
 
-    let cards = Array.from(ringRef.current.querySelectorAll('.card3d'));
+    const ring = document.getElementById("ring")!;
+    const cards = Array.from(ring.querySelectorAll<HTMLElement>(".card3d"));
 
     // ★ まずは5枚に制限（表示）
     cards.forEach((c, i) => {
-      const element = c as HTMLElement;
-      element.style.display = i < 5 ? 'block' : 'none';
+      c.style.display = i < 5 ? 'block' : 'none';
     });
-    cards = cards.slice(0, 5);
+    const activeCards = cards.slice(0, 5);
 
-    const N = cards.length;
-    
-    // --N を実数に同期
-    document.documentElement.style.setProperty('--N', String(N));
-    const STEP = 360 / N;
-
-    let targetRot = 0;
-    let currentRot = 0;
-    let prevTargetRot = 0;
-    let velocity = 0;
-    let scrollStopTimer: NodeJS.Timeout | null = null;
-
-    // Enhanced parameters for smoother snap
-    const LERP = 0.10;
-    const SNAP_DELAY = 160;
-    const DEADZONE = STEP * 0.22;
-
-    const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
+    // N 同期
+    document.documentElement.style.setProperty("--N", String(activeCards.length));
 
     // index を CSS 変数に流し込む（幾何はCSS側で決定）
-    cards.forEach((c, i) => {
-      const element = c as HTMLElement;
-      element.style.setProperty('--i', i.toString());
+    activeCards.forEach((c, i) => {
+      c.style.setProperty('--i', i.toString());
     });
 
-    // ★ 半径：重なりに強い"弦長ベース"の式に変更
-    // R >= (カード幅 + 両側ギャップ) / (2 * sin(π/N))
-    function readPxVar(name: string): number {
-      const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-      const n = parseFloat(v);
-      return Number.isFinite(n) ? n : 0;
-    }
-
-    function computeRadius(): number {
-      const w = readPxVar('--card-w');
-      const gap = readPxVar('--gap-px') || 12;
-      const r = (w + 2 * gap) / (2 * Math.sin(Math.PI / N));
-      return Math.max(r, 420);
-    }
-
-    function applyRadius() {
-      const r = Math.round(computeRadius());
-      document.documentElement.style.setProperty('--radius', `${r}px`);
-    }
-
-    function updateTargetFromScroll() {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const total = Math.max(1, sectionRef.current.offsetHeight - vh);
-      const passed = Math.max(0, Math.min(1, (vh - rect.top) / total));
-      targetRot = -passed * 360; // 1周
-    }
-
-    function snapMaybe() {
-      const nearest = Math.round(targetRot / STEP) * STEP;
-      if (Math.abs(targetRot - nearest) < DEADZONE) {
-        targetRot = nearest;
-      }
-    }
-
-    function onScroll() {
-      updateTargetFromScroll();
-      if (scrollStopTimer) clearTimeout(scrollStopTimer);
-      scrollStopTimer = setTimeout(snapMaybe, SNAP_DELAY);
-    }
-
-    function markActive() {
-      // 現在角度から正面indexを推定
-      const idx = ((-Math.round((currentRot % 360) / STEP)) % N + N) % N;
-      cards.forEach((c, i) => {
-        c.classList.toggle('is-active', i === idx);
-      });
-    }
-
-    function animate() {
-      if (!ringRef.current) return;
-      
-      velocity = targetRot - prevTargetRot;
-      prevTargetRot = targetRot;
-      
-      if (Math.abs(velocity) < 0.08) {
-        targetRot = Math.round(targetRot / STEP) * STEP;
-      }
-
-      currentRot += (targetRot - currentRot) * LERP;
-      
-      if (Math.abs(currentRot - targetRot) < 0.02) {
-        currentRot = targetRot;
-      }
-
-      ringRef.current.style.setProperty('--rot', currentRot.toFixed(3) + 'deg');
-      markActive();
-      requestAnimationFrame(animate);
-    }
-
-    // Initialize
+    // 半径：重なりが出ない式（弦長ベース）
+    const readPx = (name: string) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)) || 0;
+    const computeRadius = () => {
+      const w = readPx("--card-w");
+      const gap = readPx("--gap-px") || 12;
+      const N = activeCards.length;
+      const R = (w + 2 * gap) / (2 * Math.sin(Math.PI / N));
+      return Math.max(R, 420);
+    };
+    const applyRadius = () => {
+      document.documentElement.style.setProperty("--radius", `${Math.round(computeRadius())}px`);
+    };
     applyRadius();
-    updateTargetFromScroll();
-    animate();
     
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', applyRadius);
+    const ro = new ResizeObserver(applyRadius);
+    ro.observe(document.documentElement);
 
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', applyRadius);
-      if (scrollStopTimer) clearTimeout(scrollStopTimer);
+    // GSAP: pin & scrub
+    const STEP = 360 / activeCards.length;
+    const setRot = gsap.quickSetter(ring, "--rot", "deg");
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#portfolio",
+        start: "top top",
+        end: () => "+=" + window.innerHeight * 3, // ピン滞在量（3画面分）
+        pin: true,
+        scrub: 0.35, // スクロールに追従
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        fastScrollEnd: true,
+        snap: {
+          snapTo: (value) => {
+            // progress(0..1) → 角度(-360..0) → 最寄りのカードへ
+            const deg = -value * 360;
+            const snapped = Math.round(deg / STEP) * STEP;
+            return -snapped / 360;
+          },
+          duration: { min: 0.08, max: 0.25 },
+          ease: "power1.inOut"
+        },
+        onUpdate: (self) => {
+          // アクティブカード更新
+          const progress = self.progress;
+          const currentDeg = -progress * 360;
+          const idx = ((-Math.round(currentDeg / STEP)) % activeCards.length + activeCards.length) % activeCards.length;
+          activeCards.forEach((c, i) => {
+            c.classList.toggle('is-active', i === idx);
+          });
+        }
+      }
+    });
+
+    // progress を角度に写像（0→-360deg）
+    tl.fromTo({ v: 0 }, { 
+      v: -360,
+      onUpdate() { 
+        setRot((this as any).targets()[0].v); 
+      }
+    });
+
+    return () => { 
+      ro.disconnect(); 
+      tl.kill(); 
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 
@@ -337,14 +304,15 @@ export default function Portfolio() {
           </p>
         </motion.div>
 
-        {/* Stable Circular Portfolio Cards with pin section */}
-        <div className="helix" ref={sectionRef}>
+        {/* GSAP ScrollTrigger Pin Section */}
+        <div className="helix" ref={sectionRef} id="portfolio">
           <div className="pin">
             <div className="stage">
               <div className="hub">
                 <div 
                   className="ring" 
                   ref={ringRef}
+                  id="ring"
                   style={{ "--rot": "0deg" } as React.CSSProperties}
                 >
                 {portfolioProjects.map((project, index) => {

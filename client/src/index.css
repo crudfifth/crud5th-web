@@ -1023,12 +1023,23 @@
   color: #dbeafe; 
 }
 
+/* ちらつき原因を根絶：3D直下で filter/outline/backdrop-filter/mix-blend を使わない */
+.card3d { 
+  /* filter: none; outline: none; */ 
+}
+
 /* フロントに来たカードの強調（"カチっ"と） */
 .card3d.is-active .front {
   box-shadow:
-    0 18px 60px rgba(14, 165, 233, .32),
+    0 18px 60px rgba(14, 165, 233, .24),
     0 6px 18px rgba(0,0,0,.40) inset,
     0 0 0 1px rgba(96,165,250,.35);
+}
+
+/* 装飾パーティクル等は別スタッキングに隔離（ちらつき防止） */
+.bg-decor { 
+  contain: paint; 
+  pointer-events: none; 
 }
 
 /* 視認性：裏側は薄めに（テキスト被り対策／裏面は見せない） */
