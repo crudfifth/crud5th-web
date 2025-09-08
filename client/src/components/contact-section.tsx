@@ -13,15 +13,11 @@ import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { insertContactSchema } from "@shared/schema";
+import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
 import { z } from "zod";
 
-const contactFormSchema = insertContactSchema.extend({
-  email: z.string().email("正しいメールアドレスを入力してください"),
-  name: z.string().min(1, "お名前を入力してください"),
-  message: z.string().min(10, "メッセージは10文字以上入力してください")
-});
+type ContactFormData = z.infer<typeof insertContactSchema>;
 
-type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export default function ContactSection() {
   const [ref, isVisible] = useIntersectionObserver({
@@ -32,11 +28,11 @@ export default function ContactSection() {
   const { toast } = useToast();
   
   const form = useForm<ContactFormData>({
-    resolver: zodResolver(contactFormSchema),
+    resolver: zodResolver(insertContactSchema),
     defaultValues: {
       name: "",
       email: "",
-      category: "",
+      type: "受託開発",
       message: ""
     }
   });
@@ -76,8 +72,11 @@ export default function ContactSection() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           data-testid="contact-header"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 gradient-text">お問い合わせ</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold mb-12 gradient-text relative">
+            お問い合わせ
+            <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32" delay={600} />
+          </h2>
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             プロジェクトのご相談やお見積もりなど、お気軽にお問い合わせください
           </p>
         </motion.div>
@@ -153,7 +152,7 @@ export default function ContactSection() {
                           <Input 
                             {...field} 
                             placeholder="山田太郎" 
-                            className="bg-secondary border-border text-foreground" 
+                            className="bg-secondary/50 backdrop-blur-sm border-border text-foreground hover:bg-secondary/70 transition-all rounded-lg" 
                             data-testid="input-name"
                           />
                         </FormControl>
@@ -173,7 +172,7 @@ export default function ContactSection() {
                             {...field} 
                             type="email" 
                             placeholder="example@email.com" 
-                            className="bg-secondary border-border text-foreground"
+                            className="bg-secondary/50 backdrop-blur-sm border-border text-foreground hover:bg-secondary/70 transition-all rounded-lg"
                             data-testid="input-email"
                           />
                         </FormControl>
@@ -184,20 +183,20 @@ export default function ContactSection() {
                   
                   <FormField
                     control={form.control}
-                    name="category"
+                    name="type"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-foreground">お問い合わせ種別</FormLabel>
                         <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
-                            <SelectTrigger className="bg-secondary border-border text-foreground" data-testid="select-category">
+                            <SelectTrigger className="bg-secondary/50 backdrop-blur-sm border-border text-foreground hover:bg-secondary/70 transition-all" data-testid="select-category">
                               <SelectValue placeholder="選択してください" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="受託開発について" data-testid="option-freelance-development">受託開発について</SelectItem>
-                            <SelectItem value="自社サービス開発について" data-testid="option-web-service-development">自社サービス開発について</SelectItem>
-                            <SelectItem value="DX・ITコンサルについて" data-testid="option-dx-consulting">DX・ITコンサルについて</SelectItem>
+                            <SelectItem value="受託開発" data-testid="option-freelance-development">受託開発</SelectItem>
+                            <SelectItem value="自社サービス開発" data-testid="option-web-service-development">自社サービス開発</SelectItem>
+                            <SelectItem value="DX・ITコンサル" data-testid="option-dx-consulting">DX・ITコンサル</SelectItem>
                             <SelectItem value="その他" data-testid="option-other">その他</SelectItem>
                           </SelectContent>
                         </Select>
@@ -217,7 +216,7 @@ export default function ContactSection() {
                             {...field} 
                             rows={5} 
                             placeholder="プロジェクトの詳細やご要望をお聞かせください..." 
-                            className="bg-secondary border-border text-foreground resize-none"
+                            className="bg-secondary/50 backdrop-blur-sm border-border text-foreground resize-none hover:bg-secondary/70 transition-all rounded-lg min-h-[120px]"
                             data-testid="textarea-message"
                           />
                         </FormControl>
@@ -228,7 +227,7 @@ export default function ContactSection() {
                   
                   <Button 
                     type="submit" 
-                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90" 
+                    className="w-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:from-primary/90 hover:to-primary/70 transition-all transform hover:scale-[1.02] shadow-lg hover:shadow-xl" 
                     disabled={contactMutation.isPending}
                     data-testid="button-submit"
                   >
