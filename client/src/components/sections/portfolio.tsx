@@ -23,6 +23,7 @@ import {
   MousePointer,
   Eye,
 } from "lucide-react";
+import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
 
 interface ServiceNode {
   id: string;
@@ -629,10 +630,11 @@ export default function Portfolio() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-cyan-200 to-purple-200 bg-clip-text text-transparent">
+          <h2 className="text-2xl font-bold mb-12 gradient-text relative">
             サービスエコシステム
+            <AnimatedUnderline className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32" delay={600} />
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             CRUD5thの技術サービス群とその相互関係
           </p>
         </motion.div>
