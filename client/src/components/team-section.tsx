@@ -1,16 +1,17 @@
 import { motion } from "framer-motion";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
-import { Twitter, Github } from "lucide-react";
+import { Github } from "lucide-react";
+import { SiX } from "react-icons/si";
 
 const teamMembers = [
   {
     id: "takahashi-tsunaya",
-    name: "髙橋綱弥",
+    name: "髙橋 綱弥",
     role: "Lead Engineer",
     description: "フルスタック開発とプロジェクトマネジメントを得意とし、チーム全体の技術戦略を牽引。",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=400",
-    twitter: "#",
-    github: "#"
+    twitter: "https://x.com/CRUD5th",
+    github: "https://github.com/crudfifth"
   },
   {
     id: "kaeru",
@@ -89,7 +90,7 @@ export default function TeamSection() {
                   className="text-muted-foreground hover:text-primary transition-colors"
                   data-testid={`link-${member.id}-twitter`}
                 >
-                  <Twitter className="w-5 h-5" />
+                  <SiX className="w-5 h-5" />
                 </a>
                 <a 
                   href={member.github} 
