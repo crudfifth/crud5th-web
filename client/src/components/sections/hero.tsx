@@ -137,14 +137,14 @@ export default function Hero() {
               delay: 0.6,
               ease: [0.16, 1, 0.3, 1] 
             }}
-            className="text-3xl md:text-4xl lg:text-6xl font-bold mb-4 leading-tight"
+            className="text-4xl md:text-6xl lg:text-8xl font-bold mb-4 leading-tight"
             data-testid="hero-title"
           >
             <span className="block bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent drop-shadow-2xl mb-2 font-extrabold tracking-tight">EVOLUTION</span>
             <span className="block bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent drop-shadow-2xl font-extrabold tracking-tight">PARTNER</span>
           </motion.h1>
           
-          <motion.span 
+          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ 
@@ -152,10 +152,24 @@ export default function Hero() {
               delay: 1.2,
               ease: [0.16, 1, 0.3, 1] 
             }}
-            className="block text-base md:text-lg font-normal text-white/85 mb-6 drop-shadow-2xl tracking-wide"
+            className="flex items-center justify-center gap-4 mb-6"
           >
-            革新を共に創造するエンジニア集団
-          </motion.span>
+            <motion.div 
+              className="w-8 md:w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 1.4 }}
+            />
+            <span className="text-base md:text-lg font-normal text-white/85 drop-shadow-2xl tracking-wide whitespace-nowrap">
+              革新を共に創造するエンジニア集団
+            </span>
+            <motion.div 
+              className="w-8 md:w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 1.4 }}
+            />
+          </motion.div>
         </motion.div>
 
         {/* Enhanced typing animation */}
