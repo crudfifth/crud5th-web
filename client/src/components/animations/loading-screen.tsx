@@ -46,69 +46,37 @@ export default function LoadingScreen() {
           }}
           data-testid="loading-screen"
         >
-          {/* Background geometric patterns */}
+          {/* Minimal background elements */}
           <div className="absolute inset-0 overflow-hidden">
+            {/* Simple background glow */}
             <motion.div 
-              className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
-              style={{
-                transform: 'translateZ(0)',
-                willChange: 'transform, opacity'
-              }}
+              className="absolute top-1/2 left-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"
               animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.6, 0.3]
-              }}
-              transition={{ 
-                duration: 3, 
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
-            <motion.div 
-              className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl"
-              style={{
-                transform: 'translateZ(0)',
-                willChange: 'transform, opacity'
-              }}
-              animate={{ 
-                scale: [1, 0.8, 1],
-                opacity: [0.2, 0.5, 0.2]
+                opacity: [0.2, 0.4, 0.2]
               }}
               transition={{ 
                 duration: 4, 
                 repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1
+                ease: "easeInOut"
               }}
             />
             
-            {/* Animated concentric circles */}
+            {/* Single rotating circle */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              {[...Array(2)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute border border-white/10 rounded-full"
-                  style={{
-                    width: `${(i + 1) * 200}px`,
-                    height: `${(i + 1) * 200}px`,
-                    top: `-${(i + 1) * 100}px`,
-                    left: `-${(i + 1) * 100}px`,
-                    transform: 'translateZ(0)',
-                    willChange: 'transform'
-                  }}
-                  animate={{ 
-                    rotate: 360
-                  }}
-                  transition={{ 
-                    rotate: { duration: 15 + i * 10, repeat: Infinity, ease: "linear" }
-                  }}
-                />
-              ))}
+              <motion.div
+                className="absolute border border-white/10 rounded-full w-[300px] h-[300px] -top-[150px] -left-[150px]"
+                animate={{ rotate: 360 }}
+                transition={{ 
+                  duration: 20, 
+                  repeat: Infinity, 
+                  ease: "linear" 
+                }}
+              />
             </div>
           </div>
 
           <div className="relative z-10 text-center max-w-md mx-auto px-6">
-            {/* Sophisticated loading spinner */}
+            {/* Optimized loading spinner */}
             <div className="relative mb-8">
               <motion.div
                 className="w-24 h-24 mx-auto relative"
@@ -117,9 +85,7 @@ export default function LoadingScreen() {
                 transition={{ duration: 0.8, ease: "easeOut" }}
               >
                 {/* Outer ring */}
-                <motion.div
-                  className="absolute inset-0 border-4 border-primary/20 rounded-full"
-                />
+                <div className="absolute inset-0 border-4 border-primary/20 rounded-full" />
                 
                 {/* Animated progress ring */}
                 <motion.div
@@ -129,7 +95,11 @@ export default function LoadingScreen() {
                     backfaceVisibility: 'hidden'
                   }}
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                  transition={{ 
+                    duration: 1.5, 
+                    repeat: Infinity, 
+                    ease: "linear" 
+                  }}
                 />
                 
                 {/* Inner pulsing core */}
@@ -137,8 +107,7 @@ export default function LoadingScreen() {
                   className="absolute inset-4 bg-gradient-to-br from-primary/60 to-accent/60 rounded-full"
                   style={{
                     transform: 'translateZ(0)',
-                    backfaceVisibility: 'hidden',
-                    willChange: 'transform, opacity'
+                    backfaceVisibility: 'hidden'
                   }}
                   animate={{ 
                     scale: [0.9, 1.1, 0.9],
@@ -151,19 +120,18 @@ export default function LoadingScreen() {
                   }}
                 />
                 
-                {/* Floating particles */}
-                {[...Array(4)].map((_, i) => (
+                {/* Minimal floating particles */}
+                {[...Array(2)].map((_, i) => (
                   <motion.div
                     key={i}
                     className="absolute w-2 h-2 bg-primary/80 rounded-full"
                     style={{
-                      top: `${50 + Math.sin(i * Math.PI / 3) * 40}%`,
-                      left: `${50 + Math.cos(i * Math.PI / 3) * 40}%`,
-                      transform: 'translateZ(0)',
-                      willChange: 'transform, opacity'
+                      top: `${50 + Math.sin(i * Math.PI) * 40}%`,
+                      left: `${50 + Math.cos(i * Math.PI) * 40}%`,
+                      transform: 'translateZ(0)'
                     }}
                     animate={{
-                      y: [-5, 5, -5],
+                      y: [-3, 3, -3],
                       opacity: [0.5, 1, 0.5]
                     }}
                     transition={{
@@ -177,7 +145,7 @@ export default function LoadingScreen() {
               </motion.div>
             </div>
 
-            {/* Enhanced brand name */}
+            {/* Brand name */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -207,7 +175,7 @@ export default function LoadingScreen() {
               </motion.p>
             </motion.div>
 
-            {/* Sophisticated progress bar */}
+            {/* Simple progress bar */}
             <motion.div
               className="relative mb-4"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -216,22 +184,11 @@ export default function LoadingScreen() {
             >
               <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-primary to-accent rounded-full relative"
+                  className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
                   initial={{ width: "0%" }}
                   animate={{ width: `${Math.min(loadingProgress, 100)}%` }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  {/* Shimmer effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                    animate={{ x: ["-100%", "200%"] }}
-                    transition={{ 
-                      duration: 1.5, 
-                      repeat: Infinity, 
-                      ease: "easeInOut" 
-                    }}
-                  />
-                </motion.div>
+                />
               </div>
               
               {/* Progress text */}
@@ -259,92 +216,9 @@ export default function LoadingScreen() {
               </motion.span>
             </motion.div>
           </div>
-
-          {/* Space-themed floating particles and stars */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            {/* Floating micro particles */}
-            {[...Array(15)].map((_, i) => (
-              <motion.div
-                key={`particle-${i}`}
-                className="absolute w-1 h-1 bg-white/20 rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  transform: 'translateZ(0)',
-                  willChange: 'transform, opacity'
-                }}
-                animate={{
-                  y: [0, -15, 0],
-                  opacity: [0.3, 0.7, 0.3]
-                }}
-                transition={{
-                  duration: 2 + Math.random() * 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 1,
-                  ease: "easeInOut"
-                }}
-              />
-            ))}
-            
-            {/* Constellation stars */}
-            {[...Array(8)].map((_, i) => (
-              <motion.div
-                key={`star-${i}`}
-                className="absolute bg-cyan-400/40 rounded-full"
-                style={{
-                  width: `${1 + Math.random() * 3}px`,
-                  height: `${1 + Math.random() * 3}px`,
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  transform: 'translateZ(0)',
-                  willChange: 'opacity'
-                }}
-                animate={{
-                  opacity: [0.3, 1, 0.3]
-                }}
-                transition={{
-                  duration: 2 + Math.random() * 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 1,
-                  ease: "easeInOut"
-                }}
-              />
-            ))}
-            
-            {/* Bottom geometric pattern */}
-            <div className="absolute bottom-0 left-0 right-0 h-40 overflow-hidden">
-              <motion.div
-                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-4xl h-32"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.5, duration: 1 }}
-              >
-                {/* Hexagonal grid pattern */}
-                <svg viewBox="0 0 100 40" className="w-full h-full opacity-10">
-                  <defs>
-                    <pattern id="hexGrid" x="0" y="0" width="10" height="8.66" patternUnits="userSpaceOnUse">
-                      <polygon points="5,0 9.33,2.5 9.33,7.5 5,10 0.67,7.5 0.67,2.5" 
-                        fill="none" stroke="currentColor" strokeWidth="0.5" className="text-cyan-400"/>
-                    </pattern>
-                  </defs>
-                  <rect width="100" height="40" fill="url(#hexGrid)" />
-                </svg>
-                
-                {/* Animated scanning line */}
-                <motion.div
-                  className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"
-                  animate={{ x: ["-100%", "200%"] }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }}
-                />
-              </motion.div>
-            </div>
-          </div>
         </motion.div>
       )}
+      
     </AnimatePresence>
   );
 }
