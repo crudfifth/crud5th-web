@@ -189,12 +189,27 @@ export default function Hero() {
         >
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-50" />
           <div className="relative z-10">
-            <p className="text-base md:text-lg text-white/90 leading-relaxed drop-shadow-lg max-w-3xl mx-auto font-medium"
-               data-testid="hero-description">
-              CRUD5thは、最新テクノロジーを駆使してビジネス変革を推進するエンジニアチームです。
-              受託開発・自社サービス開発・DX/ITコンサルティングを通じて、
-              お客様の成長と成功に貢献する包括的なソリューションを提供いたします。
-            </p>
+            <div className="text-base md:text-lg text-white/90 leading-relaxed drop-shadow-lg max-w-3xl mx-auto font-medium"
+                 data-testid="hero-description">
+              {(() => {
+                const text = "CRUD5thは、最新テクノロジーを駆使してビジネス変革を推進するエンジニアチームです。受託開発・自社サービス開発・DX/ITコンサルティングを通じて、お客様の成長と成功に貢献する包括的なソリューションを提供いたします。";
+                return text.split("").map((char, index) => (
+                  <motion.span
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.1,
+                      delay: 2.8 + (index * 0.03),
+                      ease: "easeOut"
+                    }}
+                    className={char === " " ? "inline-block w-1" : "inline-block"}
+                  >
+                    {char === " " ? "\u00A0" : char}
+                  </motion.span>
+                ));
+              })()}
+            </div>
           </div>
         </motion.div>
 
