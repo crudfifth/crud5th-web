@@ -125,7 +125,7 @@ const serviceNodes: ServiceNode[] = [
     description: "デザインツール統合プラットフォーム",
     technologies: ["Canvas API", "WebGL"],
     status: "active",
-    position: { x: 50, y: 180 },
+    position: { x: 20, y: 180 },
     icon: <Code className="w-5 h-5" />,
     connections: ["etheria", "video-edit", "crud5th-web"]
   },
@@ -137,7 +137,7 @@ const serviceNodes: ServiceNode[] = [
     description: "Webベース動画編集プラットフォーム",
     technologies: ["WebAssembly", "FFmpeg"],
     status: "development",
-    position: { x: 50, y: 600 },
+    position: { x: 20, y: 600 },
     icon: <VideoIcon className="w-5 h-5" />,
     connections: ["etheria", "cloud-nas", "design-system"]
   },
@@ -174,7 +174,7 @@ const serviceNodes: ServiceNode[] = [
     description: "クリエイター支援プラットフォーム",
     technologies: ["Stripe", "React"],
     status: "active",
-    position: { x: 600, y: 720 },
+    position: { x: 600, y: 780 },
     icon: <Building2 className="w-5 h-5" />,
     connections: ["etheria", "communication-system"]
   },
