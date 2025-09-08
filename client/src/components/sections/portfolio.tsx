@@ -516,7 +516,7 @@ function ConnectionLine({
 export default function Portfolio() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [zoom, setZoom] = useState(0.6); // デフォルトで60%ズーム
+  const [zoom, setZoom] = useState(0.5); // デフォルトで50%ズーム
   const [pan, setPan] = useState({ x: 0, y: -30 }); // 初期値を中央に調整
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
@@ -582,7 +582,7 @@ export default function Portfolio() {
 
   // ズーム・パンのリセット
   const resetView = () => {
-    setZoom(0.6);
+    setZoom(0.5);
     setPan({ x: 0, y: -30 });
   };
 
