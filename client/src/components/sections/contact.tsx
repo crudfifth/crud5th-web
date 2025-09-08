@@ -151,7 +151,7 @@ export default function Contact() {
                           <Input 
                             {...field} 
                             placeholder="山田太郎" 
-                            className="bg-background/60 border-muted-foreground/30 text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary transition-all" 
+                            className="!bg-slate-800 !border-slate-600 text-white placeholder:text-slate-400 hover:!border-primary/70 focus:!border-primary focus:!ring-primary/20 transition-all" 
                             data-testid="input-name"
                           />
                         </FormControl>
@@ -171,7 +171,7 @@ export default function Contact() {
                             {...field} 
                             type="email" 
                             placeholder="example@email.com" 
-                            className="bg-background/60 border-muted-foreground/30 text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary transition-all"
+                            className="!bg-slate-800 !border-slate-600 text-white placeholder:text-slate-400 hover:!border-primary/70 focus:!border-primary focus:!ring-primary/20 transition-all"
                             data-testid="input-email"
                           />
                         </FormControl>
@@ -188,7 +188,7 @@ export default function Contact() {
                         <FormLabel className="text-foreground">お問い合わせ種別</FormLabel>
                         <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
-                            <SelectTrigger className="bg-background/60 border-muted-foreground/30 text-foreground hover:border-primary/50 focus:border-primary transition-all" data-testid="select-category">
+                            <SelectTrigger className="!bg-slate-800 !border-slate-600 text-white hover:!border-primary/70 focus:!border-primary focus:!ring-primary/20 transition-all" data-testid="select-category">
                               <SelectValue placeholder="選択してください" />
                             </SelectTrigger>
                           </FormControl>
@@ -215,7 +215,7 @@ export default function Contact() {
                             {...field} 
                             rows={5} 
                             placeholder="プロジェクトの詳細やご要望をお聞かせください..." 
-                            className="bg-background/60 border-muted-foreground/30 text-foreground placeholder:text-muted-foreground resize-none hover:border-primary/50 focus:border-primary transition-all min-h-[120px] rounded-md"
+                            className="!bg-slate-800 !border-slate-600 text-white placeholder:text-slate-400 resize-none hover:!border-primary/70 focus:!border-primary focus:!ring-primary/20 transition-all min-h-[120px] !rounded-md"
                             data-testid="textarea-message"
                           />
                         </FormControl>
