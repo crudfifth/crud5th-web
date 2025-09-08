@@ -569,11 +569,15 @@
   left: 0;
 }
 
-/* Front face positioning with corrected formula */
+/* Front face positioning with stable 3D transform */
 .portfolio-sample-card .front {
   transform: 
     rotateY(calc((var(--base-deg) + (var(--index) * var(--rotate-deg))) * 1deg))
-    translateZ(var(--r));
+    translateZ(var(--r))
+    translateX(0)
+    translateY(0);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
 /* Fade out cards when they're behind (180deg rotation range) */
@@ -589,9 +593,21 @@
 
 /* Front center card - reduce glass effect for better visibility */
 .portfolio-sample-card.front-center .glassmorphism-card {
-  background: rgba(255, 255, 255, 0.25) !important; /* More solid background */
-  backdrop-filter: blur(8px); /* Less blur */
-  border: 2px solid rgba(255, 255, 255, 0.5); /* Stronger border */
+  background: rgba(255, 255, 255, 0.3) !important; /* More solid background */
+  backdrop-filter: blur(6px); /* Less blur */
+  border: 2px solid rgba(255, 255, 255, 0.6); /* Stronger border */
+  transform: scale(1.05); /* Slightly larger when front-center */
+  box-shadow: 
+    0 25px 70px rgba(0, 0, 0, 0.8), /* Stronger shadow when centered */
+    0 10px 35px rgba(31, 38, 135, 0.7),
+    0 5px 20px rgba(0, 0, 0, 0.6),
+    0 0 50px rgba(79, 209, 197, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+/* Smooth transition for front-center state */
+.portfolio-sample-card .glassmorphism-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Add 3D thickness to cards */
@@ -644,26 +660,49 @@
 .portfolio-sample-card .back {
   transform: 
     rotateY(calc((var(--base-deg) + (var(--index) * var(--rotate-deg)) + 180) * 1deg))
-    translateZ(var(--r));
+    translateZ(var(--r))
+    translateX(0)
+    translateY(0);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
 /* Flipped state */
 .portfolio-sample-card.is-active .front {
   transform: 
     rotateY(calc((var(--base-deg) + (var(--index) * var(--rotate-deg)) + 179.9) * 1deg))
-    translateZ(var(--r));
+    translateZ(var(--r))
+    translateX(0)
+    translateY(0);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
 .portfolio-sample-card.is-active .back {
   transform: 
     rotateY(calc((var(--base-deg) + (var(--index) * var(--rotate-deg)) + 359.9) * 1deg))
-    translateZ(var(--r));
+    translateZ(var(--r))
+    translateX(0)
+    translateY(0);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
 /* Flip transition only when not scrolling */
 .portfolio-scrollable:not(.scrolling) .face {
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   transition: transform 0.8s var(--ease-out-quart);
+}
+
+/* Ensure 3D context is maintained during scroll */
+.portfolio-card-list {
+  transform: translateZ(0); /* Force GPU acceleration */
+  will-change: transform;
+}
+
+.portfolio-sample-card {
+  will-change: transform;
+  transform-origin: center center;
 }
 
 /* Glassmorphism Card Effects - Enhanced depth and opacity */

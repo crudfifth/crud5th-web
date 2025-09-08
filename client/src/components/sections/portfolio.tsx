@@ -139,41 +139,50 @@ export default function Portfolio() {
     offset: ["start end", "end start"]
   });
 
-  // Circle rotation based on scroll with more dramatic effect
-  const circleRotation = useTransform(scrollYProgress, [0, 1], [0, 1080]); // 3 full rotations
+  // GSAP ScrollTrigger-like snap effect
+  const snapRotation = useTransform(
+    scrollYProgress, 
+    [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+    [0, 108, 216, 324, 432, 540, 648, 756, 864, 972, 1080] // Snapped values (every 36 degrees for 10 cards)
+  );
 
   useEffect(() => {
-    const unsubscribe = circleRotation.on("change", (latest) => {
+    const unsubscribe = snapRotation.on("change", (latest) => {
       if (cardListRef.current) {
-        cardListRef.current.style.setProperty("--base-deg", `${latest}`);
-        
-        // Apply back-side and front-center classes to cards
-        const cards = cardListRef.current.querySelectorAll('.portfolio-sample-card');
-        cards.forEach((card: Element, index: number) => {
-          const cardElement = card as HTMLElement;
-          const cardRotation = (latest + (index * (360 / portfolioProjects.length))) % 360;
-          const normalizedRotation = cardRotation < 0 ? cardRotation + 360 : cardRotation;
-          
-          // Card is on back side if rotation is between 90 and 270 degrees
-          if (normalizedRotation > 90 && normalizedRotation < 270) {
-            cardElement.classList.add('back-side');
-            cardElement.classList.remove('front-center');
-          } else {
-            cardElement.classList.remove('back-side');
+        // Apply with requestAnimationFrame for smooth updates
+        requestAnimationFrame(() => {
+          if (cardListRef.current) {
+            cardListRef.current.style.setProperty("--base-deg", `${latest}`);
             
-            // Card is in front-center if rotation is between -15 and 15 degrees
-            const frontCenterRange = 15;
-            if (Math.abs(normalizedRotation) <= frontCenterRange || Math.abs(normalizedRotation - 360) <= frontCenterRange) {
-              cardElement.classList.add('front-center');
-            } else {
-              cardElement.classList.remove('front-center');
-            }
+            // Apply back-side and front-center classes to cards
+            const cards = cardListRef.current.querySelectorAll('.portfolio-sample-card');
+            cards.forEach((card: Element, index: number) => {
+              const cardElement = card as HTMLElement;
+              const cardRotation = (latest + (index * (360 / portfolioProjects.length))) % 360;
+              const normalizedRotation = cardRotation < 0 ? cardRotation + 360 : cardRotation;
+              
+              // Card is on back side if rotation is between 90 and 270 degrees
+              if (normalizedRotation > 90 && normalizedRotation < 270) {
+                cardElement.classList.add('back-side');
+                cardElement.classList.remove('front-center');
+              } else {
+                cardElement.classList.remove('back-side');
+                
+                // Card is in front-center if rotation is between -10 and 10 degrees (tighter snap range)
+                const frontCenterRange = 10;
+                if (Math.abs(normalizedRotation) <= frontCenterRange || Math.abs(normalizedRotation - 360) <= frontCenterRange) {
+                  cardElement.classList.add('front-center');
+                } else {
+                  cardElement.classList.remove('front-center');
+                }
+              }
+            });
           }
         });
       }
     });
     return unsubscribe;
-  }, [circleRotation]);
+  }, [snapRotation]);
 
   // Scroll state management
   useEffect(() => {
