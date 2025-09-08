@@ -389,7 +389,7 @@ export default function Portfolio() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [zoom, setZoom] = useState(0.6); // デフォルトで60%ズーム
-  const [pan, setPan] = useState({ x: -50, y: -50 }); // 初期値を左上に調整
+  const [pan, setPan] = useState({ x: 0, y: -30 }); // 初期値を中央に調整
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [isFocused, setIsFocused] = useState(false);
@@ -451,7 +451,7 @@ export default function Portfolio() {
   // ズーム・パンのリセット
   const resetView = () => {
     setZoom(0.6);
-    setPan({ x: -50, y: -50 });
+    setPan({ x: 0, y: -30 });
   };
 
   const highlightedConnections = new Set<string>();
