@@ -858,16 +858,16 @@
 }
 
 .sampleCard {
-  /* 実際に配置する大きさなどに応じて適宜変更してください */
-  --r: 450px; /* 円周の半径 */
-  --z-offset: 600px; /* 円周の奥行き方向の距離 */
+  /* カードサイズとスペーシングを最適化 */
+  --r: 650px; /* 円周の半径を大きくして間隔を広げる */
+  --z-offset: 800px; /* 円周の奥行き方向の距離 */
   --rotate-deg: calc(360 / var(--card-count)); /* 個別のカードの回転角度（度） */
 
   position: fixed;
   top: 50%;
-  left: calc(50% - 120px); /* 50%の位置からカードの横幅の半分で中央寄せにする */
-  width: 240px;
-  height: 320px;
+  left: calc(50% - 150px); /* カード幅に合わせて調整 */
+  width: 300px; /* カードサイズを大きく */
+  height: 400px; /* カードサイズを大きく */
   list-style: none;
   transform-style: preserve-3d;
 }

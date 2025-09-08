@@ -277,9 +277,9 @@ export default function Portfolio() {
                 >
                   {/* Front Face */}
                   <div className="face front">
-                    <div className="glassmorphism-card w-full h-full p-4 rounded-xl border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl relative overflow-hidden group cursor-pointer">
+                    <div className="w-full h-full p-4 rounded-xl border border-gray-600 bg-slate-800 shadow-2xl relative overflow-hidden group cursor-pointer">
                       {/* Background gradient based on category */}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl`} />
+                      <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-0 group-hover:opacity-30 transition-opacity duration-300 rounded-xl`} />
                       
                       {/* Content */}
                       <div className="relative z-10 h-full flex flex-col">
@@ -330,16 +330,16 @@ export default function Portfolio() {
                         </div>
                       </div>
 
-                      {/* Holographic effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/5 to-purple-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" />
+                      {/* Subtle glow effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/0 via-cyan-400/10 to-purple-400/0 opacity-0 group-hover:opacity-50 transition-opacity duration-500 rounded-xl" />
                     </div>
                   </div>
 
                   {/* Back Face */}
                   <div className="face back">
-                    <div className="glassmorphism-card w-full h-full p-4 rounded-xl border border-white/20 backdrop-blur-xl bg-white/5 shadow-2xl relative overflow-hidden group cursor-pointer">
+                    <div className="w-full h-full p-4 rounded-xl border border-gray-600 bg-slate-800 shadow-2xl relative overflow-hidden group cursor-pointer">
                       {/* Background gradient */}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-30 rounded-xl`} />
+                      <div className={`absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-20 rounded-xl`} />
                       
                       {/* Content */}
                       <div className="relative z-10 h-full flex flex-col">
