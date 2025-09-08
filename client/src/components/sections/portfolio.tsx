@@ -212,7 +212,7 @@ interface NodeCardProps {
 function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: NodeCardProps) {
   return (
     <motion.div
-      className={`absolute w-72 h-40 cursor-pointer group ${isHighlighted ? 'z-30' : 'z-10'} relative`}
+      className={`absolute w-72 h-40 cursor-pointer group ${isHighlighted ? 'z-30' : 'z-10'}`}
       style={{
         left: node.position.x,
         top: node.position.y,
