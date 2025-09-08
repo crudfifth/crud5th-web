@@ -124,7 +124,7 @@ export default function Hero() {
               delay: 0.3,
               ease: [0.16, 1, 0.3, 1] 
             }}
-            className="block text-sm md:text-lg font-light text-white/75 mb-6 drop-shadow-2xl tracking-widest uppercase"
+            className="block text-xs md:text-base font-light text-white/75 mb-4 drop-shadow-2xl tracking-widest uppercase"
           >
             THE
           </motion.span>
@@ -137,7 +137,7 @@ export default function Hero() {
               delay: 0.6,
               ease: [0.16, 1, 0.3, 1] 
             }}
-            className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight"
+            className="text-3xl md:text-4xl lg:text-6xl font-bold mb-4 leading-tight"
             data-testid="hero-title"
           >
             <span className="block bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent drop-shadow-2xl mb-2 font-extrabold tracking-tight">EVOLUTION</span>
@@ -152,7 +152,7 @@ export default function Hero() {
               delay: 1.2,
               ease: [0.16, 1, 0.3, 1] 
             }}
-            className="block text-lg md:text-xl font-normal text-white/85 mb-8 drop-shadow-2xl tracking-wide"
+            className="block text-base md:text-lg font-normal text-white/85 mb-6 drop-shadow-2xl tracking-wide"
           >
             革新を共に創造するエンジニア集団
           </motion.span>
@@ -167,7 +167,7 @@ export default function Hero() {
             duration: 0.8,
             ease: [0.16, 1, 0.3, 1]
           }}
-          className="text-base md:text-lg text-white/80 mb-12 drop-shadow-xl"
+          className="text-sm md:text-base text-white/80 mb-8 drop-shadow-xl"
           data-testid="hero-typing"
         >
           <TypingAnimation />
@@ -182,7 +182,7 @@ export default function Hero() {
             duration: 0.8,
             ease: [0.16, 1, 0.3, 1]
           }}
-          className="relative mx-auto max-w-4xl p-8 mb-12 backdrop-blur-2xl bg-gradient-to-br from-white/10 via-white/5 to-transparent border border-white/20 rounded-2xl shadow-2xl shadow-primary/10"
+          className="relative mx-auto max-w-4xl p-6 mb-8 backdrop-blur-2xl bg-gradient-to-br from-white/10 via-white/5 to-transparent border border-white/20 rounded-2xl shadow-2xl shadow-primary/10"
           style={{
             background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, rgba(46,184,207,0.1) 100%)'
           }}
@@ -220,6 +220,9 @@ export default function Hero() {
                               ? "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-bold text-lg tracking-wider drop-shadow-lg" 
                               : ""
                           }`}
+                          style={{
+                            textShadow: isCRUD5thChar ? '0 0 20px rgba(46, 184, 207, 0.6), 0 0 40px rgba(46, 184, 207, 0.3)' : undefined
+                          }}
                         >
                           {char === " " ? "\u00A0" : char}
                         </motion.span>
@@ -246,7 +249,7 @@ export default function Hero() {
         >
           <motion.button
             onClick={scrollToServices}
-            className="relative px-8 py-4 text-base font-semibold text-white backdrop-blur-xl bg-gradient-to-r from-black/20 via-primary/10 to-black/20 border border-white/30 hover:border-primary/60 rounded-2xl transition-all duration-500 group overflow-hidden min-w-[200px]"
+            className="relative px-6 py-3 text-sm font-semibold text-white backdrop-blur-xl bg-gradient-to-r from-black/20 via-primary/10 to-black/20 border border-white/30 hover:border-primary/60 rounded-xl transition-all duration-500 group overflow-hidden min-w-[160px]"
             style={{
               boxShadow: '0 8px 32px rgba(46, 184, 207, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
             }}
@@ -271,7 +274,7 @@ export default function Hero() {
           
           <motion.button
             onClick={scrollToContact}
-            className="relative px-8 py-4 text-base font-semibold text-white backdrop-blur-xl bg-gradient-to-r from-primary/40 via-primary/60 to-accent/40 border border-primary/50 hover:border-primary rounded-2xl group overflow-hidden min-w-[200px]"
+            className="relative px-6 py-3 text-sm font-semibold text-white backdrop-blur-xl bg-gradient-to-r from-primary/40 via-primary/60 to-accent/40 border border-primary/50 hover:border-primary rounded-xl group overflow-hidden min-w-[160px]"
             style={{
               boxShadow: '0 8px 32px rgba(46, 184, 207, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
             }}
