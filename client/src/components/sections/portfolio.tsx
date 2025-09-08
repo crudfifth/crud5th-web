@@ -27,7 +27,7 @@ const serviceNodes: ServiceNode[] = [
     description: "コーポレートサイト",
     technologies: ["React", "TypeScript", "Vite"],
     status: "active",
-    position: { x: 600, y: 100 },
+    position: { x: 800, y: 150 },
     icon: <Globe className="w-5 h-5" />,
     connections: ["raft-core", "etheria", "cloud-nas"]
   },
@@ -39,7 +39,7 @@ const serviceNodes: ServiceNode[] = [
     description: "全社共通データストレージ基盤",
     technologies: ["Node.js", "AWS S3"],
     status: "active",
-    position: { x: 300, y: 120 },
+    position: { x: 400, y: 100 },
     icon: <Cloud className="w-5 h-5" />,
     connections: ["domain-system", "crud5th-web", "video-edit"]
   },
@@ -51,12 +51,12 @@ const serviceNodes: ServiceNode[] = [
     description: "DNS・ドメイン統合管理",
     technologies: ["DNS API", "React"],
     status: "active",
-    position: { x: 900, y: 130 },
+    position: { x: 1200, y: 180 },
     icon: <Database className="w-5 h-5" />,
     connections: ["cloud-nas", "crud5th-web"]
   },
 
-  // Management Layer (Upper Middle)
+  // Management Layer (Right Side)
   {
     id: "crud5th-act",
     title: "CRUD5th act",
@@ -64,7 +64,7 @@ const serviceNodes: ServiceNode[] = [
     description: "稼働管理システム",
     technologies: ["React", "Express", "PostgreSQL"],
     status: "active",
-    position: { x: 750, y: 280 },
+    position: { x: 1000, y: 400 },
     icon: <Building2 className="w-5 h-5" />,
     connections: ["personal-business", "enda", "keibi-shift"]
   },
@@ -76,7 +76,7 @@ const serviceNodes: ServiceNode[] = [
     description: "警備シフト管理システム",
     technologies: ["React", "Calendar API"],
     status: "active",
-    position: { x: 1050, y: 300 },
+    position: { x: 1400, y: 420 },
     icon: <Shield className="w-5 h-5" />,
     connections: ["crud5th-act", "enda"]
   },
@@ -88,7 +88,7 @@ const serviceNodes: ServiceNode[] = [
     description: "フリーランス向け業務管理",
     technologies: ["React", "Express"],
     status: "active",
-    position: { x: 950, y: 450 },
+    position: { x: 1300, y: 650 },
     icon: <Shield className="w-5 h-5" />,
     connections: ["crud5th-act", "enda"]
   },
@@ -100,7 +100,7 @@ const serviceNodes: ServiceNode[] = [
     description: "リアルタイム動態管理",
     technologies: ["IoT", "WebSocket"],
     status: "active",
-    position: { x: 650, y: 500 },
+    position: { x: 900, y: 700 },
     icon: <Server className="w-5 h-5" />,
     connections: ["crud5th-act", "personal-business", "raft-core"]
   },
@@ -113,7 +113,7 @@ const serviceNodes: ServiceNode[] = [
     description: "クリエイターオールインワンシステム", 
     technologies: ["Vue.js", "WebGL"],
     status: "active",
-    position: { x: 150, y: 300 },
+    position: { x: 200, y: 400 },
     icon: <Brain className="w-5 h-5" />,
     connections: ["design-system", "video-edit", "donation-system"]
   },
@@ -125,7 +125,7 @@ const serviceNodes: ServiceNode[] = [
     description: "デザインツール統合プラットフォーム",
     technologies: ["Canvas API", "WebGL"],
     status: "active",
-    position: { x: 50, y: 180 },
+    position: { x: 50, y: 250 },
     icon: <Code className="w-5 h-5" />,
     connections: ["etheria", "video-edit", "crud5th-web"]
   },
@@ -137,12 +137,12 @@ const serviceNodes: ServiceNode[] = [
     description: "Webベース動画編集プラットフォーム",
     technologies: ["WebAssembly", "FFmpeg"],
     status: "development",
-    position: { x: 80, y: 400 },
+    position: { x: 100, y: 550 },
     icon: <VideoIcon className="w-5 h-5" />,
     connections: ["etheria", "cloud-nas", "design-system"]
   },
 
-  // Business & Communication Layer (Middle-Right)
+  // Business & Communication Layer (Center)
   {
     id: "raft-core",
     title: "Raft Core",
@@ -150,7 +150,7 @@ const serviceNodes: ServiceNode[] = [
     description: "SES営業推進・案件マッチング支援",
     technologies: ["React", "AI/ML"],
     status: "active",
-    position: { x: 500, y: 280 },
+    position: { x: 650, y: 350 },
     icon: <Users className="w-5 h-5" />,
     connections: ["crud5th-act", "communication-system", "enda"]
   },
@@ -162,7 +162,7 @@ const serviceNodes: ServiceNode[] = [
     description: "リアルタイム通信基盤",
     technologies: ["WebSocket", "WebRTC"],
     status: "active",
-    position: { x: 350, y: 380 },
+    position: { x: 450, y: 500 },
     icon: <Zap className="w-5 h-5" />,
     connections: ["meltin-vr", "raft-core", "donation-system"]
   },
@@ -174,7 +174,7 @@ const serviceNodes: ServiceNode[] = [
     description: "クリエイター支援プラットフォーム",
     technologies: ["Stripe", "React"],
     status: "active",
-    position: { x: 300, y: 520 },
+    position: { x: 350, y: 700 },
     icon: <Building2 className="w-5 h-5" />,
     connections: ["etheria", "communication-system"]
   },
@@ -187,7 +187,7 @@ const serviceNodes: ServiceNode[] = [
     description: "お婿養マッチングアプリ",
     technologies: ["Unity", "WebXR"],
     status: "development",
-    position: { x: 150, y: 550 },
+    position: { x: 200, y: 750 },
     icon: <Gamepad2 className="w-5 h-5" />,
     connections: ["communication-system", "etheria"]
   }
@@ -361,9 +361,48 @@ function ConnectionLine({ from, to, isActive }: { from: ServiceNode, to: Service
 export default function Portfolio() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(0.65); // デフォルトで少し縮小して全体が見える
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-200px" });
+
+  // ズーム・パン機能
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    const delta = e.deltaY * -0.001;
+    const newZoom = Math.min(Math.max(0.3, zoom + delta), 2.0);
+    setZoom(newZoom);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button === 0) { // 左クリックのみ
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) {
+      setPan({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  // ズーム・パンのリセット
+  const resetView = () => {
+    setZoom(0.65);
+    setPan({ x: 0, y: 0 });
+  };
 
   const highlightedConnections = new Set<string>();
   const activeConnections = new Set<string>();
@@ -413,69 +452,124 @@ export default function Portfolio() {
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-4">
             CRUD5thの技術サービス群とその相互関係
           </p>
-          <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
+          <div className="flex items-center justify-center gap-6 text-sm text-gray-400">
             <div className="flex items-center gap-2">
               <MousePointer className="w-4 h-4" />
-              ノードにホバーして関係性を表示
+              ホバーで関係性表示
             </div>
             <div className="flex items-center gap-2">
-              <Eye className="w-4 h-4" />
-              データフローをリアルタイム可視化
+              <Workflow className="w-4 h-4" />
+              ホイールでズーム
             </div>
+            <div className="flex items-center gap-2">
+              <ArrowRight className="w-4 h-4" />
+              ドラッグで移動
+            </div>
+            <button 
+              onClick={resetView}
+              className="flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+            >
+              <Eye className="w-4 h-4" />
+              全体表示
+            </button>
           </div>
         </motion.div>
 
         {/* Service Network Visualization */}
         <div 
           ref={containerRef}
-          className="relative w-full h-[700px] mx-auto bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-3xl border border-white/10 overflow-hidden"
-          style={{ perspective: '1000px' }}
+          className="relative w-full h-[700px] mx-auto bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-3xl border border-white/10 overflow-hidden cursor-grab"
+          style={{ 
+            perspective: '1000px',
+            cursor: isDragging ? 'grabbing' : 'grab'
+          }}
+          onWheel={handleWheel}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
         >
-          {/* SVG Connections */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-            {serviceNodes.map(fromNode => 
-              fromNode.connections.map(toNodeId => {
-                const toNode = serviceNodes.find(n => n.id === toNodeId);
-                if (!toNode) return null;
-                
-                const connectionKey = `${fromNode.id}-${toNode.id}`;
-                const isActive = activeConnections.has(connectionKey);
-                
-                return (
-                  <ConnectionLine
-                    key={connectionKey}
-                    from={fromNode}
-                    to={toNode}
-                    isActive={isActive}
-                  />
-                );
-              })
-            )}
-          </svg>
-
-          {/* Service Nodes */}
-          {serviceNodes.map((node, index) => (
-            <motion.div
-              key={node.id}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isInView ? { 
-                opacity: 1, 
-                scale: 1,
-                transition: { 
-                  duration: 0.6, 
-                  delay: index * 0.1,
-                  ease: "easeOut"
-                }
-              } : {}}
+          {/* Zoom/Pan Transform Container */}
+          <div 
+            className="absolute inset-0 transition-transform duration-200 ease-out"
+            style={{
+              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+              transformOrigin: 'center center'
+            }}
+          >
+            {/* SVG Connections */}
+            <svg 
+              className="absolute pointer-events-none" 
+              style={{ 
+                width: '1500px', 
+                height: '850px',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 1 
+              }}
             >
-              <NodeCard
-                node={node}
-                isHighlighted={hoveredNode === node.id || selectedNode === node.id || highlightedConnections.has(node.id)}
-                onHover={setHoveredNode}
-                highlightedConnections={highlightedConnections}
-              />
-            </motion.div>
-          ))}
+              {serviceNodes.map(fromNode => 
+                fromNode.connections.map(toNodeId => {
+                  const toNode = serviceNodes.find(n => n.id === toNodeId);
+                  if (!toNode) return null;
+                  
+                  const connectionKey = `${fromNode.id}-${toNode.id}`;
+                  const isActive = activeConnections.has(connectionKey);
+                  
+                  return (
+                    <ConnectionLine
+                      key={connectionKey}
+                      from={fromNode}
+                      to={toNode}
+                      isActive={isActive}
+                    />
+                  );
+                })
+              )}
+            </svg>
+
+            {/* Service Nodes Container */}
+            <div 
+              className="absolute pointer-events-none"
+              style={{
+                width: '1500px',
+                height: '850px',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)'
+              }}
+            >
+              {serviceNodes.map((node, index) => (
+                <motion.div
+                  key={node.id}
+                  className="pointer-events-auto"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={isInView ? { 
+                    opacity: 1, 
+                    scale: 1,
+                    transition: { 
+                      duration: 0.6, 
+                      delay: index * 0.1,
+                      ease: "easeOut"
+                    }
+                  } : {}}
+                >
+                  <NodeCard
+                    node={node}
+                    isHighlighted={hoveredNode === node.id || selectedNode === node.id || highlightedConnections.has(node.id)}
+                    onHover={setHoveredNode}
+                    highlightedConnections={highlightedConnections}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Zoom Level Indicator */}
+          <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-lg px-3 py-2 text-xs text-white/70">
+            ズーム: {Math.round(zoom * 100)}%
+          </div>
         </div>
 
         {/* Legend */}
