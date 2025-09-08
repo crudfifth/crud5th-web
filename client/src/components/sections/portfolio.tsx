@@ -19,46 +19,7 @@ interface ServiceNode {
 }
 
 const serviceNodes: ServiceNode[] = [
-  // Core Infrastructure
-  {
-    id: "cloud-nas",
-    title: "クラウドNASシステム",
-    category: "infrastructure",
-    description: "全社共通データストレージ基盤",
-    technologies: ["Node.js", "AWS S3", "Redis"],
-    status: "active",
-    position: { x: 400, y: 200 },
-    icon: <Cloud className="w-5 h-5" />,
-    connections: ["domain-system", "crud5th-web", "video-edit"]
-  },
-  
-  // Business Management Hub
-  {
-    id: "crud5th-act",
-    title: "CRUD5th act",
-    category: "management", 
-    description: "稼働管理システム",
-    technologies: ["React", "Express", "PostgreSQL"],
-    status: "active",
-    position: { x: 600, y: 150 },
-    icon: <Building2 className="w-5 h-5" />,
-    connections: ["personal-business", "enda", "keibi-shift"]
-  },
-
-  // Creative Suite
-  {
-    id: "etheria",
-    title: "Etheria",
-    category: "creative",
-    description: "クリエイターオールインワンシステム", 
-    technologies: ["Vue.js", "WebGL", "FFmpeg"],
-    status: "active",
-    position: { x: 200, y: 300 },
-    icon: <Brain className="w-5 h-5" />,
-    connections: ["design-system", "video-edit", "donation-system"]
-  },
-
-  // Core Web Platform
+  // Core Infrastructure Layer (Top)
   {
     id: "crud5th-web",
     title: "CRUD5th WEB",
@@ -66,110 +27,46 @@ const serviceNodes: ServiceNode[] = [
     description: "コーポレートサイト",
     technologies: ["React", "TypeScript", "Vite"],
     status: "active",
-    position: { x: 400, y: 100 },
+    position: { x: 600, y: 100 },
     icon: <Globe className="w-5 h-5" />,
     connections: ["raft-core", "etheria", "cloud-nas"]
   },
 
-  // VR Innovation
   {
-    id: "meltin-vr",
-    title: "Meltin VR",
-    category: "vr",
-    description: "お婿養マッチングアプリ",
-    technologies: ["Unity", "WebXR", "Node.js"],
-    status: "development",
-    position: { x: 150, y: 450 },
-    icon: <Gamepad2 className="w-5 h-5" />,
-    connections: ["communication-system", "etheria"]
-  },
-
-  // Business Solutions
-  {
-    id: "raft-core",
-    title: "Raft Core",
-    category: "business",
-    description: "SES営業推進・案件マッチング支援",
-    technologies: ["React", "Node.js", "AI/ML"],
+    id: "cloud-nas",
+    title: "クラウドNAS",
+    category: "infrastructure",
+    description: "全社共通データストレージ基盤",
+    technologies: ["Node.js", "AWS S3"],
     status: "active",
-    position: { x: 650, y: 300 },
-    icon: <Users className="w-5 h-5" />,
-    connections: ["crud5th-act", "communication-system", "enda"]
+    position: { x: 300, y: 120 },
+    icon: <Cloud className="w-5 h-5" />,
+    connections: ["domain-system", "crud5th-web", "video-edit"]
   },
 
-  // Creative Tools
   {
-    id: "design-system",
-    title: "デザイン作成システム",
-    category: "creative",
-    description: "デザインツール統合プラットフォーム",
-    technologies: ["Canvas API", "WebGL", "React"],
+    id: "domain-system",
+    title: "ドメイン構造管理",
+    category: "infrastructure",
+    description: "DNS・ドメイン統合管理",
+    technologies: ["DNS API", "React"],
     status: "active",
-    position: { x: 100, y: 200 },
-    icon: <Code className="w-5 h-5" />,
-    connections: ["etheria", "video-edit", "crud5th-web"]
+    position: { x: 900, y: 130 },
+    icon: <Database className="w-5 h-5" />,
+    connections: ["cloud-nas", "crud5th-web"]
   },
 
+  // Management Layer (Upper Middle)
   {
-    id: "video-edit",
-    title: "動画編集システム",
-    category: "creative",
-    description: "Webベース動画編集プラットフォーム",
-    technologies: ["WebAssembly", "FFmpeg", "React"],
-    status: "development",
-    position: { x: 250, y: 150 },
-    icon: <VideoIcon className="w-5 h-5" />,
-    connections: ["etheria", "cloud-nas", "design-system"]
-  },
-
-  // Communication & Social
-  {
-    id: "communication-system",
-    title: "コミュニケーションシステム",
-    category: "web",
-    description: "リアルタイム通信基盤",
-    technologies: ["WebSocket", "WebRTC", "Redis"],
+    id: "crud5th-act",
+    title: "CRUD5th act",
+    category: "management", 
+    description: "稼働管理システム",
+    technologies: ["React", "Express", "PostgreSQL"],
     status: "active",
-    position: { x: 350, y: 400 },
-    icon: <Zap className="w-5 h-5" />,
-    connections: ["meltin-vr", "raft-core", "donation-system"]
-  },
-
-  {
-    id: "donation-system",
-    title: "投げ銭システム",
-    category: "web",
-    description: "クリエイター支援プラットフォーム",
-    technologies: ["Stripe", "React", "WebSocket"],
-    status: "active",
-    position: { x: 500, y: 450 },
+    position: { x: 750, y: 280 },
     icon: <Building2 className="w-5 h-5" />,
-    connections: ["etheria", "communication-system"]
-  },
-
-  // Management Tools
-  {
-    id: "personal-business",
-    title: "個人事業管理システム",
-    category: "management",
-    description: "フリーランス向け業務管理",
-    technologies: ["React", "Express", "SQLite"],
-    status: "active",
-    position: { x: 750, y: 200 },
-    icon: <Shield className="w-5 h-5" />,
-    connections: ["crud5th-act", "enda"]
-  },
-
-  {
-    id: "enda",
-    title: "ENDA 動態管理システム",
-    category: "management",
-    description: "リアルタイム動態管理",
-    technologies: ["IoT", "WebSocket", "React"],
-    status: "active",
-    position: { x: 800, y: 350 },
-    icon: <Server className="w-5 h-5" />,
-    connections: ["crud5th-act", "personal-business", "raft-core"]
+    connections: ["personal-business", "enda", "keibi-shift"]
   },
 
   {
@@ -177,24 +74,122 @@ const serviceNodes: ServiceNode[] = [
     title: "KeibiShift",
     category: "management",
     description: "警備シフト管理システム",
-    technologies: ["React", "Calendar API", "Push"],
+    technologies: ["React", "Calendar API"],
     status: "active",
-    position: { x: 650, y: 100 },
+    position: { x: 1050, y: 300 },
     icon: <Shield className="w-5 h-5" />,
     connections: ["crud5th-act", "enda"]
   },
 
-  // Infrastructure
   {
-    id: "domain-system",
-    title: "ドメイン構造管理システム",
-    category: "infrastructure",
-    description: "DNS・ドメイン統合管理",
-    technologies: ["DNS API", "React", "Node.js"],
+    id: "personal-business",
+    title: "個人事業管理",
+    category: "management",
+    description: "フリーランス向け業務管理",
+    technologies: ["React", "Express"],
     status: "active",
-    position: { x: 550, y: 250 },
-    icon: <Database className="w-5 h-5" />,
-    connections: ["cloud-nas", "crud5th-web"]
+    position: { x: 950, y: 450 },
+    icon: <Shield className="w-5 h-5" />,
+    connections: ["crud5th-act", "enda"]
+  },
+
+  {
+    id: "enda",
+    title: "ENDA",
+    category: "management",
+    description: "リアルタイム動態管理",
+    technologies: ["IoT", "WebSocket"],
+    status: "active",
+    position: { x: 650, y: 500 },
+    icon: <Server className="w-5 h-5" />,
+    connections: ["crud5th-act", "personal-business", "raft-core"]
+  },
+
+  // Creative Layer (Left Side)
+  {
+    id: "etheria",
+    title: "Etheria",
+    category: "creative",
+    description: "クリエイターオールインワンシステム", 
+    technologies: ["Vue.js", "WebGL"],
+    status: "active",
+    position: { x: 150, y: 300 },
+    icon: <Brain className="w-5 h-5" />,
+    connections: ["design-system", "video-edit", "donation-system"]
+  },
+
+  {
+    id: "design-system",
+    title: "デザイン作成",
+    category: "creative",
+    description: "デザインツール統合プラットフォーム",
+    technologies: ["Canvas API", "WebGL"],
+    status: "active",
+    position: { x: 50, y: 180 },
+    icon: <Code className="w-5 h-5" />,
+    connections: ["etheria", "video-edit", "crud5th-web"]
+  },
+
+  {
+    id: "video-edit",
+    title: "動画編集",
+    category: "creative",
+    description: "Webベース動画編集プラットフォーム",
+    technologies: ["WebAssembly", "FFmpeg"],
+    status: "development",
+    position: { x: 80, y: 400 },
+    icon: <VideoIcon className="w-5 h-5" />,
+    connections: ["etheria", "cloud-nas", "design-system"]
+  },
+
+  // Business & Communication Layer (Middle-Right)
+  {
+    id: "raft-core",
+    title: "Raft Core",
+    category: "business",
+    description: "SES営業推進・案件マッチング支援",
+    technologies: ["React", "AI/ML"],
+    status: "active",
+    position: { x: 500, y: 280 },
+    icon: <Users className="w-5 h-5" />,
+    connections: ["crud5th-act", "communication-system", "enda"]
+  },
+
+  {
+    id: "communication-system",
+    title: "コミュニケーション",
+    category: "web",
+    description: "リアルタイム通信基盤",
+    technologies: ["WebSocket", "WebRTC"],
+    status: "active",
+    position: { x: 350, y: 380 },
+    icon: <Zap className="w-5 h-5" />,
+    connections: ["meltin-vr", "raft-core", "donation-system"]
+  },
+
+  {
+    id: "donation-system",
+    title: "投げ銭",
+    category: "web",
+    description: "クリエイター支援プラットフォーム",
+    technologies: ["Stripe", "React"],
+    status: "active",
+    position: { x: 300, y: 520 },
+    icon: <Building2 className="w-5 h-5" />,
+    connections: ["etheria", "communication-system"]
+  },
+
+  // VR Innovation Layer (Bottom-Left)
+  {
+    id: "meltin-vr",
+    title: "Meltin VR",
+    category: "vr",
+    description: "お婿養マッチングアプリ",
+    technologies: ["Unity", "WebXR"],
+    status: "development",
+    position: { x: 150, y: 550 },
+    icon: <Gamepad2 className="w-5 h-5" />,
+    connections: ["communication-system", "etheria"]
   }
 ];
 
@@ -217,7 +212,7 @@ interface NodeCardProps {
 function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: NodeCardProps) {
   return (
     <motion.div
-      className={`absolute w-64 h-32 cursor-pointer group ${isHighlighted ? 'z-30' : 'z-10'}`}
+      className={`absolute w-56 h-28 cursor-pointer group ${isHighlighted ? 'z-30' : 'z-10'}`}
       style={{
         left: node.position.x,
         top: node.position.y,
@@ -349,41 +344,15 @@ function ConnectionLine({ from, to, isActive }: { from: ServiceNode, to: Service
         transition={{ duration: 0.8, ease: "easeInOut" }}
       />
       
-      {/* Data Flow Animation */}
+      {/* Data Flow Animation - using SVG animate */}
       {isActive && (
-        <motion.circle
-          r="3"
-          fill="rgba(99, 102, 241, 0.9)"
-          initial={{ offsetDistance: "0%" }}
-          animate={{ offsetDistance: "100%" }}
-          transition={{ 
-            duration: 2, 
-            repeat: Infinity, 
-            ease: "linear",
-            repeatDelay: 1
-          }}
-          style={{ offsetPath: `path('${pathData}')` }}
-        />
-      )}
-      
-      {/* Arrow */}
-      {isActive && (
-        <motion.polygon
-          points="0,-4 8,0 0,4"
-          fill="rgba(99, 102, 241, 0.8)"
-          initial={{ offsetDistance: "95%" }}
-          animate={{ offsetDistance: "98%" }}
-          transition={{ 
-            duration: 2, 
-            repeat: Infinity, 
-            ease: "linear",
-            repeatDelay: 1
-          }}
-          style={{ 
-            offsetPath: `path('${pathData}')`,
-            offsetRotate: 'auto'
-          }}
-        />
+        <circle r="3" fill="rgba(99, 102, 241, 0.9)">
+          <animateMotion
+            dur="2s"
+            repeatCount="indefinite"
+            path={pathData}
+          />
+        </circle>
       )}
     </g>
   );
@@ -459,7 +428,7 @@ export default function Portfolio() {
         {/* Service Network Visualization */}
         <div 
           ref={containerRef}
-          className="relative w-full h-[600px] mx-auto bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-3xl border border-white/10 overflow-hidden"
+          className="relative w-full h-[700px] mx-auto bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-3xl border border-white/10 overflow-hidden"
           style={{ perspective: '1000px' }}
         >
           {/* SVG Connections */}
