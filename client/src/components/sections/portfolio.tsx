@@ -330,25 +330,21 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
 }
 
 function ConnectionLine({ from, to, isActive }: { from: ServiceNode, to: ServiceNode, isActive: boolean }) {
-  // ノード位置をSVG座標系に変換（SVGも中央基準なのでオフセットなし）
-  const fromX = from.position.x + 1100; // SVG幅の半分
-  const fromY = from.position.y + 550;  // SVG高さの半分
-  const toX = to.position.x + 1100;
-  const toY = to.position.y + 550;
+  const pathId = `connection-${from.id}-${to.id}`;
   
   // Calculate control points for curved path
-  const dx = toX - fromX;
-  const dy = toY - fromY;
+  const dx = to.position.x - from.position.x;
+  const dy = to.position.y - from.position.y;
   const distance = Math.sqrt(dx * dx + dy * dy);
   
   const controlOffset = Math.min(distance * 0.3, 100);
-  const midX = (fromX + toX) / 2;
-  const midY = (fromY + toY) / 2;
+  const midX = (from.position.x + to.position.x) / 2;
+  const midY = (from.position.y + to.position.y) / 2;
   
   const perpX = -dy / distance * controlOffset;
   const perpY = dx / distance * controlOffset;
   
-  const pathData = `M ${fromX} ${fromY} Q ${midX + perpX} ${midY + perpY} ${toX} ${toY}`;
+  const pathData = `M ${from.position.x} ${from.position.y} Q ${midX + perpX} ${midY + perpY} ${to.position.x} ${to.position.y}`;
 
   return (
     <g>
@@ -547,8 +543,8 @@ export default function Portfolio() {
             <svg 
               className="absolute pointer-events-none" 
               style={{ 
-                width: '2200px', 
-                height: '1100px',
+                width: '1800px', 
+                height: '950px',
                 left: '50%',
                 top: '50%',
                 transform: 'translate(-50%, -50%)',
@@ -579,8 +575,8 @@ export default function Portfolio() {
             <div 
               className="absolute pointer-events-none"
               style={{
-                width: '2200px',
-                height: '1100px',
+                width: '1800px',
+                height: '950px',
                 left: '50%',
                 top: '50%',
                 transform: 'translate(-50%, -50%)'
