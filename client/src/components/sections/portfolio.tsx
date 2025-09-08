@@ -246,7 +246,9 @@ function NodeCard({
       style={{
         left: node.position.x,
         top: node.position.y,
-        transform: "translate(-50%, -50%)",
+        transform: "translate3d(-50%, -50%, 0)",
+        willChange: isHighlighted ? "transform, box-shadow" : "auto",
+        backfaceVisibility: "hidden"
       }}
       onMouseEnter={() => onHover(node.id)}
       onMouseLeave={() => onHover(null)}
@@ -257,7 +259,7 @@ function NodeCard({
           ? "0 20px 40px rgba(99, 102, 241, 0.3)"
           : "0 8px 25px rgba(0, 0, 0, 0.15)",
       }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
       data-testid={`service-node-${node.id}`}
     >
       {/* 左上角のアクセントデザイン（カードの外に独立） */}
@@ -670,8 +672,10 @@ export default function Portfolio() {
           <div
             className={`absolute inset-0 ${isDragging ? "" : "transition-transform duration-200 ease-out"}`}
             style={{
-              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+              transform: `translate3d(${pan.x}px, ${pan.y}px, 0) scale(${zoom})`,
               transformOrigin: "center center",
+              willChange: isDragging ? "transform" : "auto",
+              backfaceVisibility: "hidden"
             }}
           >
             {/* SVG Connections */}
