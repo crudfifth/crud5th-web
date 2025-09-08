@@ -1,15 +1,39 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useAnimation, AnimatePresence, useInView } from "framer-motion";
-import { 
-  Server, Database, Globe, Users, VideoIcon, Shield, 
-  Gamepad2, Brain, Code, Cloud, Building2, Zap,
-  Workflow, ArrowRight, MousePointer, Eye
+import {
+  motion,
+  useAnimation,
+  AnimatePresence,
+  useInView,
+} from "framer-motion";
+import {
+  Server,
+  Database,
+  Globe,
+  Users,
+  VideoIcon,
+  Shield,
+  Gamepad2,
+  Brain,
+  Code,
+  Cloud,
+  Building2,
+  Zap,
+  Workflow,
+  ArrowRight,
+  MousePointer,
+  Eye,
 } from "lucide-react";
 
 interface ServiceNode {
   id: string;
   title: string;
-  category: "web" | "management" | "creative" | "infrastructure" | "vr" | "business";
+  category:
+    | "web"
+    | "management"
+    | "creative"
+    | "infrastructure"
+    | "vr"
+    | "business";
   description: string;
   technologies: string[];
   status: "active" | "development" | "planning";
@@ -29,7 +53,7 @@ const serviceNodes: ServiceNode[] = [
     status: "active",
     position: { x: 800, y: 150 },
     icon: <Globe className="w-5 h-5" />,
-    connections: ["raft-core", "etheria", "cloud-nas"]
+    connections: ["raft-core", "etheria", "cloud-nas"],
   },
 
   {
@@ -41,7 +65,7 @@ const serviceNodes: ServiceNode[] = [
     status: "active",
     position: { x: 400, y: 100 },
     icon: <Cloud className="w-5 h-5" />,
-    connections: ["domain-system", "crud5th-web", "video-edit"]
+    connections: ["domain-system", "crud5th-web", "video-edit"],
   },
 
   {
@@ -53,20 +77,20 @@ const serviceNodes: ServiceNode[] = [
     status: "active",
     position: { x: 1200, y: 180 },
     icon: <Database className="w-5 h-5" />,
-    connections: ["cloud-nas", "crud5th-web"]
+    connections: ["cloud-nas", "crud5th-web"],
   },
 
   // Management Layer (Right Side)
   {
     id: "crud5th-act",
     title: "CRUD5th act",
-    category: "management", 
+    category: "management",
     description: "稼働管理システム",
     technologies: ["React", "Express", "PostgreSQL"],
     status: "active",
     position: { x: 1000, y: 400 },
     icon: <Building2 className="w-5 h-5" />,
-    connections: ["personal-business", "enda", "keibi-shift"]
+    connections: ["personal-business", "enda", "keibi-shift"],
   },
 
   {
@@ -78,7 +102,7 @@ const serviceNodes: ServiceNode[] = [
     status: "active",
     position: { x: 1400, y: 420 },
     icon: <Shield className="w-5 h-5" />,
-    connections: ["crud5th-act", "enda"]
+    connections: ["crud5th-act", "enda"],
   },
 
   {
@@ -90,7 +114,7 @@ const serviceNodes: ServiceNode[] = [
     status: "active",
     position: { x: 1400, y: 700 },
     icon: <Shield className="w-5 h-5" />,
-    connections: ["crud5th-act", "enda"]
+    connections: ["crud5th-act", "enda"],
   },
 
   {
@@ -102,7 +126,7 @@ const serviceNodes: ServiceNode[] = [
     status: "active",
     position: { x: 1000, y: 750 },
     icon: <Server className="w-5 h-5" />,
-    connections: ["crud5th-act", "personal-business", "raft-core"]
+    connections: ["crud5th-act", "personal-business", "raft-core"],
   },
 
   // Creative Layer (Left Side - 広範囲分散配置)
@@ -110,12 +134,12 @@ const serviceNodes: ServiceNode[] = [
     id: "etheria",
     title: "Etheria",
     category: "creative",
-    description: "クリエイターオールインワンシステム", 
+    description: "クリエイターオールインワンシステム",
     technologies: ["Vue.js", "WebGL"],
     status: "active",
     position: { x: 200, y: 350 },
     icon: <Brain className="w-5 h-5" />,
-    connections: ["design-system", "video-edit", "donation-system"]
+    connections: ["design-system", "video-edit", "donation-system"],
   },
 
   {
@@ -127,7 +151,7 @@ const serviceNodes: ServiceNode[] = [
     status: "active",
     position: { x: 20, y: 120 },
     icon: <Code className="w-5 h-5" />,
-    connections: ["etheria", "video-edit", "crud5th-web"]
+    connections: ["etheria", "video-edit", "crud5th-web"],
   },
 
   {
@@ -139,7 +163,7 @@ const serviceNodes: ServiceNode[] = [
     status: "development",
     position: { x: -10, y: 600 },
     icon: <VideoIcon className="w-5 h-5" />,
-    connections: ["etheria", "cloud-nas", "design-system"]
+    connections: ["etheria", "cloud-nas", "design-system"],
   },
 
   // Business & Communication Layer (Center)
@@ -152,7 +176,7 @@ const serviceNodes: ServiceNode[] = [
     status: "active",
     position: { x: 650, y: 420 },
     icon: <Users className="w-5 h-5" />,
-    connections: ["crud5th-act", "communication-system", "enda"]
+    connections: ["crud5th-act", "communication-system", "enda"],
   },
 
   {
@@ -164,7 +188,7 @@ const serviceNodes: ServiceNode[] = [
     status: "active",
     position: { x: 320, y: 580 },
     icon: <Zap className="w-5 h-5" />,
-    connections: ["meltin-vr", "raft-core", "donation-system"]
+    connections: ["meltin-vr", "raft-core", "donation-system"],
   },
 
   {
@@ -176,7 +200,7 @@ const serviceNodes: ServiceNode[] = [
     status: "active",
     position: { x: 600, y: 780 },
     icon: <Building2 className="w-5 h-5" />,
-    connections: ["etheria", "communication-system"]
+    connections: ["etheria", "communication-system"],
   },
 
   // VR Innovation Layer (Bottom-Left)
@@ -189,17 +213,17 @@ const serviceNodes: ServiceNode[] = [
     status: "development",
     position: { x: 180, y: 820 },
     icon: <Gamepad2 className="w-5 h-5" />,
-    connections: ["communication-system", "etheria"]
-  }
+    connections: ["communication-system", "etheria"],
+  },
 ];
 
 const categoryColors: Record<string, string> = {
-  "web": "from-blue-500/30 to-cyan-500/20",
-  "management": "from-green-500/30 to-emerald-500/20",
-  "creative": "from-purple-500/30 to-pink-500/20",
-  "infrastructure": "from-orange-500/30 to-red-500/20",
-  "vr": "from-indigo-500/30 to-purple-500/20",
-  "business": "from-yellow-500/30 to-orange-500/20"
+  web: "from-blue-500/30 to-cyan-500/20",
+  management: "from-green-500/30 to-emerald-500/20",
+  creative: "from-purple-500/30 to-pink-500/20",
+  infrastructure: "from-orange-500/30 to-red-500/20",
+  vr: "from-indigo-500/30 to-purple-500/20",
+  business: "from-yellow-500/30 to-orange-500/20",
 };
 
 interface NodeCardProps {
@@ -209,23 +233,28 @@ interface NodeCardProps {
   highlightedConnections: Set<string>;
 }
 
-function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: NodeCardProps) {
+function NodeCard({
+  node,
+  isHighlighted,
+  onHover,
+  highlightedConnections,
+}: NodeCardProps) {
   return (
     <motion.div
-      className={`absolute w-72 h-40 cursor-pointer group ${isHighlighted ? 'z-30' : 'z-10'}`}
+      className={`absolute w-72 h-40 cursor-pointer group ${isHighlighted ? "z-30" : "z-10"}`}
       style={{
         left: node.position.x,
         top: node.position.y,
-        transform: 'translate(-50%, -50%)'
+        transform: "translate(-50%, -50%)",
       }}
       onMouseEnter={() => onHover(node.id)}
       onMouseLeave={() => onHover(null)}
       whileHover={{ scale: 1.05, z: 50 }}
       animate={{
         scale: isHighlighted ? 1.02 : 1,
-        boxShadow: isHighlighted 
-          ? "0 20px 40px rgba(99, 102, 241, 0.3)" 
-          : "0 8px 25px rgba(0, 0, 0, 0.15)"
+        boxShadow: isHighlighted
+          ? "0 20px 40px rgba(99, 102, 241, 0.3)"
+          : "0 8px 25px rgba(0, 0, 0, 0.15)",
       }}
       transition={{ duration: 0.3 }}
       data-testid={`service-node-${node.id}`}
@@ -234,42 +263,53 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
       <div className="absolute -top-3 -left-5 z-30">
         <div className="relative">
           {/* アウターリング */}
-          <div className={`w-8 h-8 rounded-full border-2 transition-all duration-500 ${
-            isHighlighted 
-              ? 'bg-gradient-to-br from-cyan-400/60 to-blue-500/40 border-cyan-300 shadow-xl shadow-cyan-400/40 scale-110' 
-              : 'bg-gradient-to-br from-white/15 to-white/5 border-white/30 shadow-lg shadow-black/20'
-          } backdrop-blur-md`} />
-          
+          <div
+            className={`w-8 h-8 rounded-full border-2 transition-all duration-500 ${
+              isHighlighted
+                ? "bg-gradient-to-br from-cyan-400/60 to-blue-500/40 border-cyan-300 shadow-xl shadow-cyan-400/40 scale-110"
+                : "bg-gradient-to-br from-white/15 to-white/5 border-white/30 shadow-lg shadow-black/20"
+            } backdrop-blur-md`}
+          />
+
           {/* インナーコア */}
-          <div className={`absolute top-1/2 left-1/2 w-4 h-4 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
-            isHighlighted 
-              ? 'bg-gradient-to-br from-cyan-300 to-cyan-500 shadow-lg shadow-cyan-400/60 animate-pulse' 
-              : 'bg-gradient-to-br from-white/40 to-white/20'
-          }`} />
-          
+          <div
+            className={`absolute top-1/2 left-1/2 w-4 h-4 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+              isHighlighted
+                ? "bg-gradient-to-br from-cyan-300 to-cyan-500 shadow-lg shadow-cyan-400/60 animate-pulse"
+                : "bg-gradient-to-br from-white/40 to-white/20"
+            }`}
+          />
+
           {/* 中央の光る点 */}
-          <div className={`absolute top-1/2 left-1/2 w-2 h-2 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
-            isHighlighted ? 'bg-white animate-ping' : 'bg-white/80'
-          }`} />
-          
+          <div
+            className={`absolute top-[16px] left-[16px] w-2 h-2 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+              isHighlighted ? "bg-white animate-ping" : "bg-white/80"
+            }`}
+          />
+
           {/* 接続方向指示ライン（左下に移動） */}
-          <div className={`absolute top-6 left-6 w-8 h-1 rotate-45 rounded-full transition-all duration-300 ${
-            isHighlighted 
-              ? 'bg-gradient-to-r from-cyan-400 via-cyan-300 to-transparent shadow-lg shadow-cyan-400/30' 
-              : 'bg-gradient-to-r from-white/50 via-white/30 to-transparent'
-          }`} />
-          
+          <div
+            className={`absolute top-6 left-[14px] w-6 h-1 rotate-45 rounded-full transition-all duration-300 ${
+              isHighlighted
+                ? "bg-gradient-to-r from-cyan-400 via-cyan-300 to-transparent shadow-lg shadow-cyan-400/30"
+                : "bg-gradient-to-r from-white/50 via-white/30 to-transparent"
+            }`}
+          />
+
           {/* 装飾的なサブライン（左下に移動） */}
-          <div className={`absolute top-7 left-7 w-4 h-0.5 rotate-45 rounded-full transition-all duration-300 delay-100 ${
-            isHighlighted 
-              ? 'bg-gradient-to-r from-blue-400 to-transparent opacity-80' 
-              : 'bg-gradient-to-r from-white/30 to-transparent opacity-60'
-          }`} />
+          <div
+            className={`absolute top-7 left-7 w-4 h-0.5 rotate-45 rounded-full transition-all duration-300 delay-100 ${
+              isHighlighted
+                ? "bg-gradient-to-r from-blue-400 to-transparent opacity-80"
+                : "bg-gradient-to-r from-white/30 to-transparent opacity-60"
+            }`}
+          />
         </div>
       </div>
 
-      <div className={`relative h-full bg-gradient-to-br ${categoryColors[node.category]} backdrop-blur-md border border-white/20 rounded-2xl p-4 overflow-hidden`}>
-
+      <div
+        className={`relative h-full bg-gradient-to-br ${categoryColors[node.category]} backdrop-blur-md border border-white/20 rounded-2xl p-4 overflow-hidden`}
+      >
         {/* Glow Effect */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-2xl"
@@ -279,11 +319,15 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
 
         {/* Status Indicator */}
         <div className="absolute top-3 right-3">
-          <div className={`w-3 h-3 rounded-full ${
-            node.status === "active" ? "bg-green-400 animate-pulse" :
-            node.status === "development" ? "bg-yellow-400 animate-pulse" :
-            "bg-purple-400 animate-pulse"
-          }`} />
+          <div
+            className={`w-3 h-3 rounded-full ${
+              node.status === "active"
+                ? "bg-green-400 animate-pulse"
+                : node.status === "development"
+                  ? "bg-yellow-400 animate-pulse"
+                  : "bg-purple-400 animate-pulse"
+            }`}
+          />
         </div>
 
         {/* Icon & Title */}
@@ -292,7 +336,9 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
             {node.icon}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-base font-bold text-white truncate">{node.title}</h3>
+            <h3 className="text-base font-bold text-white truncate">
+              {node.title}
+            </h3>
             <p className="text-sm text-white/70 capitalize">{node.category}</p>
           </div>
         </div>
@@ -305,7 +351,10 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
         {/* Technologies */}
         <div className="flex flex-wrap gap-1.5">
           {node.technologies.slice(0, 4).map((tech, index) => (
-            <span key={index} className="text-xs px-2.5 py-1 bg-white/15 rounded-full text-white/90 border border-white/20">
+            <span
+              key={index}
+              className="text-xs px-2.5 py-1 bg-white/15 rounded-full text-white/90 border border-white/20"
+            >
               {tech}
             </span>
           ))}
@@ -322,55 +371,69 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
           const totalConnections = node.connections.length;
           const cardWidth = 288; // w-72 = 288px
           const cardHeight = 160; // h-40 = 160px
-          
+
           let x, y;
-          
+
           // 接続数に応じて辺に分散配置
           if (index < Math.ceil(totalConnections / 4)) {
             // 上辺
-            x = (cardWidth / (Math.ceil(totalConnections / 4) + 1)) * (index + 1) - cardWidth / 2;
+            x =
+              (cardWidth / (Math.ceil(totalConnections / 4) + 1)) *
+                (index + 1) -
+              cardWidth / 2;
             y = -cardHeight / 2;
           } else if (index < Math.ceil(totalConnections / 2)) {
             // 右辺
             const rightIndex = index - Math.ceil(totalConnections / 4);
             x = cardWidth / 2;
-            y = (cardHeight / (Math.ceil(totalConnections / 4) + 1)) * (rightIndex + 1) - cardHeight / 2;
-          } else if (index < Math.ceil(totalConnections * 3 / 4)) {
+            y =
+              (cardHeight / (Math.ceil(totalConnections / 4) + 1)) *
+                (rightIndex + 1) -
+              cardHeight / 2;
+          } else if (index < Math.ceil((totalConnections * 3) / 4)) {
             // 下辺
             const bottomIndex = index - Math.ceil(totalConnections / 2);
-            x = cardWidth / 2 - (cardWidth / (Math.ceil(totalConnections / 4) + 1)) * (bottomIndex + 1);
+            x =
+              cardWidth / 2 -
+              (cardWidth / (Math.ceil(totalConnections / 4) + 1)) *
+                (bottomIndex + 1);
             y = cardHeight / 2;
           } else {
             // 左辺
-            const leftIndex = index - Math.ceil(totalConnections * 3 / 4);
+            const leftIndex = index - Math.ceil((totalConnections * 3) / 4);
             x = -cardWidth / 2;
-            y = cardHeight / 2 - (cardHeight / (Math.ceil(totalConnections / 4) + 1)) * (leftIndex + 1);
+            y =
+              cardHeight / 2 -
+              (cardHeight / (Math.ceil(totalConnections / 4) + 1)) *
+                (leftIndex + 1);
           }
-          
+
           return (
             <div
               key={connectionId}
               className={`absolute transition-all duration-300 ${
-                highlightedConnections.has(connectionId) 
-                  ? 'text-cyan-400 drop-shadow-lg' 
-                  : 'text-white/60'
+                highlightedConnections.has(connectionId)
+                  ? "text-cyan-400 drop-shadow-lg"
+                  : "text-white/60"
               }`}
               style={{
                 left: `calc(50% + ${x}px)`,
                 top: `calc(50% + ${y}px)`,
-                transform: 'translate(-50%, -50%)',
-                fontSize: '10px'
+                transform: "translate(-50%, -50%)",
+                fontSize: "10px",
               }}
             >
               {/* かわいい接続ポイントデザイン */}
               <div className="relative">
                 {/* メインの六角形コネクター */}
-                <div className={`w-3 h-3 rotate-45 border-2 transition-all duration-300 ${
-                  highlightedConnections.has(connectionId)
-                    ? 'bg-cyan-400 border-cyan-300 shadow-lg shadow-cyan-400/50'
-                    : 'bg-white/20 border-white/40'
-                } backdrop-blur-sm`} />
-                
+                <div
+                  className={`w-3 h-3 rotate-45 border-2 transition-all duration-300 ${
+                    highlightedConnections.has(connectionId)
+                      ? "bg-cyan-400 border-cyan-300 shadow-lg shadow-cyan-400/50"
+                      : "bg-white/20 border-white/40"
+                  } backdrop-blur-sm`}
+                />
+
                 {/* 小さなキラキラエフェクト */}
                 {highlightedConnections.has(connectionId) && (
                   <>
@@ -387,21 +450,29 @@ function NodeCard({ node, isHighlighted, onHover, highlightedConnections }: Node
   );
 }
 
-function ConnectionLine({ from, to, isActive }: { from: ServiceNode, to: ServiceNode, isActive: boolean }) {
+function ConnectionLine({
+  from,
+  to,
+  isActive,
+}: {
+  from: ServiceNode;
+  to: ServiceNode;
+  isActive: boolean;
+}) {
   const pathId = `connection-${from.id}-${to.id}`;
-  
+
   // Calculate control points for curved path
   const dx = to.position.x - from.position.x;
   const dy = to.position.y - from.position.y;
   const distance = Math.sqrt(dx * dx + dy * dy);
-  
+
   const controlOffset = Math.min(distance * 0.3, 100);
   const midX = (from.position.x + to.position.x) / 2;
   const midY = (from.position.y + to.position.y) / 2;
-  
-  const perpX = -dy / distance * controlOffset;
-  const perpY = dx / distance * controlOffset;
-  
+
+  const perpX = (-dy / distance) * controlOffset;
+  const perpY = (dx / distance) * controlOffset;
+
   const pathData = `M ${from.position.x} ${from.position.y} Q ${midX + perpX} ${midY + perpY} ${to.position.x} ${to.position.y}`;
 
   return (
@@ -414,29 +485,27 @@ function ConnectionLine({ from, to, isActive }: { from: ServiceNode, to: Service
         fill="none"
         strokeDasharray="5,5"
       />
-      
+
       {/* Active Path */}
       <motion.path
         d={pathData}
-        stroke={isActive ? "rgba(99, 102, 241, 0.8)" : "rgba(255, 255, 255, 0.2)"}
+        stroke={
+          isActive ? "rgba(99, 102, 241, 0.8)" : "rgba(255, 255, 255, 0.2)"
+        }
         strokeWidth={isActive ? "3" : "2"}
         fill="none"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ 
-          pathLength: isActive ? 1 : 0.3, 
-          opacity: isActive ? 1 : 0.4 
+        animate={{
+          pathLength: isActive ? 1 : 0.3,
+          opacity: isActive ? 1 : 0.4,
         }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
       />
-      
+
       {/* Data Flow Animation - using SVG animate */}
       {isActive && (
         <circle r="3" fill="rgba(99, 102, 241, 0.9)">
-          <animateMotion
-            dur="2s"
-            repeatCount="indefinite"
-            path={pathData}
-          />
+          <animateMotion dur="2s" repeatCount="indefinite" path={pathData} />
         </circle>
       )}
     </g>
@@ -451,7 +520,7 @@ export default function Portfolio() {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [isFocused, setIsFocused] = useState(false);
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-200px" });
@@ -459,17 +528,20 @@ export default function Portfolio() {
   // 画面外クリック時のフォーカス解除
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
         setIsFocused(false);
       }
     };
 
     if (isFocused) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isFocused]);
 
@@ -483,7 +555,8 @@ export default function Portfolio() {
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.button === 0) { // 左クリックのみ
+    if (e.button === 0) {
+      // 左クリックのみ
       e.preventDefault();
       setIsFocused(true); // クリック時にフォーカス設定
       setIsDragging(true);
@@ -496,7 +569,7 @@ export default function Portfolio() {
       e.preventDefault();
       const newPan = {
         x: e.clientX - dragStart.x,
-        y: e.clientY - dragStart.y
+        y: e.clientY - dragStart.y,
       };
       setPan(newPan);
     }
@@ -516,9 +589,11 @@ export default function Portfolio() {
   const activeConnections = new Set<string>();
 
   if (hoveredNode || selectedNode) {
-    const node = serviceNodes.find(n => n.id === (hoveredNode || selectedNode));
+    const node = serviceNodes.find(
+      (n) => n.id === (hoveredNode || selectedNode),
+    );
     if (node) {
-      node.connections.forEach(connId => {
+      node.connections.forEach((connId) => {
         highlightedConnections.add(connId);
         activeConnections.add(`${node.id}-${connId}`);
         activeConnections.add(`${connId}-${node.id}`);
@@ -527,21 +602,21 @@ export default function Portfolio() {
   }
 
   return (
-    <section 
+    <section
       ref={sectionRef}
-      id="portfolio" 
+      id="portfolio"
       className="py-24 bg-gradient-to-br from-slate-900 via-purple-900/10 to-slate-900 relative overflow-hidden"
     >
       {/* Background Grid */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div 
+        <div
           className="absolute inset-0"
           style={{
             backgroundImage: `
               linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
               linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px)
             `,
-            backgroundSize: '40px 40px',
+            backgroundSize: "40px 40px",
           }}
         />
       </div>
@@ -563,14 +638,14 @@ export default function Portfolio() {
         </motion.div>
 
         {/* Service Network Visualization */}
-        <div 
+        <div
           ref={containerRef}
           className={`relative w-full h-[700px] mx-auto bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-3xl border border-white/10 overflow-hidden cursor-grab outline-none ${
-            isFocused ? 'ring-2 ring-cyan-500/50' : ''
+            isFocused ? "ring-2 ring-cyan-500/50" : ""
           }`}
-          style={{ 
-            perspective: '1000px',
-            cursor: isDragging ? 'grabbing' : 'grab'
+          style={{
+            perspective: "1000px",
+            cursor: isDragging ? "grabbing" : "grab",
           }}
           onWheel={handleWheel}
           onMouseDown={handleMouseDown}
@@ -579,7 +654,7 @@ export default function Portfolio() {
           onMouseLeave={handleMouseUp}
         >
           {/* 全体表示ボタン（マップ内） */}
-          <button 
+          <button
             onClick={() => {
               resetView();
               setIsFocused(true);
@@ -590,33 +665,33 @@ export default function Portfolio() {
             全体表示
           </button>
           {/* Zoom/Pan Transform Container */}
-          <div 
-            className={`absolute inset-0 ${isDragging ? '' : 'transition-transform duration-200 ease-out'}`}
+          <div
+            className={`absolute inset-0 ${isDragging ? "" : "transition-transform duration-200 ease-out"}`}
             style={{
               transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-              transformOrigin: 'center center'
+              transformOrigin: "center center",
             }}
           >
             {/* SVG Connections */}
-            <svg 
-              className="absolute pointer-events-none" 
-              style={{ 
-                width: '1800px', 
-                height: '950px',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%)',
-                zIndex: -1 
+            <svg
+              className="absolute pointer-events-none"
+              style={{
+                width: "1800px",
+                height: "950px",
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: -1,
               }}
             >
-              {serviceNodes.map(fromNode => 
-                fromNode.connections.map(toNodeId => {
-                  const toNode = serviceNodes.find(n => n.id === toNodeId);
+              {serviceNodes.map((fromNode) =>
+                fromNode.connections.map((toNodeId) => {
+                  const toNode = serviceNodes.find((n) => n.id === toNodeId);
                   if (!toNode) return null;
-                  
+
                   const connectionKey = `${fromNode.id}-${toNode.id}`;
                   const isActive = activeConnections.has(connectionKey);
-                  
+
                   return (
                     <ConnectionLine
                       key={connectionKey}
@@ -625,19 +700,19 @@ export default function Portfolio() {
                       isActive={isActive}
                     />
                   );
-                })
+                }),
               )}
             </svg>
 
             {/* Service Nodes Container */}
-            <div 
+            <div
               className="absolute pointer-events-none"
               style={{
-                width: '1800px',
-                height: '950px',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%)'
+                width: "1800px",
+                height: "950px",
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
               }}
             >
               {serviceNodes.map((node, index) => (
@@ -645,19 +720,27 @@ export default function Portfolio() {
                   key={node.id}
                   className="pointer-events-auto"
                   initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { 
-                    opacity: 1, 
-                    scale: 1,
-                    transition: { 
-                      duration: 0.6, 
-                      delay: index * 0.1,
-                      ease: "easeOut"
-                    }
-                  } : {}}
+                  animate={
+                    isInView
+                      ? {
+                          opacity: 1,
+                          scale: 1,
+                          transition: {
+                            duration: 0.6,
+                            delay: index * 0.1,
+                            ease: "easeOut",
+                          },
+                        }
+                      : {}
+                  }
                 >
                   <NodeCard
                     node={node}
-                    isHighlighted={hoveredNode === node.id || selectedNode === node.id || highlightedConnections.has(node.id)}
+                    isHighlighted={
+                      hoveredNode === node.id ||
+                      selectedNode === node.id ||
+                      highlightedConnections.has(node.id)
+                    }
                     onHover={setHoveredNode}
                     highlightedConnections={highlightedConnections}
                   />
@@ -681,23 +764,29 @@ export default function Portfolio() {
         >
           {Object.entries(categoryColors).map(([category, gradient]) => (
             <div key={category} className="flex items-center gap-2">
-              <div className={`w-4 h-4 rounded bg-gradient-to-br ${gradient} border border-white/20`} />
-              <span className="text-sm text-gray-400 capitalize whitespace-nowrap">{category}</span>
+              <div
+                className={`w-4 h-4 rounded bg-gradient-to-br ${gradient} border border-white/20`}
+              />
+              <span className="text-sm text-gray-400 capitalize whitespace-nowrap">
+                {category}
+              </span>
             </div>
           ))}
         </motion.div>
       </div>
 
-      <style dangerouslySetInnerHTML={{
-        __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
           .line-clamp-2 {
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
           }
-        `
-      }} />
+        `,
+        }}
+      />
     </section>
   );
 }

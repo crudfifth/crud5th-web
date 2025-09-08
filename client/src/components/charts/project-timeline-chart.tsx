@@ -13,36 +13,36 @@ interface ProjectData {
 const projectData: ProjectData[] = [
   {
     name: "ECサイト構築",
-    startDate: new Date(2024, 0, 15),
-    endDate: new Date(2024, 2, 30),
+    startDate: new Date(2025, 1, 1),
+    endDate: new Date(2025, 3, 15),
     category: "受託開発",
     progress: 100
   },
   {
     name: "SaaS管理システム",
-    startDate: new Date(2024, 1, 1),
-    endDate: new Date(2024, 4, 15),
+    startDate: new Date(2025, 2, 15),
+    endDate: new Date(2025, 5, 30),
     category: "自社サービス",
     progress: 85
   },
   {
     name: "DX導入支援",
-    startDate: new Date(2024, 2, 10),
-    endDate: new Date(2024, 5, 20),
+    startDate: new Date(2025, 3, 10),
+    endDate: new Date(2025, 6, 25),
     category: "コンサル",
     progress: 70
   },
   {
     name: "モバイルアプリ開発",
-    startDate: new Date(2024, 3, 5),
-    endDate: new Date(2024, 6, 10),
+    startDate: new Date(2025, 4, 1),
+    endDate: new Date(2025, 7, 20),
     category: "受託開発",
     progress: 60
   },
   {
     name: "AIチャットボット",
-    startDate: new Date(2024, 4, 1),
-    endDate: new Date(2024, 7, 15),
+    startDate: new Date(2025, 5, 15),
+    endDate: new Date(2025, 8, 30),
     category: "自社サービス",
     progress: 40
   }
@@ -56,16 +56,21 @@ const categoryColors: Record<string, string> = {
 
 export default function ProjectTimelineChart() {
   const svgRef = useRef<SVGSVGElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!svgRef.current) return;
+    if (!svgRef.current || !containerRef.current) return;
 
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
     const margin = { top: 40, right: 40, bottom: 60, left: 120 };
-    const width = 800 - margin.left - margin.right;
+    const containerWidth = containerRef.current.clientWidth;
+    const width = Math.max(containerWidth - margin.left - margin.right, 600);
     const height = 400 - margin.bottom - margin.top;
+
+    // Update SVG dimensions
+    svg.attr("width", containerWidth).attr("height", 400);
 
     const g = svg.append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -237,6 +242,7 @@ export default function ProjectTimelineChart() {
 
   return (
     <motion.div 
+      ref={containerRef}
       className="w-full"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -245,8 +251,6 @@ export default function ProjectTimelineChart() {
     >
       <svg
         ref={svgRef}
-        width="800"
-        height="400"
         className="w-full h-auto"
         style={{ maxWidth: "100%", height: "auto" }}
       />
