@@ -137,7 +137,7 @@ const serviceNodes: ServiceNode[] = [
     description: "Webベース動画編集プラットフォーム",
     technologies: ["WebAssembly", "FFmpeg"],
     status: "development",
-    position: { x: 100, y: 600 },
+    position: { x: 50, y: 600 },
     icon: <VideoIcon className="w-5 h-5" />,
     connections: ["etheria", "cloud-nas", "design-system"]
   },
@@ -162,7 +162,7 @@ const serviceNodes: ServiceNode[] = [
     description: "リアルタイム通信基盤",
     technologies: ["WebSocket", "WebRTC"],
     status: "active",
-    position: { x: 400, y: 520 },
+    position: { x: 320, y: 580 },
     icon: <Zap className="w-5 h-5" />,
     connections: ["meltin-vr", "raft-core", "donation-system"]
   },
@@ -174,7 +174,7 @@ const serviceNodes: ServiceNode[] = [
     description: "クリエイター支援プラットフォーム",
     technologies: ["Stripe", "React"],
     status: "active",
-    position: { x: 600, y: 650 },
+    position: { x: 600, y: 720 },
     icon: <Building2 className="w-5 h-5" />,
     connections: ["etheria", "communication-system"]
   },
@@ -187,7 +187,7 @@ const serviceNodes: ServiceNode[] = [
     description: "お婿養マッチングアプリ",
     technologies: ["Unity", "WebXR"],
     status: "development",
-    position: { x: 200, y: 750 },
+    position: { x: 180, y: 820 },
     icon: <Gamepad2 className="w-5 h-5" />,
     connections: ["communication-system", "etheria"]
   }
