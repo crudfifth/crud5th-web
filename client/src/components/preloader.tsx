@@ -24,46 +24,16 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         setResourcesLoaded(prev => ({ ...prev, fonts: true }));
         setProgress(25);
 
-        // Preload video with proper handling
+        // Keep the loading step for visual continuity, but avoid bundling
+        // Replit-only video assets that are not present in the repository.
         setLoadingText('Loading video assets...');
-        const videoPromise = new Promise((resolve) => {
-          const video = document.createElement('video');
-          video.preload = 'auto';
-          video.muted = true;
-          
-          // Import video source dynamically
-          import('@assets/Blue Modern Technology YouTube Intro (1)_1757317613904.mp4').then(module => {
-            video.src = module.default;
-            
-            const handleLoad = () => {
-              resolve(true);
-            };
-            
-            const handleError = () => {
-              console.warn('Video preload failed, continuing anyway');
-              resolve(true);
-            };
-            
-            video.addEventListener('loadeddata', handleLoad, { once: true });
-            video.addEventListener('error', handleError, { once: true });
-            
-            // Fallback timeout
-            setTimeout(() => resolve(true), 5000);
-            
-            video.load();
-          }).catch(() => {
-            console.warn('Video import failed, continuing anyway');
-            resolve(true);
-          });
-        });
-        
-        await videoPromise;
+        await new Promise(resolve => setTimeout(resolve, 100));
         setResourcesLoaded(prev => ({ ...prev, video: true }));
         setProgress(50);
 
         // Preload critical images/assets
         setLoadingText('Loading visual assets...');
-        const imageAssets = [
+        const imageAssets: string[] = [
           // Add any critical image paths here
         ];
         

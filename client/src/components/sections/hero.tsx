@@ -1,9 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { AnimatedLogo, AnimatedArrow } from "@/components/animations/svg-path-animation";
-import ParallaxSection from "@/components/animations/parallax-section";
 import TypingAnimation from "@/components/ui/typing-animation";
-import videoSrc from "@assets/Blue Modern Technology YouTube Intro (1)_1757317613904.mp4";
 
 export default function Hero() {
   const { scrollY } = useScroll();
@@ -26,32 +23,17 @@ export default function Hero() {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Enhanced Background Video with parallax */}
+      {/* Repository-safe animated background. The original Replit video asset is not tracked. */}
       <motion.div 
         style={{ 
           y,
           willChange: 'transform'
         }}
-        className="absolute inset-0 w-full h-full"
-      >
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover z-0 scale-110"
-          style={{
-            transform: 'translateZ(0)',
-            backfaceVisibility: 'hidden'
-          }}
-          data-testid="hero-background-video"
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-      </motion.div>
+        className="absolute inset-0 w-full h-full scale-110 bg-[radial-gradient(circle_at_35%_25%,rgba(46,184,207,0.28),transparent_34%),radial-gradient(circle_at_70%_60%,rgba(129,92,246,0.22),transparent_30%),linear-gradient(135deg,#030712_0%,#0f172a_48%,#020617_100%)]"
+        data-testid="hero-background"
+      />
       
-      {/* Enhanced video overlays with depth */}
+      {/* Enhanced background overlays with depth */}
       <div className="absolute inset-0 bg-black/60 z-10" />
       <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-primary/5 to-primary/20 z-10" />
       <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent z-10" />

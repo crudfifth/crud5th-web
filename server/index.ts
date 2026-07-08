@@ -1,6 +1,39 @@
 import express, { type Request, Response, NextFunction } from "express";
+import fs from "fs";
+import path from "path";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+
+function log(message: string, source = "express") {
+  const formattedTime = new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+
+  console.log(`${formattedTime} [${source}] ${message}`);
+}
+
+function serveStatic(app: express.Express) {
+  const distPath = [
+    process.env.STATIC_DIR,
+    path.resolve(process.cwd(), "public"),
+    path.resolve(process.cwd(), "dist", "public"),
+    path.resolve(process.cwd(), ".amplify-hosting", "compute", "default", "public"),
+  ].find((candidate): candidate is string => Boolean(candidate && fs.existsSync(candidate)));
+
+  if (!distPath) {
+    throw new Error(
+      "Could not find the build directory, make sure to build the client first",
+    );
+  }
+
+  app.use(express.static(distPath));
+
+  app.use("*", (_req, res) => {
+    res.sendFile(path.resolve(distPath, "index.html"));
+  });
+}
 
 const app = express();
 app.use(express.json());
@@ -38,7 +71,7 @@ app.use((req, res, next) => {
 
 // HTTPS redirect middleware - force all HTTP traffic to HTTPS
 app.use((req, res, next) => {
-  if (req.headers['x-forwarded-proto'] !== 'https' && process.env.NODE_ENV === 'production') {
+  if (req.headers["x-forwarded-proto"] === "http" && process.env.NODE_ENV === "production") {
     return res.redirect(301, `https://${req.headers.host}${req.originalUrl}`);
   }
   next();
@@ -59,20 +92,17 @@ app.use((req, res, next) => {
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
   if (app.get("env") === "development") {
+    const { setupVite } = await import("./vite");
     await setupVite(app, server);
   } else {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
+  const defaultPort = process.env.NODE_ENV === "production" ? "3000" : "5000";
+  const port = parseInt(process.env.PORT || defaultPort, 10);
   server.listen({
     port,
     host: "0.0.0.0",
-    reusePort: true,
   }, () => {
     log(`serving on port ${port}`);
   });

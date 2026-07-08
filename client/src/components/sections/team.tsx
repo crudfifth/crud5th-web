@@ -3,7 +3,6 @@ import ScrollReveal, { RevealOnScroll, SlideInLeft, ScaleIn } from "@/components
 import { AnimatedUnderline } from "@/components/animations/svg-path-animation";
 import { Github } from "lucide-react";
 import { SiX } from "react-icons/si";
-import takahashiImage from '@assets/C300E57E-954C-4E87-9DCC-28D7DB8B1E582025-01-21_20-48-20_000_1757304334173.png';
 
 const teamMembers = [
   {
@@ -11,7 +10,6 @@ const teamMembers = [
     role: "Lead Engineer",
     description: "フルスタック開発とプロジェクトマネジメントを得意とし、チーム全体の技術戦略を牽引。",
     initials: "高綱",
-    image: takahashiImage,
     social: {
       twitter: "https://x.com/CRUD5th",
       github: "https://github.com/crudfifth"
@@ -66,23 +64,13 @@ function TeamCard({ member, index }: { member: typeof teamMembers[0], index: num
           }}
           transition={{ duration: 0.3 }}
         >
-          {member.image ? (
-            <motion.img
-              src={member.image}
-              alt={member.name}
-              className="w-full h-full object-cover rounded-full"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.2 }}
-            />
-          ) : (
-            <motion.span 
-              className="text-3xl font-bold text-primary"
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.2 }}
-            >
-              {member.initials}
-            </motion.span>
-          )}
+          <motion.span
+            className="text-3xl font-bold text-primary"
+            whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.2 }}
+          >
+            {member.initials}
+          </motion.span>
           
           {/* Floating particles around avatar on hover */}
           <motion.div
